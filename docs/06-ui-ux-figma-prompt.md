@@ -629,9 +629,8 @@ Card hover: translateY(-4px) + deeper outer shadow.
 TECH STACK
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-- Next.js 14 (App Router with app/ directory)
-- React 18 + TypeScript
-- Tailwind CSS 3 (custom theme)
+- React 19 + Vite + TypeScript
+- Tailwind CSS v4 (custom 3D clay theme)
 - Framer Motion for ALL animations (spring physics, gestures, layout transitions, page transitions)
 - Web Speech API for voice input
 - WebSocket for real-time agent updates

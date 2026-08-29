@@ -3,7 +3,7 @@
 This document details the 6 core end-to-end autonomous pipelines that demonstrate the true "agentic" capabilities of Crewmate. These workflows utilize Pub/Sub for asynchronous event-driven execution, state management in Firestore, and Model Armor for security.
 
 ## 1. Contract Review Pipeline
-**Trigger**: User uploads a brand deal PDF via the Next.js frontend.
+**Trigger**: User uploads a brand deal PDF via the React 19 frontend.
 **Duration**: ~15-20 seconds.
 
 ### Flow
