@@ -146,7 +146,7 @@ Enterprise-grade agent fleets are built for Fortune 500 CIOs. **Crewmate builds 
 
 | Layer | Technology | Purpose |
 |:---|:---|:---|
-| **Frontend** | Next.js 14 (App Router) + Tailwind CSS | 3D Claymorphism dashboard SPA |
+| **Frontend** | React 19 + Vite + Tailwind CSS v4 | 3D Claymorphism dashboard SPA |
 | **Backend** | Python 3.11 + FastAPI | API Gateway + Agent runtime |
 | **Agent Framework** | Google ADK (SequentialAgent, ParallelAgent) | Multi-agent orchestration |
 | **Agent Runtime** | Antigravity SDK | Safety policies, budget governance, hooks |
