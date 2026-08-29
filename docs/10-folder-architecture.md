@@ -55,7 +55,7 @@ crewmate/
 │       │   ├── test_clipping_director.py
 │       │   └── test_community_guardian.py
 │       └── test_services/             # Integration tests
-├── frontend/                          # Next.js Application (Placeholder)
+├── frontend/                          # React 19 + Vite 3D Claymorphism SPA
 ├── deploy/                            # Deployment scripts and config
 │   ├── cloudbuild.yaml                # CI/CD pipeline definition
 │   └── setup_gcp.sh                   # Script to provision GCP resources

@@ -49,10 +49,10 @@ stateDiagram-v2
 ## 9. State Diagram
 ```mermaid
 graph TD
-    User[User Action] --> NextJS[Next.js Frontend]
-    NextJS -- REST --> FastAPI[FastAPI Backend]
+    User[User Action] --> ReactSPA[React 19 Frontend]
+    ReactSPA -- REST --> FastAPI[FastAPI Backend]
     FastAPI -- Trigger --> Agent[Agent Executor]
     Agent -- Writes State --> DB[(Firestore)]
     Agent -- Publishes --> PubSub[Pub/Sub Event]
-    DB -. Listens .-> NextJS
+    DB -. Listens .-> ReactSPA
 ```
