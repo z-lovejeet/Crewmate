@@ -1,304 +1,255 @@
-# Development Roadmap — Crewmate (v2.0)
+# Development Roadmap — Crewmate (v3.0 Final Sprint)
 
 > **Hackathon**: All Things Agentic Hackathon 2026
+> **Track**: Fortified Enterprise Fleet
 > **Deadline**: August 31, 2026, 11:59 PM PT
-> **Days Remaining**: 7 (Aug 24 → Aug 31)
-> **Builder**: Solo — AI-Assisted Development
+> **Hours Remaining**: ~36 (Aug 29 8:00 PM IST → Aug 31)
+> **Builder**: Solo — Lovejeet Singh
+> **Coding Agents**: Antigravity (Gemini 3.7 Flash) + Claude Opus 4.6
+> **GCP Project**: `crewmate-507013`
 
 ---
 
-## 0. Current Project Status (As of Aug 24)
+## 0. Current State (As of Aug 29, 8:00 PM IST)
 
-### ✅ What's Built
+### ✅ DONE — Foundation
 
 | Component | Status | Details |
 |:---|:---|:---|
-| **Documentation** | ✅ Complete | 12 spec docs + 14 agent specs (26 markdown files) |
-| **Frontend Shell** | ✅ Complete | Vite + React 19 + Tailwind v4 + Framer Motion |
-| **38 Frontend Files** | ✅ Complete | 20 clay components, 4 layout components, 8 pages, 3 lib modules |
-| **3D Claymorphism Design** | ✅ Complete | Full clay shadow system, CSS custom properties, light theme |
-| **Landing Page** | ✅ Complete | 12 interactive sections, ROI calculator, agent simulator, FAQ |
-| **Dashboard Pages** | ✅ Complete | Command Center, Contracts, Compliance, Distribution, Fleet, Reports |
+| **Documentation** | ✅ Complete | 26 markdown files (PRD, architecture, agent specs, API contracts, DB design, deployment) |
+| **Frontend UI** | ✅ Complete | React 19 + Vite + Tailwind v4, 38 files, 20 clay components, 8 pages, voice interface |
+| **Backend Scaffold** | ✅ Running | FastAPI on `localhost:8000`, `main.py`, `config/settings.py`, `.env`, `Dockerfile` |
+| **14 ADK Agent Definitions** | ✅ Defined | All agent Python files with names, models, instructions, tool functions |
+| **9 API Routers** | ✅ Responding | fleet, contracts, compliance, distribution, trends, reports, community, voice, health — all HTTP 200 |
+| **Gemini Service** | ✅ Working | Multi-model fallback: `gemini-3.7-flash` → `gemini-3.6-flash` → `gemini-3.1-pro-preview` |
+| **Frontend ↔ Backend** | ✅ Hybrid | `api.ts` connects to live backend with mock fallback |
+| **Pydantic Schemas** | ✅ Rich | Contracts (ClauseDetail, counter-proposals), Compliance (Lyria, FTC checks), Trends (ContentBrief) |
 
-### ❌ What's NOT Built
+### 🔴 NOT DONE — Critical Track Requirements
 
-| Component | Status | Scope |
+| Component | Impact | Track Requirement |
 |:---|:---|:---|
-| **Backend (Python)** | ❌ Not Started | 0 Python files. No `backend/` directory. |
-| **Google ADK Agents** | ❌ Not Started | 0 of 14 agents implemented |
-| **FastAPI Gateway** | ❌ Not Started | No API server |
-| **Firebase/Firestore** | ❌ Not Started | No database setup |
-| **Model Armor** | ❌ Not Started | No security middleware |
-| **Frontend ↔ Backend Wiring** | ❌ Not Started | All pages use hardcoded mock data |
-| **GCP Deployment** | ❌ Not Started | No Cloud Run, no Docker |
-| **Demo Video** | ❌ Not Started | No recording |
-| **Devpost Submission** | ❌ Not Started | No write-up posted |
+| **Agent Registry** (Firestore) | CRITICAL | Discovery & Lifecycle |
+| **Agent Runtime** (Async execution) | CRITICAL | Core Execution & State |
+| **Memory Bank** (Persistent context) | CRITICAL | Core Execution & State |
+| **Agent Identity** (RBAC) | CRITICAL | Security & Governance |
+| **Agent Gateway** (Rate limits, circuit breakers) | HIGH | Security & Governance |
+| **Model Armor** (I/O screening) | CRITICAL | Security & Governance |
+| **Agent Observability** (OpenTelemetry traces) | CRITICAL | Telemetry |
+| **Firestore Integration** | CRITICAL | Zero database code exists |
+| **Cloud Run Deployment** | CRITICAL | Must have live hosted URL |
+| **Gemma Integration** | HIGH | Bonus points |
+| **Demo Video** | CRITICAL | Required for submission |
+| **Devpost / Blog / Social** | CRITICAL | Required for submission + bonus |
 
 ---
 
-## 1. AI Coding Agent Strategy
-
-| Agent | LLM | Strengths | Assigned Work |
-|:---|:---|:---|:---|
-| **Antigravity (AGY)** | Gemini 3.7 Flash | Parallel subagents, multi-file scaffolds, codebase-wide refactors | Backend scaffold, frontend API wiring, deployment |
-| **Cline** | OX Alpha | Fast single-file generation, iterative debugging | Individual agent implementations, tool functions, API routes |
-| **Cline** | Claude Opus 4.6 | Complex reasoning, architecture decisions, long context | Orchestrator logic, security layer, integration, documentation |
-
-### Assignment Rules
-1. **Scaffold & Parallel Creation** → Antigravity (spawns 10+ subagents)
-2. **Individual Agent Python Files** → Cline + OX Alpha (fast, one file at a time)
-3. **Complex Integration** → Cline + Claude Opus 4.6 (reasoning-heavy)
-4. **Frontend Refactors** → Antigravity (multi-file across all pages)
-5. **Documentation & Devpost** → Cline + Claude Opus 4.6 (long-form writing)
-
----
-
-## 2. Phase Overview
+## 1. Strategy: Three 12-Hour Sprints
 
 ```mermaid
 gantt
-    title Crewmate — 7-Day AI-Accelerated Sprint
+    title Crewmate — 36-Hour Final Sprint
     dateFormat YYYY-MM-DD
     axisFormat %b %d
 
-    section Phase 1
-    Backend Scaffold + FastAPI + Config :done, p1, 2026-08-24, 1d
+    section Phase 1 - Enterprise Infra
+    Firestore + Registry + Memory Bank  :active, p1a, 2026-08-29, 1d
+    Model Armor + Identity + Gateway    :p1b, 2026-08-29, 1d
+    Observability + Gemma + Runtime     :p1c, 2026-08-29, 1d
 
-    section Phase 2
-    Orchestrator + Contract + Compliance :p2, 2026-08-25, 1d
+    section Phase 2 - Autonomy + Frontend
+    Contract + Compliance Pipelines     :p2a, 2026-08-30, 1d
+    Orchestration + Voice E2E           :p2b, 2026-08-30, 1d
+    Dashboard Traces + Demo Data        :p2c, 2026-08-30, 1d
 
-    section Phase 3
-    Fleet Agents 3-9 :p3, 2026-08-26, 1d
-
-    section Phase 4
-    Growth Agents 10-13 + Security :p4, 2026-08-27, 1d
-
-    section Phase 5
-    Frontend API Wiring + Voice :p5, 2026-08-28, 1d
-
-    section Phase 6
-    GCP Deploy + Polish + Demo Data :p6, 2026-08-29, 1d
-
-    section Phase 7
-    Demo Video + Devpost + Submit :p7, 2026-08-30, 2d
+    section Phase 3 - Deploy + Submit
+    Cloud Run + Frontend Deploy         :p3a, 2026-08-31, 1d
+    Demo Video + README                 :p3b, 2026-08-31, 1d
+    Devpost + Blog + Social + Submit    :crit, p3c, 2026-08-31, 1d
 ```
 
 ---
 
-## 3. Phase-by-Phase Breakdown
+## 2. Phase 1 — Enterprise Infrastructure (12 hours)
+
+> **When**: Aug 29 8:00 PM → Aug 30 8:00 AM IST
+> **Goal**: Build ALL 7 GEAP components. This is the track requirement.
+> **Agent**: Antigravity + Claude Opus 4.6
+
+### Sprint 1A: Data Layer (4 hours)
+
+| # | Task | Files | Est. | Priority |
+|:---|:---|:---|:---|:---|
+| 1.1 | **Install & configure Firestore client** — `google-cloud-firestore` SDK, singleton client, connection to `crewmate-507013` project | `services/firestore_client.py` | 30m | P0 |
+| 1.2 | **Agent Registry service** — Register agent metadata (name, version, model, capabilities, health, status) to Firestore `agents` collection. CRUD operations + health-check endpoint. Seed all 14 agents on startup. | `services/registry.py`, `routers/registry.py` | 90m | P0 |
+| 1.3 | **Memory Bank service** — Store/retrieve creator preferences (min deal value, max exclusivity, preferred terms), brand interaction history, content patterns. Namespaced by creator_id. | `services/memory.py`, `routers/memory.py` | 60m | P0 |
+| 1.4 | **Update all existing routers** — Replace hardcoded demo data with Firestore reads. Contract analyses stored in `contracts` collection. Compliance results in `compliance_results`. | All routers | 60m | P0 |
+
+**Gate 1A ✓**: `GET /api/registry/agents` returns 14 agents from Firestore · `POST /api/memory/store` persists data · `GET /api/memory/retrieve` returns stored data
+
+### Sprint 1B: Security Layer (4 hours)
+
+| # | Task | Files | Est. | Priority |
+|:---|:---|:---|:---|:---|
+| 1.5 | **Model Armor middleware** — Input screening: 15+ prompt injection regex patterns + PII detection (SSN, email, phone, credit card). Output screening: PII leak prevention + harmful content filter. FastAPI middleware that wraps every route. Logs all blocked requests to Firestore `armor_logs`. | `middleware/model_armor.py` | 90m | P0 |
+| 1.6 | **Agent Identity middleware** — Per-agent RBAC matrix. Each agent has declared read/write scopes. Gateway validates agent capabilities before routing tasks. API key validation on all endpoints. | `middleware/identity.py` | 60m | P0 |
+| 1.7 | **Agent Gateway enhancements** — Circuit breaker decorator: 3 retries, 30s timeout, exponential backoff, fallback response. Sliding-window rate limiter: 100 req/min per API key. Request validation middleware. Unified error response format. | `middleware/gateway.py` | 60m | P0 |
+| 1.8 | **Wire middleware into FastAPI** — Add all middleware to `main.py` app lifecycle. Ensure request flows through: Gateway → Model Armor → Identity → Router → Agent → Model Armor (output) → Response. | `main.py` | 30m | P0 |
+
+**Gate 1B ✓**: Sending `"ignore all previous instructions"` returns 403 blocked · Rate limiter returns 429 after threshold · RBAC prevents unauthorized agent access
+
+### Sprint 1C: Observability + Classification (4 hours)
+
+| # | Task | Files | Est. | Priority |
+|:---|:---|:---|:---|:---|
+| 1.9 | **Agent Observability service** — Create OpenTelemetry-compatible spans for every agent invocation. Track: agent_id, model, prompt_hash (never raw prompt), tool_calls, latency_ms, token_count, result_status. Store spans in Firestore `traces` collection. | `services/observability.py` | 60m | P0 |
+| 1.10 | **Traces API router** — `GET /api/traces` (list recent traces with pagination), `GET /api/traces/{trace_id}` (full reasoning chain), `GET /api/traces/agent/{agent_id}` (per-agent trace history). | `routers/traces.py` | 45m | P0 |
+| 1.11 | **Agent Runtime service** — Async task execution with Firestore state machine. Submit task → status `pending` → agent picks up → `running` → completes → `completed` or `failed`. Background asyncio worker. `GET /api/runtime/tasks/{task_id}` for status polling. | `services/runtime.py`, `routers/runtime.py` | 75m | P0 |
+| 1.12 | **Gemma content classification** — Use `gemma-4-26b-a4b-it` via GenAI SDK for lightweight content categorization (review, tutorial, vlog, sponsored, etc.) and brand safety scoring. Integrated as a tool in Content Compliance agent. | `services/gemma_classifier.py` | 30m | P1 |
+| 1.13 | **Update pyproject.toml** — Add new dependencies: `google-cloud-firestore`, `opentelemetry-api`, `opentelemetry-sdk` | `pyproject.toml` | 15m | P0 |
+
+**Gate 1C ✓**: `GET /api/traces` returns spans with latency/tool data · `POST /api/runtime/submit` creates async task with state tracking · Gemma classifies content category
 
 ---
 
-### Phase 1 — Backend Scaffold & Infrastructure
-**Date**: Aug 24 · **Agent**: Antigravity (parallel subagents) · **Hours**: 6-8
+## 3. Phase 2 — Real Agent Autonomy & Frontend (12 hours)
 
-Create the entire backend directory structure, FastAPI app, config, and empty agent stubs.
+> **When**: Aug 30 8:00 AM → 8:00 PM IST
+> **Goal**: Make agents DO things autonomously. Wire frontend to all new services.
+> **Agent**: Antigravity + Claude Opus 4.6
 
-| # | Task | File(s) |
-|:---|:---|:---|
-| 1.1 | Create `backend/` directory tree | All dirs |
-| 1.2 | `pyproject.toml` with all deps | `backend/pyproject.toml` |
-| 1.3 | FastAPI main app with CORS, lifespan | `backend/main.py` |
-| 1.4 | Pydantic settings (`.env` loading) | `backend/config/settings.py` |
-| 1.5 | Firestore client singleton | `backend/services/firestore.py` |
-| 1.6 | Model Armor service stub | `backend/services/model_armor.py` |
-| 1.7 | OpenTelemetry + Cloud Trace setup | `backend/services/observability.py` |
-| 1.8 | Base Pydantic schemas | `backend/schemas/base.py` |
-| 1.9 | All 14 agent stub files (empty ADK Agent classes) | `backend/agents/*.py` |
-| 1.10 | API router stubs for all endpoints | `backend/routers/*.py` |
-| 1.11 | Docker + docker-compose | `Dockerfile`, `docker-compose.yml` |
-| 1.12 | `.env.example` | Root |
+### Sprint 2A: Autonomous Pipelines (4 hours)
 
-**Gate 1 ✓**: `uv run uvicorn backend.main:app` starts · `GET /health` returns `{"status":"ok","agents":14}` · Swagger UI loads
+| # | Task | Files | Est. | Priority |
+|:---|:---|:---|:---|:---|
+| 2.1 | **Contract Review autonomous pipeline** — Full flow: Upload PDF → `pdf_extractor` extracts text → Contract Reviewer analyzes clauses with Gemini → Risk scores assigned → Revenue Optimizer benchmarks deal → Counter-proposals generated → Results stored in Firestore `contracts` → Memory Bank updated with brand history. Zero human in the loop. | `agents/contract_reviewer.py`, `agents/revenue_optimizer.py`, `routers/contracts.py` | 120m | P0 |
+| 2.2 | **Compliance Scan autonomous pipeline** — Submit content metadata → FTC disclosure check → Copyright audio scan → Platform-specific rules (YT + IG) → Gemma content classification → Compliance score → Lyria alternative suggestion (data reference) → Store in Firestore `compliance_results`. | `agents/content_compliance.py`, `routers/compliance.py` | 90m | P0 |
+| 2.3 | **Wire Gemini API calls into all agent tools** — Replace mock return values in all 14 agent tool functions with actual `generate_text()` calls. Every agent should call Gemini for real reasoning. | All `agents/*.py` | 30m | P0 |
 
----
+**Gate 2A ✓**: `POST /api/contracts/analyze` with a PDF returns real Gemini-powered clause analysis stored in Firestore · Compliance scan returns real FTC check results
 
-### Phase 2 — Core Agent Trio
-**Date**: Aug 25 · **Agent**: Cline + Claude Opus 4.6 (orchestrator), Cline + OX Alpha (workers) · **Hours**: 10-12
+### Sprint 2B: Orchestration + Voice (4 hours)
 
-The 3 most critical agents powering the flagship demo.
+| # | Task | Files | Est. | Priority |
+|:---|:---|:---|:---|:---|
+| 2.4 | **Multi-agent orchestration demo** — Orchestrator receives high-level goal (e.g., "Review this brand deal end-to-end") → Decomposes into sub-tasks → Dispatches Contract Reviewer + Revenue Optimizer + Brand Safety + Compliance in parallel via ADK sub_agents → Aggregates results → Returns unified report. Use ADK Agent with `sub_agents` list properly. | `agents/orchestrator.py`, `routers/fleet.py` | 90m | P0 |
+| 2.5 | **Voice command end-to-end** — Frontend: Web Speech API captures voice → sends transcript to `POST /api/voice/command` → Backend: Orchestrator routes to correct agent based on intent → Agent executes → Response returned → Frontend speaks response via Speech Synthesis. | `routers/voice.py`, Frontend `VoiceWave.tsx` | 60m | P1 |
+| 2.6 | **WebSocket live updates** (optional, time permitting) — Real-time agent status push via FastAPI WebSocket. Frontend subscribes to `/ws/fleet` for live agent activity feed. | `services/websocket.py`, `routers/ws.py` | 60m | P2 |
+| 2.7 | **Update all existing routers to record traces** — Every endpoint wraps execution in observability span. Record agent_id, latency, tool_calls, result. | All routers | 30m | P0 |
 
-| # | Task | File(s) |
-|:---|:---|:---|
-| 2.1 | Fleet Orchestrator (ADK SequentialAgent + routing) | `agents/orchestrator.py` |
-| 2.2 | Contract Reviewer (PDF parse, clause extract, risk score) | `agents/contract_reviewer.py` |
-| 2.3 | Content Compliance (FTC, copyright, platform rules) | `agents/content_compliance.py` |
-| 2.4 | Contract + Compliance Pydantic schemas | `schemas/contracts.py`, `schemas/compliance.py` |
-| 2.5 | Contract API router (upload, analyze, list) | `routers/contracts.py` |
-| 2.6 | Compliance API router (scan, status) | `routers/compliance.py` |
-| 2.7 | PDF extraction tool | `tools/pdf_extractor.py` |
-| 2.8 | Shared Gemini client wrapper | `services/gemini.py` |
+**Gate 2B ✓**: `POST /api/fleet/invoke` with a complex goal dispatches to multiple agents and returns aggregated results · Voice command captures speech and returns agent response
 
-**Gate 2 ✓**: `POST /api/contracts/analyze` returns clause analysis · Orchestrator routes correctly to both agents
+### Sprint 2C: Frontend & Demo Data (4 hours)
+
+| # | Task | Files | Est. | Priority |
+|:---|:---|:---|:---|:---|
+| 2.8 | **Dashboard Observability page** — New frontend page or section showing real traces from Firestore. Agent reasoning chains, tool call timelines, latency bars. Fetches from `GET /api/traces`. | Frontend `Observability.tsx` or `Fleet.tsx` | 90m | P0 |
+| 2.9 | **Seed rich demo data** — Script to pre-populate Firestore with: 3 sample contracts with analyses, 5 compliance results, creator memory (preferences, brand history), 20+ trace entries, agent registry with health data. The demo must look lived-in. | `scripts/seed_data.py` | 60m | P0 |
+| 2.10 | **Frontend polish** — Fix any pages broken by API schema changes. Ensure all pages show live Firestore data. Add loading skeletons. Fix error states. Test Agent Registry page. | Frontend pages | 60m | P1 |
+| 2.11 | **Generate architecture diagram PNG** — Render the Mermaid architecture diagram as a professional PNG for Devpost submission. | `docs/assets/architecture.png` | 30m | P1 |
+
+**Gate 2C ✓**: Observability page shows real traces · Firestore has realistic demo data · All frontend pages render without errors
 
 ---
 
-### Phase 3 — Fleet Agents (3-9)
-**Date**: Aug 26 · **Agent**: Cline + OX Alpha (rapid sequence) · **Hours**: 8-10
+## 4. Phase 3 — Deploy, Record, Submit (12 hours)
 
-7 prompt-driven worker agents following the same ADK pattern.
+> **When**: Aug 30 8:00 PM → Aug 31 8:00 AM IST (then polish until deadline)
+> **Goal**: Live deployment, demo video, complete submission.
 
-| # | Agent | Key Tools | Complexity |
-|:---|:---|:---|:---|
-| 3.1 | Distribution Manager (A3) | `check_specs`, `generate_metadata`, `optimize_seo` | Medium |
-| 3.2 | Report Generator (A4) | `compile_report`, `generate_pdf`, `call_veo_stub` | Medium |
-| 3.3 | Revenue Optimizer (A5) | `benchmark_rates`, `project_revenue`, `draft_counter` | Medium |
-| 3.4 | Brand Safety (A6) | `check_alignment`, `scan_controversial` | Low |
-| 3.5 | Content Calendar (A7) | `find_conflicts`, `suggest_timing` | Low |
-| 3.6 | Threat Sentinel (A8) | `model_armor_scan`, `detect_anomaly` | Medium |
-| 3.7 | Audience Analyst (A9) | `analyze_demographics`, `predict_engagement` | Low |
+### Sprint 3A: Cloud Deployment (4 hours)
 
-Plus routers: `routers/distribution.py`, `routers/reports.py`, `routers/fleet.py`
+| # | Task | Files | Est. | Priority |
+|:---|:---|:---|:---|:---|
+| 3.1 | **GCP Project Setup** — Enable APIs (Cloud Run, Firestore, Artifact Registry, Cloud Build, Cloud Trace). Create service account. Set IAM roles. | Manual (see setup guide) | 30m | P0 |
+| 3.2 | **Build & deploy backend to Cloud Run** — Update Dockerfile for production. Build image. Push to Artifact Registry. Deploy to Cloud Run with env vars (API key, project ID). Verify public URL responds. | `Dockerfile`, `gcloud` commands | 90m | P0 |
+| 3.3 | **Deploy frontend** — Build production frontend. Deploy to Firebase Hosting or serve from Cloud Run. Point API_BASE to Cloud Run backend URL. | Frontend build + deploy | 60m | P0 |
+| 3.4 | **End-to-end testing on production** — Test every flow on the deployed URL: contract upload, compliance scan, voice command, fleet invoke, registry lookup, memory retrieval, trace viewing, Model Armor blocking. | Live URLs | 60m | P0 |
 
-**Gate 3 ✓**: All 10 agents (0-9) callable · `GET /api/fleet/status` returns health for all
+**Gate 3A ✓**: App is live at a public `*.run.app` URL · All endpoints work on production · Firestore shows data
 
----
+### Sprint 3B: Demo & Documentation (4 hours)
 
-### Phase 4 — Growth Agents + Security Layer
-**Date**: Aug 27 · **Agent**: Cline + OX Alpha (growth), Cline + Claude Opus 4.6 (security) · **Hours**: 10-12
+| # | Task | Files | Est. | Priority |
+|:---|:---|:---|:---|:---|
+| 3.5 | **Record 4-minute demo video** — Unedited screen recording. Script: (1) Hosted URL + fleet dashboard, (2) Contract upload → autonomous analysis, (3) Compliance scan, (4) Voice command, (5) Observability traces, (6) Model Armor blocking demo, (7) GCP Console proof (Cloud Run + Firestore). Upload to YouTube (public). | Screen recording | 120m | P0 |
+| 3.6 | **Write comprehensive README** — Project overview, architecture diagram, setup instructions (one-command local, Cloud Run deployment), tech stack table, screenshots. | `README.md` | 60m | P0 |
+| 3.7 | **Screenshot collection** — Capture 5-8 screenshots of: dashboard, contract analysis, compliance scan, observability, voice command, fleet status. For Devpost gallery. | Screenshots | 30m | P0 |
 
-#### Part A: Growth Agents
+**Gate 3B ✓**: Demo video uploaded to YouTube · README has clear setup instructions · Screenshots ready
 
-| # | Agent | Innovation |
-|:---|:---|:---|
-| 4.1 | Trend Radar (A10) | Gemini Search Grounding for real-time trends |
-| 4.2 | Hook Architect (A11) | Retention curve analysis, script beat generation |
-| 4.3 | Clipping Director (A12) | Transcript energy scoring, viral moment detection |
-| 4.4 | Community Guardian (A13) | Gemma-powered sentiment classification |
+### Sprint 3C: Submission (4 hours)
 
-#### Part B: Enterprise Security
+| # | Task | Files | Est. | Priority |
+|:---|:---|:---|:---|:---|
+| 3.8 | **Write Devpost submission** — Project description (2000+ words), inspiration, what it does, how we built it, challenges, accomplishments, what's next, tech stack tags, video embed, screenshots, hosted URL. | Devpost portal | 90m | P0 |
+| 3.9 | **Write Medium blog post** — "Building an Enterprise Agent Fleet for Content Creators with Google ADK & Gemini 3.7 Flash". Include: architecture walkthrough, code snippets, screenshots, hackathon attribution line. Publish publicly. | Medium | 60m | P1 |
+| 3.10 | **Post on LinkedIn** — Project highlight with `#AllThingsAgenticHackathon` hashtag. Tag Google Cloud, Google AI. | LinkedIn | 15m | P1 |
+| 3.11 | **Final submission on Devpost** — Verify all fields complete. Verify video plays. Verify hosted URL works. Verify GitHub repo is public. **SUBMIT.** | Devpost | 15m | P0 |
+| 3.12 | **Buffer time** — Fix any last-minute issues discovered during final testing. | — | 60m | P0 |
 
-| # | Task | File(s) |
-|:---|:---|:---|
-| 4.5 | Model Armor middleware (input/output screening) | `services/model_armor.py` |
-| 4.6 | Circuit breaker (3 retries, 30s timeout) | `services/circuit_breaker.py` |
-| 4.7 | Agent Identity / RBAC | `services/agent_identity.py` |
-| 4.8 | WebSocket manager for real-time events | `services/websocket.py` |
-| 4.9 | Growth API routers | `routers/trends.py`, `routers/community.py` |
-
-**Gate 4 ✓**: All 14 agents functional · Model Armor blocks injection · Circuit breaker activates on timeout
-
----
-
-### Phase 5 — Frontend ↔ Backend Integration
-**Date**: Aug 28 · **Agent**: Antigravity (multi-file refactor) · **Hours**: 10-12
-
-Wire every page to the live API. Replace all hardcoded mock data.
-
-| # | Task | Files |
-|:---|:---|:---|
-| 5.1 | Shared API client (`fetch` + error handling) | `lib/api-client.ts` |
-| 5.2 | Wire Command Center → `/api/fleet/status` | `CommandCenter.tsx` |
-| 5.3 | Wire Contracts → `/api/contracts/*` | `Contracts.tsx` |
-| 5.4 | Wire Compliance → `/api/compliance/*` | `Compliance.tsx` |
-| 5.5 | Wire Distribution → `/api/distribution/*` | `Distribution.tsx` |
-| 5.6 | Wire Fleet Monitor → `/api/fleet/*` + WebSocket | `Fleet.tsx` |
-| 5.7 | Wire Reports → `/api/reports/*` | `Reports.tsx` |
-| 5.8 | Voice: Web Speech API → `/api/voice` | `VoiceWave.tsx` |
-| 5.9 | WebSocket live ticker | `lib/websocket.ts` |
-| 5.10 | Error boundaries + loading skeletons | All pages |
-
-**Gate 5 ✓**: Every page shows live backend data · Voice captures speech and routes via orchestrator
-
----
-
-### Phase 6 — Deploy + Polish + Demo Data
-**Date**: Aug 29 · **Agent**: Antigravity (deploy), Cline + Opus (data) · **Hours**: 8-10
-
-#### Part A: GCP Deployment
-
-| # | Task |
-|:---|:---|
-| 6.1 | GCP project setup, enable APIs |
-| 6.2 | Backend Dockerfile (multi-stage, `uv`) |
-| 6.3 | Frontend Dockerfile (Vite build + nginx) |
-| 6.4 | `docker-compose.yml` for local dev |
-| 6.5 | Cloud Build config |
-| 6.6 | Deploy to Cloud Run |
-| 6.7 | Configure CORS, env vars, service accounts |
-
-#### Part B: Demo Data
-
-| # | Task |
-|:---|:---|
-| 6.8 | Create 3 sample PDF contracts |
-| 6.9 | Seed Firestore with traces + memory bank |
-| 6.10 | End-to-end bug fix pass |
-
-**Gate 6 ✓**: App live on public URL · Demo script runs on deployed version · `docker-compose up` works locally
-
----
-
-### Phase 7 — Submission
-**Date**: Aug 30-31 · **Agent**: Cline + Opus (writing), Manual (video) · **Hours**: 10-12
-
-#### Demo Video (Aug 30)
-| Beat | Time | Content |
-|:---|:---|:---|
-| 1 | 0:00-0:30 | Landing page tour, fleet overview |
-| 2 | 0:30-1:30 | Contract Review: PDF upload → analysis → counter-proposal |
-| 3 | 1:30-2:30 | Compliance Scan: FTC check → Lyria audio replacement |
-| 4 | 2:30-3:15 | Fleet Monitor: Live traces, reasoning chains, memory bank |
-| 5 | 3:15-3:45 | Voice Command: "Scan my video for compliance" |
-| 6 | 3:45-4:00 | GCP Console: Cloud Run + Firestore + Cloud Trace |
-
-#### Devpost + Content (Aug 30-31)
-| # | Task |
-|:---|:---|
-| 7.1 | Devpost description (2000+ words) |
-| 7.2 | Architecture diagram (Mermaid → PNG) |
-| 7.3 | GitHub README with setup instructions |
-| 7.4 | Medium blog post with hackathon attribution |
-| 7.5 | LinkedIn social post |
-| 7.6 | **SUBMIT before 11:59 PM PT Aug 31** |
-
-**Gate 7 ✓**: Demo uploaded · Devpost complete · Blog published · Social posted · **SUBMITTED**
-
----
-
-## 4. Risk Mitigation — Scope Cutting Tiers
-
-Cut in this exact order if falling behind:
-
-| Tier | Cut | Impact |
-|:---|:---|:---|
-| **1 (First)** | WebSocket → HTTP polling 5s · Drop A7+A9 (fleet→12) · Text-only reports | Low |
-| **2** | Drop growth agents A10-A13 (fleet→9) · Drop voice command · Use Firestore emulator | Moderate |
-| **3** | Drop Model Armor (document only) · Drop Cloud Trace (console logs) · Pre-loaded contracts | Significant |
-| **4 (Last)** | Keep frontend with enhanced mocks · Record demo with mock backend · Focus on Devpost quality | Emergency |
-
-> **Golden Rule**: A polished demo with 5 working agents beats a broken demo with 14.
+**Gate 3C ✓**: Devpost submitted · Blog published · LinkedIn posted · **DONE**
 
 ---
 
 ## 5. Google Technologies Checklist (Target: 12+)
 
-| # | Technology | Phase |
-|:---|:---|:---|
-| 1 | Google ADK (SequentialAgent, ParallelAgent) | Phase 2 |
-| 2 | Gemini 2.5 Flash (primary reasoning LLM) | Phase 2 |
-| 3 | Firebase Firestore (state, memory, traces) | Phase 1 |
-| 4 | Cloud Run (serverless backend) | Phase 6 |
-| 5 | Model Armor (I/O security) | Phase 4 |
-| 6 | Cloud Trace (distributed tracing) | Phase 4 |
-| 7 | OpenTelemetry GCP Exporter | Phase 4 |
-| 8 | Gemma (sentiment classification) | Phase 4 |
-| 9 | Veo (video summaries) | Phase 3 |
-| 10 | Lyria (royalty-free music) | Phase 2 |
-| 11 | Cloud Storage (contracts, reports) | Phase 3 |
-| 12 | Firebase Hosting (frontend) | Phase 6 |
-| 13 | Artifact Registry (Docker images) | Phase 6 |
-| 14 | Gemini Search Grounding (trend data) | Phase 4 |
+| # | Technology | Phase | Status |
+|:---|:---|:---|:---|
+| 1 | **Google ADK 2.8.0** (Agent Framework) | Done | ✅ |
+| 2 | **Gemini 3.7 Flash** (Primary AI Model) | Done | ✅ |
+| 3 | **Gemini 3.1 Pro Preview** (Orchestrator Model) | Done | ✅ |
+| 4 | **Gemini 3.6 Flash** (Fallback Model) | Done | ✅ |
+| 5 | **Google GenAI SDK 2.20.0** | Done | ✅ |
+| 6 | **Firebase Firestore** (Database) | Phase 1 | 📝 |
+| 7 | **Google Cloud Run** (Hosting) | Phase 3 | 📝 |
+| 8 | **Gemma 4 26B** (Content Classification) | Phase 1 | 📝 |
+| 9 | **OpenTelemetry** (Agent Observability) | Phase 1 | 📝 |
+| 10 | **Cloud Trace** (Distributed Tracing) | Phase 3 | 📝 |
+| 11 | **Artifact Registry** (Docker Images) | Phase 3 | 📝 |
+| 12 | **Cloud Build** (CI/CD) | Phase 3 | 📝 |
+| 13 | **Firebase Hosting** (Frontend) | Phase 3 | 📝 |
+| 14 | **Cloud IAM** (Service Accounts) | Phase 3 | 📝 |
 
 ---
 
-## 6. Submission Checklist (Aug 31)
+## 6. Risk Mitigation — Scope Cutting Tiers
 
-- [ ] App live on public Cloud Run URL
-- [ ] Demo video uploaded (YouTube/Vimeo unlisted, ≤5 min)
+Cut in this exact order if falling behind:
+
+| Tier | What to Cut | Impact |
+|:---|:---|:---|
+| **1 (First)** | WebSocket live updates → HTTP polling. Drop Voice command. | Low — core demo unaffected |
+| **2** | Drop Growth Agents 10-13 to stub-only. Keep 10 active agents. | Moderate — still impressive count |
+| **3** | Drop Gemma integration (document in architecture only). Drop blog post. | Moderate — lose 0.4 bonus points |
+| **4** | Replace Firestore with in-memory dicts for demo. Skip Cloud Trace. | Significant — loses persistence proof |
+| **5 (Last Resort)** | Record demo on localhost via `ngrok`. Focus entirely on Devpost quality + video. | Emergency — still submittable |
+
+> **Golden Rule**: A polished demo with 8 working agents and all GEAP components beats a broken demo with 14 agents and zero governance.
+
+---
+
+## 7. Judging Criteria Alignment
+
+| Criterion | Weight | Our Strategy |
+|:---|:---|:---|
+| **Innovation & Operational Utility** | 40% | "Unlikely Hero" — enterprise governance for solo creators. Agents autonomously review contracts, scan compliance, and generate reports with zero human intervention. Real measurable output: $$$ value unlocked in counter-proposals. |
+| **Architectural Discipline & Tech Stack** | 30% | 7-layer architecture with ALL 7 GEAP components. 10 ADRs documented. Circuit breakers, Model Armor, per-agent RBAC, full OpenTelemetry observability. Production-grade, not a tutorial. |
+| **Demo & Production Readiness** | 30% | Live Cloud Run URL. Unedited 4-minute demo. Clean README with one-command setup. Architecture diagram PNG. Firestore with realistic data. GCP Console proof. |
+
+---
+
+## 8. Submission Checklist
+
+- [ ] App live on public Cloud Run URL (`*.run.app`)
+- [ ] Demo video uploaded to YouTube (public, ≤5 min, unedited)
 - [ ] Devpost project with all required fields
-- [ ] GitHub repo public with README
-- [ ] Architecture diagram (PNG)
-- [ ] Medium blog post published
-- [ ] LinkedIn social post published
-- [ ] **SUBMITTED ON DEVPOST BEFORE DEADLINE**
+- [ ] GitHub repo public with comprehensive README
+- [ ] Architecture diagram (PNG) uploaded to Devpost
+- [ ] Medium blog post published (with hackathon attribution)
+- [ ] LinkedIn post published (with `#AllThingsAgenticHackathon`)
+- [ ] All 7 GEAP components demonstrably present in code and demo
+- [ ] Gemini 3.5+ model in use (✅ using 3.7 Flash)
+- [ ] Google Agent Framework in use (✅ Google ADK 2.8.0)
+- [ ] Google Cloud infrastructure service in use (Cloud Run + Firestore)
+- [ ] **SUBMITTED ON DEVPOST BEFORE 11:59 PM PT AUG 31**

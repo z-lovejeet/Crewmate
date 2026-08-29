@@ -24,7 +24,7 @@
 
 **[3:30 - 4:00] Conclusion & Architecture**
 *Visual*: Show the Architecture Diagram briefly, then back to the Dashboard.
-*Narration*: "Built on FastAPI, Next.js, and Google Cloud, Crewmate brings enterprise agentic workflows to the solo creator. The Fortified Enterprise Fleet isn't just for big corps anymore. It's for us."
+*Narration*: "Built on FastAPI, React 19, and Google Cloud, Crewmate brings enterprise agentic workflows to the solo creator. The Fortified Enterprise Fleet isn't just for big corps anymore. It's for us."
 
 ---
 
@@ -75,7 +75,7 @@ Live AI demos fail. Be prepared.
 
 - **Inspiration**: The "Unlikely Hero" - solo creators are overwhelmed. They need a team but can't afford one.
 - **What it does**: A 14-agent fleet that automates contract review, copyright compliance, distribution, and revenue optimization via a beautiful 3D claymorphism interface with soft clay components, warm light theme, and premium micro-animations.
-- **How we built it**: Python/FastAPI backend, Next.js frontend. Gemini 3.7 Flash for reasoning, Veo/Lyria for multimodal, deployed on Google Cloud.
+- **How we built it**: Python/FastAPI backend, React 19 + Vite frontend. Gemini 3.7 Flash for reasoning, Gemma for classification, deployed on Google Cloud Run.
 - **Challenges**: Managing state across 14 concurrent agents; achieving 60fps animations on heavy CSS shadows.
 - **Accomplishments**: Fully functioning pub/sub agent communication; beautiful non-standard UI.
 - **What we learned**: Agentic design patterns (Orchestrator/Worker) and how to ground AI in physical metaphors.
@@ -139,7 +139,7 @@ An enterprise-grade multi-agent fleet for solo content creators.
 ![Architecture Diagram](./docs/arch.png)
 
 ## Tech Stack
-- Frontend: Next.js, Tailwind, Framer Motion
+- Frontend: React 19, Vite, Tailwind v4, Framer Motion
 - Backend: Python, FastAPI
 - AI: Gemini 3.7 Flash, Veo, Lyria
 - Cloud: Google Cloud (Run, Firestore, Pub/Sub, Model Armor)
