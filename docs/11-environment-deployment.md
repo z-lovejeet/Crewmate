@@ -58,7 +58,7 @@ services:
 
 ```env
 # GCP Configuration
-GCP_PROJECT_ID=crewmate-hackathon
+GCP_PROJECT_ID=crewmate-507013
 GCP_REGION=us-central1
 GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json
 
@@ -86,22 +86,24 @@ Run these commands to provision the environment:
 
 ```bash
 # Set variables
-PROJECT_ID="crewmate-hackathon"
+PROJECT_ID="crewmate-507013"
 REGION="us-central1"
 
 # Create project & set config
-gcloud projects create $PROJECT_ID
-gcloud config set project $PROJECT_ID
+gcloud projects create
+# Set project
+gcloud config set project crewmate-507013
 
-# Enable APIs
+# Enable required APIs
 gcloud services enable \
     run.googleapis.com \
     firestore.googleapis.com \
-    pubsub.googleapis.com \
     cloudtrace.googleapis.com \
     aiplatform.googleapis.com \
-    modelarmor.googleapis.com \
-    secretmanager.googleapis.com
+    artifactregistry.googleapis.com \
+    cloudbuild.googleapis.com \
+    secretmanager.googleapis.com \
+    firebasehosting.googleapis.com
 
 # Initialize Firestore
 gcloud firestore databases create --location=$REGION --type=firestore-native
