@@ -215,18 +215,18 @@ All detailed specifications are in separate documents:
 
 | Document | File | Contains |
 |:---|:---|:---|
-| System Architecture | [`01-system-architecture.md`](file:///Users/lovejeetsingh1/Documents/Hackathons/crewmate/docs/01-system-architecture.md) | 7-layer architecture, ADRs, Mermaid diagrams |
-| API Contracts | [`02-api-contracts.md`](file:///Users/lovejeetsingh1/Documents/Hackathons/crewmate/docs/02-api-contracts.md) | All REST + WebSocket endpoints |
-| Database Design | [`03-database-design.md`](file:///Users/lovejeetsingh1/Documents/Hackathons/crewmate/docs/03-database-design.md) | Firestore schemas, indexes, security rules |
-| Agent Workflow | [`04-agent-workflow-overview.md`](file:///Users/lovejeetsingh1/Documents/Hackathons/crewmate/docs/04-agent-workflow-overview.md) | Agent communication, orchestration patterns |
-| Individual Agents | [`agents/agent-XX-*.md`](file:///Users/lovejeetsingh1/Documents/Hackathons/crewmate/docs/agents/) | Per-agent detailed specs (14 docs) |
-| Automation Workflows | [`05-automation-workflows.md`](file:///Users/lovejeetsingh1/Documents/Hackathons/crewmate/docs/05-automation-workflows.md) | 9 autonomous pipelines |
-| UI/UX + Figma Prompt | [`06-ui-ux-figma-prompt.md`](file:///Users/lovejeetsingh1/Documents/Hackathons/crewmate/docs/06-ui-ux-figma-prompt.md) | 3D Claymorphism design system, Figma master prompt |
-| State Management | [`07-state-management.md`](file:///Users/lovejeetsingh1/Documents/Hackathons/crewmate/docs/07-state-management.md) | State flow, Firestore patterns, caching |
-| Demo & Polish | [`08-demo-and-polish.md`](file:///Users/lovejeetsingh1/Documents/Hackathons/crewmate/docs/08-demo-and-polish.md) | Video script, Devpost copy, blog outline |
-| Development Roadmap | [`09-development-roadmap.md`](file:///Users/lovejeetsingh1/Documents/Hackathons/crewmate/docs/09-development-roadmap.md) | Day-by-day timeline, milestones |
-| Folder Architecture | [`10-folder-architecture.md`](file:///Users/lovejeetsingh1/Documents/Hackathons/crewmate/docs/10-folder-architecture.md) | Complete file tree (backend focus) |
-| Environment & Deploy | [`11-environment-deployment.md`](file:///Users/lovejeetsingh1/Documents/Hackathons/crewmate/docs/11-environment-deployment.md) | GCP setup, Docker, CI/CD |
+| System Architecture | [`01-system-architecture.md`](01-system-architecture.md) | 7-layer architecture, ADRs, Mermaid diagrams |
+| API Contracts | [`02-api-contracts.md`](02-api-contracts.md) | All REST + WebSocket endpoints |
+| Database Design | [`03-database-design.md`](03-database-design.md) | Firestore schemas, indexes, security rules |
+| Agent Workflow | [`04-agent-workflow-overview.md`](04-agent-workflow-overview.md) | Agent communication, orchestration patterns |
+| Individual Agents | [`agents/agent-XX-*.md`](agents/) | Per-agent detailed specs (14 docs) |
+| Automation Workflows | [`05-automation-workflows.md`](05-automation-workflows.md) | 9 autonomous pipelines |
+| UI/UX + Figma Prompt | [`06-ui-ux-figma-prompt.md`](06-ui-ux-figma-prompt.md) | 3D Claymorphism design system, Figma master prompt |
+| State Management | [`07-state-management.md`](07-state-management.md) | State flow, Firestore patterns, caching |
+| Demo & Polish | [`08-demo-and-polish.md`](08-demo-and-polish.md) | Video script, Devpost copy, blog outline |
+| Development Roadmap | [`09-development-roadmap.md`](09-development-roadmap.md) | Day-by-day timeline, milestones |
+| Folder Architecture | [`10-folder-architecture.md`](10-folder-architecture.md) | Complete file tree (backend focus) |
+| Environment & Deploy | [`11-environment-deployment.md`](11-environment-deployment.md) | GCP setup, Docker, CI/CD |
 
 ---
 
