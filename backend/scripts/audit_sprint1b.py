@@ -138,9 +138,9 @@ async def run_sprint_1b_audit():
         # -------------------------------------------------------------
         print("\n[5/5] Testing Circuit Breaker State Transitions (CLOSED -> OPEN -> HALF_OPEN)...")
         
-        cb = get_circuit_breaker("test_service")
+        cb = get_circuit_breaker("test_service_cb")
         cb.failure_threshold = 3
-        cb.recovery_timeout = 0.2
+        cb.recovery_timeout = 0.1
         cb.state = "CLOSED"
         cb.failure_count = 0
         assert cb.state == "CLOSED"
@@ -160,7 +160,7 @@ async def run_sprint_1b_audit():
         print(f"   🚨 After 3rd Failure: Tripped to {cb.state}! (can_execute={cb.can_execute()})")
 
         # Test decorator returns fallback when breaker is OPEN
-        @with_circuit_breaker("test_service")
+        @with_circuit_breaker("test_service_cb")
         async def mock_failing_service():
             return {"data": "success"}
 
@@ -170,7 +170,7 @@ async def run_sprint_1b_audit():
         print(f"   ✅ Automated Fallback Served: {fallback_result.get('message')}")
 
         # Wait recovery timeout -> transitions to HALF_OPEN
-        await asyncio.sleep(0.25)
+        await asyncio.sleep(0.15)
         assert cb.can_execute() == True
         assert cb.state == "HALF_OPEN"
         print(f"   🔄 After Recovery Timeout: State transitioned to {cb.state} probe.")
