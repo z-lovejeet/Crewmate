@@ -34,9 +34,14 @@ export default function About() {
         variants={container}
         className="text-center"
       >
-        <motion.div variants={item} className="mb-4 flex justify-center">
+        <motion.div variants={item} className="mb-4 flex items-center justify-center gap-3">
+          <img
+            src="/logo-icon.png"
+            alt="Crewmate Logo"
+            className="w-9 h-9 object-contain drop-shadow-sm"
+          />
           <span className="clay-sm inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-pale px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-primary">
-            <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+            <span className="h-2 w-2 rounded-full bg-primary" />
             System Architecture & Fleet Specs
           </span>
         </motion.div>

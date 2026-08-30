@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Body
 from typing import Dict, Any, Optional
 from pydantic import BaseModel, Field
 from ..services.memory import (
@@ -13,19 +13,23 @@ from ..services.memory import (
 router = APIRouter(tags=["Memory Bank (GEAP)"])
 
 class UpdatePreferencesRequest(BaseModel):
-    minimum_deal_value_usd: Optional[float] = Field(None, description="Minimum USD for sponsorships")
-    target_cpm_usd: Optional[float] = Field(None, description="Target CPM benchmark")
-    maximum_exclusivity_days: Optional[int] = Field(None, description="Max allowed exclusivity")
-    voice_tone: Optional[str] = Field(None, description="Creator voice style")
-    preferred_payment_terms: Optional[str] = Field(None, description="Payment schedule preference")
-
-class RecordBrandHistoryRequest(BaseModel):
-    brand_name: str
-    deal_value: float
-    cpm: Optional[float] = None
-    contract_quirks: Optional[str] = None
-    payment_reliability: Optional[str] = "net15"
-    notes: Optional[str] = None
+    channel_name: Optional[str] = None
+    creator_name: Optional[str] = None
+    primary_niche: Optional[str] = None
+    secondary_topics: Optional[str] = None
+    target_audience: Optional[str] = None
+    audience_level: Optional[str] = None
+    creator_tone: Optional[str] = None
+    content_format: Optional[str] = None
+    subscribers: Optional[str] = None
+    publishing_cadence: Optional[str] = None
+    min_sponsorship_floor: Optional[str] = None
+    custom_directives: Optional[str] = None
+    minimum_deal_value_usd: Optional[float] = None
+    target_cpm_usd: Optional[float] = None
+    maximum_exclusivity_days: Optional[int] = None
+    voice_tone: Optional[str] = None
+    preferred_payment_terms: Optional[str] = None
 
 @router.get("", summary="Get all persistent creator memory and brand histories")
 async def get_all_memory():
@@ -38,10 +42,20 @@ async def get_preferences():
     return await get_creator_preferences(DEFAULT_CREATOR_ID)
 
 @router.put("/preferences", summary="Update creator baseline preferences")
-async def update_preferences(payload: UpdatePreferencesRequest):
+async def update_preferences_put(payload: Dict[str, Any] = Body(...)):
     """Update creator rules in the persistent Memory Bank."""
-    updates = payload.model_dump(exclude_unset=True)
-    return await update_creator_preferences(DEFAULT_CREATOR_ID, updates)
+    return await update_creator_preferences(DEFAULT_CREATOR_ID, payload)
+
+@router.post("/preferences", summary="Save creator baseline preferences")
+async def update_preferences_post(payload: Dict[str, Any] = Body(...)):
+    """Save creator rules in the persistent Memory Bank."""
+    return await update_creator_preferences(DEFAULT_CREATOR_ID, payload)
+
+@router.post("/update", summary="Save creator memory update")
+async def update_memory_post(payload: Dict[str, Any] = Body(...)):
+    """Save creator memory updates into Firestore."""
+    prefs = payload.get("creator_preferences", payload)
+    return await update_creator_preferences(DEFAULT_CREATOR_ID, prefs)
 
 @router.get("/brands/{brand_name}", summary="Get brand history and past contract traps")
 async def get_brand(brand_name: str):
@@ -52,13 +66,14 @@ async def get_brand(brand_name: str):
     return history
 
 @router.post("/brands", summary="Record a new brand interaction or deal outcome")
-async def add_brand_record(payload: RecordBrandHistoryRequest):
+async def add_brand_record(payload: Dict[str, Any] = Body(...)):
     """Append a newly analyzed deal or negotiation result to brand memory."""
+    brand_name = payload.get("brand_name", "Brand Partner")
     deal_data = {
-        "last_deal_value": payload.deal_value,
-        "historical_cpm": payload.cpm or (payload.deal_value / 185.0),
-        "contract_quirks": payload.contract_quirks,
-        "payment_reliability": payload.payment_reliability,
-        "notes": payload.notes
+        "last_deal_value": payload.get("deal_value", 8500),
+        "historical_cpm": payload.get("cpm", 45.0),
+        "contract_quirks": payload.get("contract_quirks"),
+        "payment_reliability": payload.get("payment_reliability", "net30"),
+        "notes": payload.get("notes")
     }
-    return await record_brand_interaction(payload.brand_name, deal_data, DEFAULT_CREATOR_ID)
+    return await record_brand_interaction(brand_name, deal_data, DEFAULT_CREATOR_ID)

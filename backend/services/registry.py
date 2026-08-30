@@ -1,7 +1,8 @@
 import logging
+import asyncio
 from typing import Dict, Any, List, Optional
 from datetime import datetime, timezone
-from .firestore_client import save_document, get_document, list_documents, query_documents
+from .firestore_client import save_document, get_document, list_documents, query_documents, _in_memory_store
 
 logger = logging.getLogger(__name__)
 
@@ -14,7 +15,7 @@ CANONICAL_AGENTS = [
         "name": "Fleet Orchestrator (Captain)",
         "role": "Supervisor & Task Decomposition",
         "version": "2.4.0",
-        "model": "gemini-2.5-pro",
+        "model": "gemini-3.1-pro-preview",
         "status": "active",
         "health": "healthy",
         "category": "core",
@@ -33,7 +34,7 @@ CANONICAL_AGENTS = [
         "name": "Contract Reviewer",
         "role": "Legal & Sponsorship Risk Auditor",
         "version": "2.1.0",
-        "model": "gemini-2.5-flash",
+        "model": "gemini-3.7-flash",
         "status": "active",
         "health": "healthy",
         "category": "business",
@@ -52,7 +53,7 @@ CANONICAL_AGENTS = [
         "name": "Content Compliance",
         "role": "FTC & Copyright Guard",
         "version": "2.1.0",
-        "model": "gemini-2.5-flash",
+        "model": "gemini-3.7-flash",
         "status": "active",
         "health": "healthy",
         "category": "legal",
@@ -71,7 +72,7 @@ CANONICAL_AGENTS = [
         "name": "Distribution Manager",
         "role": "YouTube & Instagram Optimizer",
         "version": "2.0.0",
-        "model": "gemini-2.5-flash",
+        "model": "gemini-3.7-flash",
         "status": "active",
         "health": "healthy",
         "category": "growth",
@@ -90,7 +91,7 @@ CANONICAL_AGENTS = [
         "name": "Report Generator",
         "role": "Executive Summarizer",
         "version": "1.9.0",
-        "model": "gemini-2.5-flash",
+        "model": "gemini-3.7-flash",
         "status": "active",
         "health": "healthy",
         "category": "analytics",
@@ -109,7 +110,7 @@ CANONICAL_AGENTS = [
         "name": "Revenue Optimizer",
         "role": "Deal Economics & CPM Benchmarking",
         "version": "2.0.0",
-        "model": "gemini-2.5-flash",
+        "model": "gemini-3.7-flash",
         "status": "active",
         "health": "healthy",
         "category": "business",
@@ -128,7 +129,7 @@ CANONICAL_AGENTS = [
         "name": "Brand Safety",
         "role": "Reputation & Sponsor Alignment",
         "version": "1.8.0",
-        "model": "gemini-2.5-flash",
+        "model": "gemini-3.7-flash",
         "status": "active",
         "health": "healthy",
         "category": "legal",
@@ -146,7 +147,7 @@ CANONICAL_AGENTS = [
         "name": "Content Calendar",
         "role": "Schedule & Cadence Architect",
         "version": "1.8.0",
-        "model": "gemini-2.5-flash",
+        "model": "gemini-3.7-flash",
         "status": "active",
         "health": "healthy",
         "category": "growth",
@@ -164,7 +165,7 @@ CANONICAL_AGENTS = [
         "name": "Threat Sentinel",
         "role": "Fleet Security & Anomaly Monitor",
         "version": "2.2.0",
-        "model": "gemini-2.5-flash",
+        "model": "gemini-3.7-flash",
         "status": "active",
         "health": "healthy",
         "category": "security",
@@ -183,7 +184,7 @@ CANONICAL_AGENTS = [
         "name": "Audience Analyst",
         "role": "Demographics & Retention Physicist",
         "version": "1.9.0",
-        "model": "gemini-2.5-flash",
+        "model": "gemini-3.7-flash",
         "status": "active",
         "health": "healthy",
         "category": "analytics",
@@ -201,7 +202,7 @@ CANONICAL_AGENTS = [
         "name": "Trend Radar",
         "role": "Real-Time Viral Signal Hunter",
         "version": "2.1.0",
-        "model": "gemini-2.5-flash",
+        "model": "gemini-3.7-flash",
         "status": "active",
         "health": "healthy",
         "category": "growth",
@@ -220,7 +221,7 @@ CANONICAL_AGENTS = [
         "name": "Hook & Script Architect",
         "role": "First-3-Seconds & Script Engineer",
         "version": "2.0.0",
-        "model": "gemini-2.5-flash",
+        "model": "gemini-3.7-flash",
         "status": "active",
         "health": "healthy",
         "category": "growth",
@@ -239,7 +240,7 @@ CANONICAL_AGENTS = [
         "name": "Smart Repurposing Director",
         "role": "Viral Moment & Short-Form Extractor",
         "version": "2.0.0",
-        "model": "gemini-2.5-flash",
+        "model": "gemini-3.7-flash",
         "status": "active",
         "health": "healthy",
         "category": "growth",
@@ -258,7 +259,7 @@ CANONICAL_AGENTS = [
         "name": "Community Sentiment Guardian",
         "role": "Comment Clustered Intelligence & Mod",
         "version": "2.1.0",
-        "model": "gemini-2.5-flash",
+        "model": "gemini-3.7-flash",
         "status": "active",
         "health": "healthy",
         "category": "community",
@@ -276,20 +277,23 @@ CANONICAL_AGENTS = [
 
 
 async def seed_agent_registry() -> List[Dict[str, Any]]:
-    """Seed the Firestore Agent Registry with all 14 canonical agents if not present."""
-    registered = []
-    for agent in CANONICAL_AGENTS:
-        existing = await get_document(AGENTS_COLLECTION, agent["id"])
-        if not existing:
-            saved = await save_document(AGENTS_COLLECTION, agent["id"], agent)
-            registered.append(saved)
-        else:
-            # Sync metadata while preserving runtime stats
-            merged = {**agent, **existing}
-            saved = await save_document(AGENTS_COLLECTION, agent["id"], merged)
-            registered.append(saved)
-    logger.info(f"Agent Registry seeded with {len(registered)} agents in Firestore.")
-    return registered
+    """Seed the Firestore Agent Registry with all 14 canonical agents in parallel."""
+    async def _seed_one(agent: Dict[str, Any]):
+        try:
+            existing = await asyncio.wait_for(get_document(AGENTS_COLLECTION, agent["id"]), timeout=2.0)
+            merged = {**agent, **(existing or {})}
+            return await asyncio.wait_for(save_document(AGENTS_COLLECTION, agent["id"], merged), timeout=2.0)
+        except Exception:
+            # Fallback to direct memory save
+            if AGENTS_COLLECTION not in _in_memory_store:
+                _in_memory_store[AGENTS_COLLECTION] = {}
+            _in_memory_store[AGENTS_COLLECTION][agent["id"]] = agent
+            return agent
+
+    tasks = [_seed_one(agent) for agent in CANONICAL_AGENTS]
+    registered = await asyncio.gather(*tasks)
+    logger.info(f"Agent Registry seeded with {len(registered)} agents.")
+    return list(registered)
 
 
 async def get_all_agents() -> List[Dict[str, Any]]:

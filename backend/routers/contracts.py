@@ -5,7 +5,7 @@ import logging
 from fastapi import APIRouter, UploadFile, File, Form
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
-from ..services.gemini import generate_text
+from ..services.gemini import generate_text_async as generate_text
 from ..tools.pdf_extractor import extract_text_from_pdf
 from ..services.firestore_client import save_document, list_documents, get_document
 from ..services.memory import build_agent_context_prompt, record_brand_interaction
@@ -140,7 +140,7 @@ Respond ONLY in valid JSON matching this schema:
 }}
 """
         system_inst = "You are the Crewmate Contract Reviewer & Revenue Optimizer agent. Protect the creator from bad deal traps."
-        response_text = generate_text(prompt=prompt, system_instruction=system_inst)
+        response_text = await generate_text(prompt=prompt, system_instruction=system_inst)
         
         cleaned = response_text.strip()
         if cleaned.startswith("```json"):
@@ -181,7 +181,7 @@ Respond ONLY in valid JSON matching this schema:
             tool_calls=[
                 {"tool": "pdf_extractor", "arguments": {"filename": file.filename}, "result_preview": f"Extracted {len(extracted_text)} chars", "latency_ms": 12.0},
                 {"tool": "memory_bank_lookup", "arguments": {"creator_id": "solo_creator_main"}, "result_preview": "Loaded creator preferences", "latency_ms": 15.0},
-                {"tool": "gemini_clause_analyzer", "arguments": {"model": "gemini-2.5-flash"}, "result_preview": f"Identified {len(data.get('clauses', []))} clauses", "latency_ms": latency_ms - 27.0}
+                {"tool": "gemini_clause_analyzer", "arguments": {"model": "gemini-3.7-flash"}, "result_preview": f"Identified {len(data.get('clauses', []))} clauses", "latency_ms": latency_ms - 27.0}
             ],
             output_summary=f"Audited {data.get('brand_name')} deal. Risk: {data.get('overall_risk')}. Value unlocked: {data.get('value_unlocked')}"
         )

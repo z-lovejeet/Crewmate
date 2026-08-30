@@ -31,10 +31,10 @@ export function PageHeader({
 
   const dotClasses = {
     primary: "bg-primary",
-    success: "bg-accent animate-pulse",
-    warning: "bg-warning animate-pulse",
+    success: "bg-accent",
+    warning: "bg-warning",
     info: "bg-blue-600",
-    accent: "bg-accent animate-pulse",
+    accent: "bg-accent",
   }
 
   return (

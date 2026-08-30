@@ -5,7 +5,7 @@ import logging
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
 from typing import List, Optional
-from ..services.gemini import generate_text
+from ..services.gemini import generate_text_async as generate_text
 from ..services.gemma_classifier import classify_content_and_safety
 from ..services.firestore_client import save_document, list_documents, get_document
 from ..services.observability import record_trace_span
@@ -134,7 +134,7 @@ Return ONLY valid JSON matching this schema:
     system_inst = "You are the Crewmate Content Compliance agent. Ensure 100% platform and regulatory safety."
 
     try:
-        response_text = generate_text(prompt=prompt, system_instruction=system_inst)
+        response_text = await generate_text(prompt=prompt, system_instruction=system_inst)
         cleaned = response_text.strip()
         if cleaned.startswith("```json"):
             cleaned = cleaned[7:]

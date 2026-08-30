@@ -4,46 +4,50 @@
 @import 'tailwindcss';
 
 /* ===================================================================
-   Crewmate — 3D Claymorphism design tokens
-   Light theme only. Warm, soft, molded-clay surfaces.
+   Crewmate — Minimalist Enterprise Studio Design Tokens
+   Clean, modern, high-contrast typography, subtle hairline borders.
    =================================================================== */
 :root {
   /* Backgrounds */
-  --bg-app: #fafaf5;
-  --bg-secondary: #f5f3ee;
-  --bg-tertiary: #ecebe3;
+  --bg-app: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-tertiary: #e2e8f0;
   --surface: #ffffff;
+  --surface-sunken: #f8fafc;
+  --border: #e2e8f0;
+  --border-light: #f1f5f9;
 
   /* Brand */
-  --primary: #6366f1;
-  --primary-light: #a5b4fc;
+  --primary: #4f46e5;
+  --primary-light: #818cf8;
   --primary-pale: #eef2ff;
-  --secondary: #f97066;
-  --accent: #10b981;
+  --secondary: #6366f1;
+  --secondary-pale: #f5f3ff;
+  --accent: #059669;
   --accent-pale: #ecfdf5;
-  --warning: #f59e0b;
+  --warning: #d97706;
   --warning-pale: #fffbeb;
-  --error: #ef4444;
+  --error: #dc2626;
   --error-pale: #fef2f2;
-  --info: #3b82f6;
+  --info: #2563eb;
 
   /* Platforms */
-  --youtube: #ff0000;
+  --youtube: #dc2626;
   --instagram: #e1306c;
 
   /* Text */
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
   --text-tertiary: #94a3b8;
 
   /* Radii */
-  --r-sm: 12px;
-  --r-md: 16px;
-  --r-lg: 20px;
-  --r-hero: 24px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-hero: 22px;
 
-  --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
@@ -73,6 +77,10 @@
   --font-mono: var(--font-mono);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body,
 #root {
@@ -95,54 +103,35 @@ h4,
 h5,
 h6 {
   font-family: var(--font-display);
+  letter-spacing: -0.025em;
 }
 
 /* ===================================================================
-   Clay shadow utilities — the signature molded look
+   Sleek Surface & Elevation Utilities
    =================================================================== */
 .clay-sm {
-  box-shadow:
-    6px 6px 14px rgba(0, 0, 0, 0.07),
-    -4px -4px 12px rgba(255, 255, 255, 0.9),
-    inset 0 2px 4px rgba(255, 255, 255, 0.7),
-    inset 0 -1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .clay-md {
-  box-shadow:
-    10px 10px 20px rgba(0, 0, 0, 0.08),
-    -6px -6px 16px rgba(255, 255, 255, 0.9),
-    inset 0 3px 6px rgba(255, 255, 255, 0.7),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
 }
 
 .clay-lg {
-  box-shadow:
-    12px 12px 24px rgba(0, 0, 0, 0.08),
-    -6px -6px 18px rgba(255, 255, 255, 0.9),
-    inset 0 3px 6px rgba(255, 255, 255, 0.7),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
 }
 
 .clay-xl {
-  box-shadow:
-    18px 18px 36px rgba(0, 0, 0, 0.1),
-    -10px -10px 28px rgba(255, 255, 255, 0.95),
-    inset 0 4px 8px rgba(255, 255, 255, 0.75),
-    inset 0 -3px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
 }
 
 .clay-pressed {
-  box-shadow:
-    inset 4px 4px 10px rgba(0, 0, 0, 0.1),
-    inset -4px -4px 10px rgba(255, 255, 255, 0.8);
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
 }
 
-/* recessed / carved-in wells (toggle tracks, sliders) */
+/* recessed / carved-in wells (inputs, tracks) */
 .clay-inset {
-  box-shadow:
-    inset 3px 3px 7px rgba(0, 0, 0, 0.1),
-    inset -3px -3px 7px rgba(255, 255, 255, 0.85);
+  box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 /* focus ring per accessibility spec */

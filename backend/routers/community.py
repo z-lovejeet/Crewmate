@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from typing import List, Dict, Optional
 import json
 from ..config.settings import get_settings
-from ..services.gemini import generate_text
+from ..services.gemini import generate_text_async as generate_text
 
 router = APIRouter()
 
@@ -78,7 +78,7 @@ Return ONLY valid JSON matching this schema:
 }}
 """
     try:
-        response_text = generate_text(prompt=prompt)
+        response_text = await generate_text(prompt=prompt)
         cleaned = response_text.strip()
         if cleaned.startswith("```json"):
             cleaned = cleaned[7:]

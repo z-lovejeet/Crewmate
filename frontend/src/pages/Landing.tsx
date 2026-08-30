@@ -452,9 +452,14 @@ export default function Landing() {
             className="mx-auto max-w-4xl text-center"
           >
             {/* Human Tagline Pill */}
-            <motion.div variants={item} className="mb-6 flex justify-center">
+            <motion.div variants={item} className="mb-6 flex items-center justify-center gap-3">
+              <img
+                src="/logo-icon.png"
+                alt="Crewmate Logo"
+                className="w-9 h-9 object-contain drop-shadow-sm"
+              />
               <span className="clay-sm inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-pale px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-primary">
-                <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
+                <span className="h-2 w-2 rounded-full bg-accent" />
                 The AI Backstage Crew for Solo Creators
               </span>
             </motion.div>

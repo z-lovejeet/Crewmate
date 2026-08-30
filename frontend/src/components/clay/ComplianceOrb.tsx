@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function ComplianceOrb({
-  platforms,
+  platforms = [],
   isScanning = true,
   score = 84,
   size = 260,

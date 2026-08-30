@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel, Field
 from typing import Optional
 from ..config.settings import get_settings
-from ..services.gemini import generate_text
+from ..services.gemini import generate_text_async as generate_text
 
 router = APIRouter()
 
@@ -29,15 +29,15 @@ async def process_voice_command(request: VoiceCommandRequest):
     elif any(w in cmd for w in ["compliance", "ftc", "copyright", "music", "audio", "strike", "lyria"]):
         agent_id = "content_compliance"
         agent_name = "Content Compliance"
-    elif any(w in cmd for w in ["trend", "viral", "niche", "idea", "brief"]):
-        agent_id = "trend_radar"
-        agent_name = "Trend Radar"
+    elif any(w in cmd for w in ["clip", "short", "shorts", "reel", "reels", "repurpose", "cut", "timestamp"]):
+        agent_id = "clipping_director"
+        agent_name = "Clipping Director"
     elif any(w in cmd for w in ["hook", "script", "retention", "thumbnail"]):
         agent_id = "hook_architect"
         agent_name = "Hook Architect"
-    elif any(w in cmd for w in ["clip", "short", "reel", "repurpose", "cut"]):
-        agent_id = "clipping_director"
-        agent_name = "Clipping Director"
+    elif any(w in cmd for w in ["trend", "trending", "niche", "idea", "brief", "viral"]):
+        agent_id = "trend_radar"
+        agent_name = "Trend Radar"
     elif any(w in cmd for w in ["comment", "sentiment", "toxic", "community", "reply"]):
         agent_id = "community_guardian"
         agent_name = "Community Guardian"
@@ -54,7 +54,7 @@ async def process_voice_command(request: VoiceCommandRequest):
     prompt = f"You are {agent_name} in the Crewmate Autonomous Creator Fleet. Respond briefly and actionably to this voice command from the creator: '{request.text}'."
     
     try:
-        reply = generate_text(prompt=prompt)
+        reply = await generate_text(prompt=prompt)
         return VoiceCommandResponse(
             transcript=request.text,
             routed_agent_id=agent_id,

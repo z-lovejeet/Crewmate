@@ -1,11 +1,11 @@
-import { motion } from "framer-motion"
+import React from "react"
 
 type Status = "active" | "busy" | "error" | "idle"
 
 const colors: Record<Status, string> = {
-  active: "#10b981",
-  busy: "#f59e0b",
-  error: "#ef4444",
+  active: "#059669",
+  busy: "#d97706",
+  error: "#dc2626",
   idle: "#94a3b8",
 }
 
@@ -22,29 +22,21 @@ interface Props {
   size?: number
 }
 
-export default function StatusDot({ status, pulse = true, size = 11 }: Props) {
-  const color = colors[status]
+export default function StatusDot({ status, size = 8 }: Props) {
+  const color = colors[status] || colors.idle
   return (
     <span
-      className="relative inline-flex"
+      className="relative inline-flex items-center justify-center shrink-0"
       role="img"
       aria-label={labels[status]}
     >
-      {pulse && status !== "idle" && (
-        <motion.span
-          className="absolute inset-0 rounded-full"
-          style={{ background: color }}
-          animate={{ scale: [1, 2.2], opacity: [0.5, 0] }}
-          transition={{ repeat: Infinity, duration: 1.6, ease: "easeOut" }}
-        />
-      )}
       <span
-        className="relative rounded-full"
+        className="rounded-full transition-colors"
         style={{
           width: size,
           height: size,
-          background: color,
-          boxShadow: `0 0 8px ${color}88`,
+          backgroundColor: color,
+          boxShadow: `0 0 0 2px ${color}20`,
         }}
       />
     </span>

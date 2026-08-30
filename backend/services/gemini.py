@@ -69,3 +69,16 @@ def generate_text(
             continue
 
     raise last_error or RuntimeError("All Gemini model attempts failed")
+
+
+async def generate_text_async(
+    prompt: str,
+    model: Optional[str] = None,
+    system_instruction: Optional[str] = None,
+) -> str:
+    """Async wrapper — runs synchronous generate_text in a thread pool to avoid blocking the event loop."""
+    import asyncio
+    loop = asyncio.get_event_loop()
+    return await loop.run_in_executor(
+        None, lambda: generate_text(prompt, model, system_instruction)
+    )

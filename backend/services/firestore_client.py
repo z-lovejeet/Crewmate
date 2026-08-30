@@ -1,4 +1,5 @@
 import logging
+import asyncio
 from typing import Dict, Any, List, Optional
 from datetime import datetime, timezone
 from google.cloud import firestore
@@ -23,7 +24,7 @@ def get_firestore_db() -> Optional[firestore.Client]:
     return _db
 
 
-# Universal CRUD operations
+# Universal CRUD operations — all sync Firestore I/O runs in a thread pool via asyncio.to_thread
 async def save_document(collection: str, doc_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
     """Save or update document in Firestore or fallback store."""
     data["updated_at"] = datetime.now(timezone.utc).isoformat()
@@ -33,8 +34,10 @@ async def save_document(collection: str, doc_id: str, data: Dict[str, Any]) -> D
     db = get_firestore_db()
     if db:
         try:
-            doc_ref = db.collection(collection).document(doc_id)
-            doc_ref.set(data, merge=True)
+            def _write():
+                doc_ref = db.collection(collection).document(doc_id)
+                doc_ref.set(data, merge=True)
+            await asyncio.to_thread(_write)
             return data
         except Exception as e:
             logger.error(f"Firestore write error on {collection}/{doc_id}: {e}")
@@ -54,10 +57,13 @@ async def get_document(collection: str, doc_id: str) -> Optional[Dict[str, Any]]
     db = get_firestore_db()
     if db:
         try:
-            doc_ref = db.collection(collection).document(doc_id)
-            doc = doc_ref.get()
-            if doc.exists:
-                return doc.to_dict()
+            def _read():
+                doc_ref = db.collection(collection).document(doc_id)
+                doc = doc_ref.get()
+                if doc.exists:
+                    return doc.to_dict()
+                return None
+            return await asyncio.to_thread(_read)
         except Exception as e:
             logger.error(f"Firestore read error on {collection}/{doc_id}: {e}")
 
@@ -70,15 +76,18 @@ async def list_documents(collection: str, limit: int = 50, order_by: Optional[st
     db = get_firestore_db()
     if db:
         try:
-            query = db.collection(collection)
-            if order_by:
-                query = query.order_by(order_by, direction=firestore.Query.DESCENDING if descending else firestore.Query.ASCENDING)
-            docs = query.limit(limit).stream()
-            results = []
-            for d in docs:
-                item = d.to_dict()
-                item["id"] = d.id
-                results.append(item)
+            def _list():
+                query = db.collection(collection)
+                if order_by:
+                    query = query.order_by(order_by, direction=firestore.Query.DESCENDING if descending else firestore.Query.ASCENDING)
+                docs = query.limit(limit).stream()
+                results = []
+                for d in docs:
+                    item = d.to_dict()
+                    item["id"] = d.id
+                    results.append(item)
+                return results
+            results = await asyncio.to_thread(_list)
             if results:
                 return results
         except Exception as e:
@@ -96,13 +105,16 @@ async def query_documents(collection: str, field: str, op: str, value: Any, limi
     db = get_firestore_db()
     if db:
         try:
-            query = db.collection(collection).where(field, op, value).limit(limit)
-            docs = query.stream()
-            results = []
-            for d in docs:
-                item = d.to_dict()
-                item["id"] = d.id
-                results.append(item)
+            def _query():
+                query = db.collection(collection).where(field, op, value).limit(limit)
+                docs = query.stream()
+                results = []
+                for d in docs:
+                    item = d.to_dict()
+                    item["id"] = d.id
+                    results.append(item)
+                return results
+            results = await asyncio.to_thread(_query)
             if results:
                 return results
         except Exception as e:
@@ -127,7 +139,9 @@ async def delete_document(collection: str, doc_id: str) -> bool:
     db = get_firestore_db()
     if db:
         try:
-            db.collection(collection).document(doc_id).delete()
+            def _delete():
+                db.collection(collection).document(doc_id).delete()
+            await asyncio.to_thread(_delete)
             return True
         except Exception as e:
             logger.error(f"Firestore delete error on {collection}/{doc_id}: {e}")

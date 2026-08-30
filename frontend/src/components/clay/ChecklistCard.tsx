@@ -5,6 +5,7 @@ import {
   CheckmarkSquare03Icon as CheckData,
   Alert02Icon as AlertData,
 } from "@hugeicons/core-free-icons"
+import ClayProgressRing from "./ClayProgressRing"
 
 export interface ChecklistItem {
   id: string
@@ -27,7 +28,7 @@ export default function ChecklistCard({
   headerRight,
 }: Props) {
   const done = items.filter((i) => i.checked).length
-  const pct = Math.round((done / items.length) * 100)
+  const pct = items.length > 0 ? Math.round((done / items.length) * 100) : 0
   return (
     <div
       className="clay-md flex flex-col gap-3 bg-surface p-5"
@@ -40,7 +41,15 @@ export default function ChecklistCard({
         >
           {title}
         </h4>
-        {headerRight}
+        {headerRight !== undefined ? (
+          headerRight
+        ) : (
+          <ClayProgressRing
+            value={pct}
+            size="sm"
+            variant={pct >= 80 ? "accent" : pct >= 50 ? "warning" : "danger"}
+          />
+        )}
       </div>
       <ul className="flex flex-col gap-2">
         {items.map((it) => (

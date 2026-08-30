@@ -153,7 +153,7 @@ async def seed_all():
             "tool_calls": [
                 {"tool": "pdf_extractor", "arguments": {"filename": "BrandX_2026_Agreement.pdf"}, "result_preview": "Extracted 4,820 chars", "latency_ms": 14.2},
                 {"tool": "memory_bank_lookup", "arguments": {"brand": "BrandX"}, "result_preview": "Retrieved past deal: $4,500 in 2025", "latency_ms": 11.8},
-                {"tool": "gemini_clause_analyzer", "arguments": {"model": "gemini-2.5-flash"}, "result_preview": "Identified 3 high-risk clauses (Exclusivity 12mo, Net-90, Perpetual ads)", "latency_ms": 316.5}
+                {"tool": "gemini_clause_analyzer", "arguments": {"model": "gemini-3.7-flash"}, "result_preview": "Identified 3 high-risk clauses (Exclusivity 12mo, Net-90, Perpetual ads)", "latency_ms": 316.5}
             ],
             "output_summary": "Extracted $8,500 offer. Generated 3 counter-proposals unlocking +$2,700."
         },

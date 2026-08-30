@@ -1,4 +1,20 @@
+import sys
+from pathlib import Path
+
+# Add project root and backend directory to sys.path
+_ROOT_DIR = Path(__file__).resolve().parent.parent
+_BACKEND_DIR = Path(__file__).resolve().parent
+if str(_ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(_ROOT_DIR))
+if str(_BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(_BACKEND_DIR))
+
+# Ensure package context for relative imports when executed directly
+if not __package__:
+    __package__ = "backend"
+
 import logging
+import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -23,7 +39,10 @@ from .routers import (
     reports,
     trends,
     community,
-    voice
+    voice,
+    scripts,
+    clips,
+    music
 )
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
@@ -41,19 +60,20 @@ async def lifespan(app: FastAPI):
     else:
         logger.info("ℹ️ Running with active in-memory state store")
 
-    # 2. Seed Agent Registry with all 14 canonical agents
-    try:
-        synced = await seed_agent_registry()
-        logger.info(f"✅ Agent Registry initialized with {len(synced)} enterprise agents")
-    except Exception as e:
-        logger.error(f"⚠️ Registry seed warning: {e}")
+    # 2. Seed Agent Registry & Memory in background task so server starts in <50ms
+    async def _async_bootstrap():
+        try:
+            synced = await seed_agent_registry()
+            logger.info(f"✅ Agent Registry initialized with {len(synced)} enterprise agents")
+        except Exception as e:
+            logger.error(f"⚠️ Registry seed warning: {e}")
+        try:
+            prefs = await get_creator_preferences()
+            logger.info(f"✅ Memory Bank loaded for creator: '{prefs.get('creator_name')}'")
+        except Exception as e:
+            logger.error(f"⚠️ Memory Bank init warning: {e}")
 
-    # 3. Seed Memory Bank baseline context
-    try:
-        prefs = await get_creator_preferences()
-        logger.info(f"✅ Memory Bank loaded for creator: '{prefs.get('creator_name')}'")
-    except Exception as e:
-        logger.error(f"⚠️ Memory Bank init warning: {e}")
+    asyncio.create_task(_async_bootstrap())
 
     logger.info("🚀 Crewmate GEAP Engine fully operational (7/7 components active)")
     yield
@@ -99,6 +119,9 @@ app.include_router(reports.router, prefix="/api/reports")
 app.include_router(trends.router, prefix="/api/trends")
 app.include_router(community.router, prefix="/api/community")
 app.include_router(voice.router, prefix="/api/voice")
+app.include_router(scripts.router)
+app.include_router(clips.router)
+app.include_router(music.router)
 
 @app.get("/", summary="Crewmate GEAP Health & Info")
 async def root():

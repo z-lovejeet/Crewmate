@@ -8,9 +8,16 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Column 1: Brand */}
           <div className="flex flex-col gap-2">
-            <h3 className="font-[var(--font-display)] font-extrabold text-[var(--primary)] text-xl tracking-tight">
-              Crewmate
-            </h3>
+            <div className="flex items-center gap-2.5">
+              <img
+                src="/logo-icon.png"
+                alt="Crewmate Logo"
+                className="w-6 h-6 object-contain"
+              />
+              <h3 className="font-[var(--font-display)] font-extrabold text-[var(--text-primary)] text-xl tracking-tight">
+                Crew<span className="text-[var(--primary)]">mate</span>
+              </h3>
+            </div>
             <p className="font-[var(--font-body)] text-[var(--text-secondary)] text-sm leading-relaxed max-w-xs">
               Enterprise AI agent fleet for content creators.
             </p>

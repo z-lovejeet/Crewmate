@@ -9,17 +9,21 @@ _ENV_FILE = Path(__file__).resolve().parent.parent / ".env"
 class Settings(BaseSettings):
     # Vertex AI configuration (uses GCP credits directly)
     GCP_PROJECT_ID: str = "crewmate-507013"
-    GCP_REGION: str = "us-central1"
+    GCP_REGION: str = "global"
     USE_VERTEX_AI: bool = True
 
     # Optional API key fallback (AI Studio)
     GOOGLE_GENAI_API_KEY: Optional[str] = None
 
     # Model configuration
-    PRIMARY_MODEL: str = "gemini-2.5-flash"
-    REASONING_MODEL: str = "gemini-2.5-pro"
-    FALLBACK_MODEL: str = "gemini-2.5-flash"
-    CLASSIFICATION_MODEL: str = "gemini-2.5-flash"  # For lightweight classification tasks
+    PRIMARY_MODEL: str = "gemini-3.7-flash"
+    REASONING_MODEL: str = "gemini-3.1-pro-preview"
+    FALLBACK_MODEL: str = "gemini-3.5-flash"
+    CLASSIFICATION_MODEL: str = "gemini-3.7-flash"
+    IMAGE_MODEL: str = "gemini-3-pro-image"
+    VIDEO_OMNI_MODEL: str = "gemini-omni-1.1-flash-preview"
+    AUDIO_TTS_MODEL: str = "gemini-3.1-flash-tts-preview"
+    STT_TRANSCRIBE_MODEL: str = "gemini-3.5-transcribe-preview"
 
     # App configuration
     ENVIRONMENT: str = "development"

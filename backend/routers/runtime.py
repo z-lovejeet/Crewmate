@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, BackgroundTasks
 from typing import Dict, Any, Optional
 from pydantic import BaseModel, Field
 from ..services.runtime import create_runtime_task, get_task_status, list_runtime_tasks, update_task_progress
-from ..services.gemini import generate_text
+from ..services.gemini import generate_text_async as generate_text
 from ..services.memory import build_agent_context_prompt
 from ..services.observability import record_trace_span
 import time
@@ -27,7 +27,7 @@ async def execute_task_worker(task_id: str, agent_id: str, goal: str, payload: D
         prompt = f"{context}\n\nTask Goal: {goal}\nInput Data: {payload}\n\nExecute this task and provide structured findings."
         system_inst = f"You are the Crewmate {agent_id.replace('_', ' ').title()} agent. Deliver concise, high-impact enterprise results."
         
-        response_text = generate_text(prompt=prompt, system_instruction=system_inst)
+        response_text = await generate_text(prompt=prompt, system_instruction=system_inst)
         
         await update_task_progress(
             task_id,

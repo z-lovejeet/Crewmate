@@ -1,204 +1,261 @@
-import { useState } from "react"
+import React, { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { ClayCard, StatusBadge } from "../components/clay"
+import { api } from "../lib/api"
+import { useStudioStore } from "../store/useStudioStore"
+import { useNavigate } from "react-router-dom"
 import {
-  ChecklistCard,
-  ClayButton,
-  ClayCard,
-  ClayProgressRing,
-  ClayToggle,
-  ContentCard,
-  StatusBadge,
-  type ChecklistItem,
-} from "../components/clay"
-import Section from "../components/layout/Section"
-import { ACTION_ICONS, UserGroup03Icon } from "../lib/icons"
-
-const YT: ChecklistItem[] = [
-  { id: "y1", label: "Thumbnail uploaded", checked: true },
-  { id: "y2", label: "Title & tags optimized", checked: true },
-  { id: "y3", label: "End screen configured", checked: false, warn: true },
-  { id: "y4", label: "Captions generated", checked: true },
-]
-const IG: ChecklistItem[] = [
-  { id: "i1", label: "Cover frame selected", checked: true },
-  { id: "i2", label: "Caption drafted", checked: true },
-  { id: "i3", label: "Location & tags", checked: false, warn: true },
-  { id: "i4", label: "First comment prepped", checked: true },
-]
-
-const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-const CAL: Record<string, { p: string color: string time: string }[]> = {
-  Tue: [{ p: "IG", color: "var(--instagram)", time: "11:00" }],
-  Thu: [
-    { p: "YT", color: "var(--youtube)", time: "18:00" },
-    { p: "IG", color: "var(--instagram)", time: "19:30" },
-  ],
-  Sat: [{ p: "YT", color: "var(--youtube)", time: "10:00" }],
-}
+  Satellite01Icon,
+  SparkleIcon,
+  UserGroup03Icon,
+  Calendar03Icon,
+  CheckmarkSquare03Icon,
+  ZapIcon,
+  PencilEdit01Icon,
+  Settings01Icon,
+} from "../lib/icons"
 
 export default function Distribution() {
-  const [yt, setYt] = useState(YT)
-  const [ig, setIg] = useState(IG)
-  const [autoPublish, setAutoPublish] = useState(true)
-  const [crossPost, setCrossPost] = useState(false)
-  const [gen, setGen] = useState(false)
+  const navigate = useNavigate()
+  const { channelProfile, personalizedIdeas, setPersonalizedIdeas } = useStudioStore()
 
-  const toggle = (setter: typeof setYt) => (id: string) =>
-    setter((l) =>
-      l.map((x) =>
-        x.id === id ? { ...x, checked: !x.checked, warn: false } : x,
-      ),
-    )
+  const [niche, setNiche] = useState(channelProfile.primaryNiche || "AI Coding & Tech Tutorials")
+  const [scanningTrends, setScanningTrends] = useState(false)
+  const [trendData, setTrendData] = useState<any | null>(null)
+  const [loadingPersonalized, setLoadingPersonalized] = useState(false)
+
+  const handleFetchPersonalized = async () => {
+    setLoadingPersonalized(true)
+    try {
+      const data = await api.getPersonalizedIdeas(channelProfile.creatorName, channelProfile.primaryNiche)
+      if (data?.ideas && data.ideas.length > 0) {
+        setPersonalizedIdeas(data.ideas)
+      }
+    } catch (err) {
+      console.error("Personalized ideas error:", err)
+    } finally {
+      setLoadingPersonalized(false)
+    }
+  }
+
+  const handleScanTrends = async () => {
+    setScanningTrends(true)
+    try {
+      const data = await api.scanTrends(niche, "youtube")
+      setTrendData(data)
+    } catch (err) {
+      console.error("Trend scan error:", err)
+    } finally {
+      setScanningTrends(false)
+    }
+  }
+
+  const handleDraftScript = (ideaTitle: string) => {
+    if (!ideaTitle) {
+      navigate("/scripts")
+      return
+    }
+    navigate(`/scripts?topic=${encodeURIComponent(ideaTitle)}`, { state: { topic: ideaTitle } })
+  }
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[40fr_60fr]">
-      <div className="flex flex-col gap-5">
-        <ClayCard>
-          <Section title="Platform Readiness">
-            <div className="flex flex-col gap-5">
-              <div className="flex items-center gap-4">
-                <ClayProgressRing value={92} size="sm" variant="accent" />
-                <div className="flex-1">
-                  <ChecklistCard
-                    title="YouTube"
-                    items={yt}
-                    onToggle={toggle(setYt)}
-                  />
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <ClayProgressRing value={78} size="sm" variant="warning" />
-                <div className="flex-1">
-                  <ChecklistCard
-                    title="Instagram"
-                    items={ig}
-                    onToggle={toggle(setIg)}
-                  />
-                </div>
-              </div>
-            </div>
-          </Section>
-          <div className="mt-5 flex flex-col gap-3 border-t border-black/5 pt-4">
-            <ClayToggle
-              checked={autoPublish}
-              onChange={setAutoPublish}
-              label="Auto-Publish when ready"
-            />
-            <ClayToggle
-              checked={crossPost}
-              onChange={setCrossPost}
-              label="Cross-Post to all platforms"
-            />
+    <div className="flex flex-col gap-8 max-w-7xl mx-auto">
+      {/* Hero */}
+      <div className="pt-1 pb-2">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-[28px] font-bold text-text-primary tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
+              Trends & Strategy
+            </h1>
+            <p className="mt-1.5 text-[15px] text-text-secondary max-w-xl">
+              Content ideas personalized for <span className="font-semibold text-text-primary">{channelProfile.channelName}</span> based on
+              your niche, audience, and past performance.
+            </p>
           </div>
-        </ClayCard>
+          <button
+            onClick={() => navigate("/channel")}
+            className="mt-1 px-3 py-1.5 rounded-lg text-xs font-medium text-text-tertiary hover:text-primary border border-transparent hover:border-[var(--border)] transition cursor-pointer shrink-0"
+          >
+            Edit profile →
+          </button>
+        </div>
       </div>
 
-      <div className="flex flex-col gap-5">
-        <ClayCard>
-          <Section title="Content Calendar" hint="This week's schedule">
-            <div className="grid grid-cols-7 gap-2">
-              {DAYS.map((d) => (
-                <div
-                  key={d}
-                  className="clay-inset flex min-h-24 flex-col gap-1.5 rounded-xl p-2"
-                  style={{ background: "var(--bg-secondary)" }}
-                >
-                  <span
-                    className="text-center text-[11px] font-bold text-text-tertiary"
-                    style={{ fontFamily: "var(--font-display)" }}
+      {/* ─── 1. Personalized Ideas Tailored to Creator ──────────────────── */}
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center">
+              <SparkleIcon size={22} />
+            </div>
+            <div>
+              <h2 className="text-xl font-extrabold text-text-primary tracking-tight font-[var(--font-display)]">
+                Personalized Content Recommendations
+              </h2>
+              <p className="text-xs text-text-tertiary">
+                Agent 10 & 09 · Tailored to your channel history, viewer demographics, and highest-retention formats
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={handleFetchPersonalized}
+            disabled={loadingPersonalized}
+            className="px-4 py-2 rounded-xl bg-surface border border-[var(--border)] hover:bg-slate-50 text-xs font-semibold text-text-primary transition flex items-center gap-1.5 cursor-pointer self-start sm:self-auto shadow-2xs"
+          >
+            <SparkleIcon size={14} />
+            <span>{loadingPersonalized ? "Refreshing Ideas..." : "Refresh Channel Ideas"}</span>
+          </button>
+        </div>
+
+        {/* Clean, Modern 3-Column Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {personalizedIdeas.map((idea, idx) => {
+            const matchScore = idea.match_score || (idea as any).creator_match_score || 95
+            const title = idea.title || (idea as any).topic || "Autonomous Agent Architecture"
+            const format = idea.format || "Deep-Dive Tutorial"
+            const duration = idea.duration || "15 Min"
+            const viralAngle = idea.viral_angle || "Actionable technical breakdown"
+            const hookTeaser = idea.hook_teaser || "Here is the exact framework to build autonomous agents."
+            const predictedViews = idea.predicted_views || (idea as any).predicted_reach || "150K+ views"
+
+            return (
+              <div
+                key={idea.id || idx}
+                className="p-5 rounded-3xl bg-[var(--surface)] border border-[var(--border)] hover:border-primary/40 transition-all shadow-xs flex flex-col justify-between gap-4 group"
+              >
+                <div className="flex flex-col gap-3">
+                  {/* Top Badge Bar with clean separation */}
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="px-2.5 py-1 rounded-lg text-[11px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 shrink-0">
+                      {matchScore}% Match
+                    </span>
+                    <span className="text-[11px] font-semibold text-text-tertiary truncate max-w-[170px] text-right">
+                      {duration} · {format}
+                    </span>
+                  </div>
+
+                  {/* Title & Viral Angle */}
+                  <div>
+                    <h4 className="font-bold text-text-primary text-sm font-[var(--font-display)] leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                      {title}
+                    </h4>
+                    <p className="text-xs text-text-secondary mt-2 leading-relaxed">
+                      <span className="font-bold text-text-tertiary">Viral Angle:</span> {viralAngle}
+                    </p>
+                  </div>
+
+                  {/* Opening Hook Teaser */}
+                  <div className="p-3.5 rounded-2xl bg-[var(--surface-sunken)] border border-[var(--border)] flex flex-col gap-1 text-[11px]">
+                    <span className="font-bold text-primary flex items-center gap-1">
+                      <PencilEdit01Icon size={12} />
+                      <span>Opening Hook Teaser:</span>
+                    </span>
+                    <p className="text-text-primary italic leading-relaxed">"{hookTeaser}"</p>
+                  </div>
+                </div>
+
+                {/* Footer with Views & Action Button */}
+                <div className="pt-3 border-t border-[var(--border)] flex items-center justify-between gap-2">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] text-text-tertiary font-medium">Est. Reach</span>
+                    <span className="text-xs font-bold text-text-primary">{predictedViews}</span>
+                  </div>
+
+                  <button
+                    onClick={() => handleDraftScript(title)}
+                    className="px-3.5 py-1.5 rounded-xl bg-primary-pale text-primary text-xs font-bold hover:bg-primary hover:text-white transition cursor-pointer flex items-center gap-1 shadow-2xs"
                   >
-                    {d}
-                  </span>
-                  {(CAL[d] ?? []).map((e, i) => (
-                    <div
-                      key={i}
-                      className="clay-sm flex items-center gap-1 rounded-lg bg-surface px-1.5 py-1"
-                    >
-                      <span
-                        className="h-2 w-2 shrink-0 rounded-full"
-                        style={{ background: e.color }}
-                      />
-                      <span className="text-[10px] font-semibold text-text-secondary">
-                        {e.time}
+                    <span>Draft Script</span>
+                    <span>→</span>
+                  </button>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* ─── 2. Breakout Trend Radar Scanner ────────────────────────────── */}
+      <ClayCard>
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-[var(--border)]">
+            <div>
+              <h3 className="text-base font-bold text-text-primary font-[var(--font-display)] flex items-center gap-2">
+                <Satellite01Icon size={18} />
+                <span>Niche Breakout Trend Radar</span>
+              </h3>
+              <p className="text-xs text-text-tertiary">
+                Agent 10 · Live algorithmic search velocity scanning across YouTube tech keywords
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                value={niche}
+                onChange={(e) => setNiche(e.target.value)}
+                placeholder="Enter your content niche..."
+                className="px-3.5 py-1.5 rounded-xl bg-[var(--surface-sunken)] border border-[var(--border)] text-xs text-text-primary focus:outline-none focus:border-primary"
+              />
+              <button
+                onClick={handleScanTrends}
+                disabled={scanningTrends}
+                className="px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:brightness-110 disabled:opacity-60 transition cursor-pointer flex items-center gap-1.5 shrink-0 shadow-xs"
+              >
+                {scanningTrends ? (
+                  <>
+                    <span className="w-3 h-3 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                    <span>Scanning Radar...</span>
+                  </>
+                ) : (
+                  <>
+                    <ZapIcon size={13} />
+                    <span>Scan Velocity</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {trendData && trendData.topics ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {trendData.topics.map((t: any, idx: number) => (
+                <div
+                  key={idx}
+                  className="p-4 rounded-2xl bg-[var(--surface-sunken)] border border-[var(--border)] flex flex-col justify-between gap-3 shadow-2xs"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="px-2 py-0.5 rounded-md bg-indigo-50 text-primary text-[10px] font-bold border border-indigo-200">
+                        Velocity: {t.velocity_score}/100
+                      </span>
+                      <span className="text-[10px] font-semibold text-text-tertiary uppercase">
+                        {t.saturation} saturation
                       </span>
                     </div>
-                  ))}
+                    <h4 className="text-xs font-bold text-text-primary leading-snug">
+                      {t.topic}
+                    </h4>
+                  </div>
+                  <div className="pt-2 border-t border-[var(--border)]/60 flex items-center justify-between text-[11px] text-text-tertiary">
+                    <span>Rec: {t.format_rec}</span>
+                    <button
+                      onClick={() => handleDraftScript(t.topic)}
+                      className="text-primary font-bold hover:underline cursor-pointer"
+                    >
+                      Script Hook →
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
-            <div
-              className="clay-inset mt-4 flex items-center gap-3 rounded-2xl p-3.5"
-              style={{ background: "var(--primary-pale)" }}
-            >
-              <span className="text-primary flex items-center justify-center">
-                <UserGroup03Icon size={20} />
-              </span>
-              <p className="text-[13px] text-text-primary">
-                <b>Audience Agent:</b> Post Thursday 6:00 PM for +14% projected
-                reach.
-              </p>
+          ) : (
+            <div className="p-6 rounded-2xl bg-[var(--surface-sunken)] border border-dashed border-[var(--border)] text-center text-xs text-text-tertiary">
+              Click <b>"Scan Velocity"</b> to run Gemini 3.7 Flash trend discovery across {niche}.
             </div>
-          </Section>
-        </ClayCard>
-
-        <ContentCard
-          title="Metadata Preview"
-          subtitle="Draft — Distribution agent"
-        >
-          <div className="flex flex-col gap-3">
-            <div>
-              <p className="text-[11px] font-bold uppercase text-text-tertiary">
-                Title
-              </p>
-              <p className="text-sm font-semibold text-text-primary">
-                I Tested 7 AI Gadgets So You Don't Have To
-              </p>
-            </div>
-            <div>
-              <p className="text-[11px] font-bold uppercase text-text-tertiary">
-                Tags
-              </p>
-              <div className="mt-1 flex flex-wrap gap-1.5">
-                {["#ai", "#gadgets", "#techreview", "#2026"].map((t) => (
-                  <span
-                    key={t}
-                    className="clay-sm rounded-full bg-surface px-2.5 py-0.5 text-[11px] font-semibold text-primary"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div>
-              <p className="text-[11px] font-bold uppercase text-text-tertiary">
-                Description
-              </p>
-              <p className="text-[13px] text-text-secondary">
-                A hands-on breakdown of this year's most hyped AI hardware —
-                what's worth your money and what's just marketing. #ad in
-                partnership with BrandX.
-              </p>
-            </div>
-            <StatusBadge type="approved" text="Disclosure included" size="sm" />
-          </div>
-          <div className="mt-4 flex flex-wrap gap-2.5">
-            <ClayButton
-              label="Generate Metadata"
-              variant="secondary"
-              icon={ACTION_ICONS.sparkle}
-              isLoading={gen}
-              onClick={() => {
-                setGen(true)
-                setTimeout(() => setGen(false), 1400)
-              }}
-            />
-            <ClayButton
-              label="Schedule"
-              variant="primary"
-              icon={ACTION_ICONS.calendar}
-            />
-          </div>
-        </ContentCard>
-      </div>
+          )}
+        </div>
+      </ClayCard>
     </div>
   )
 }
