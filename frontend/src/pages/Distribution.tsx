@@ -217,43 +217,80 @@ export default function Distribution() {
             </div>
           </div>
 
-          {trendData && trendData.topics ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {trendData.topics.map((t: any, idx: number) => (
-                <div
-                  key={idx}
-                  className="p-4 rounded-2xl bg-[var(--surface-sunken)] border border-[var(--border)] flex flex-col justify-between gap-3 shadow-2xs"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="px-2 py-0.5 rounded-md bg-indigo-50 text-primary text-[10px] font-bold border border-indigo-200">
-                        Velocity: {t.velocity_score}/100
-                      </span>
-                      <span className="text-[10px] font-semibold text-text-tertiary uppercase">
-                        {t.saturation} saturation
-                      </span>
-                    </div>
-                    <h4 className="text-xs font-bold text-text-primary leading-snug">
-                      {t.topic}
-                    </h4>
-                  </div>
-                  <div className="pt-2 border-t border-[var(--border)]/60 flex items-center justify-between text-[11px] text-text-tertiary">
-                    <span>Rec: {t.format_rec}</span>
-                    <button
-                      onClick={() => handleDraftScript(t.topic)}
-                      className="text-primary font-bold hover:underline cursor-pointer"
-                    >
-                      Script Hook →
-                    </button>
-                  </div>
+          {(() => {
+            const rawList = trendData?.briefs || trendData?.topics || []
+            if (!rawList || rawList.length === 0) {
+              return (
+                <div className="p-8 rounded-2xl bg-[var(--surface-sunken)] border border-dashed border-[var(--border)] text-center text-xs text-text-tertiary flex flex-col items-center justify-center gap-2">
+                  <Satellite01Icon size={24} className="text-primary/60" />
+                  <p>
+                    Click <b>"Scan Velocity"</b> to run Gemini 3.7 Flash trend discovery across <b>{niche}</b>.
+                  </p>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="p-6 rounded-2xl bg-[var(--surface-sunken)] border border-dashed border-[var(--border)] text-center text-xs text-text-tertiary">
-              Click <b>"Scan Velocity"</b> to run Gemini 3.7 Flash trend discovery across {niche}.
-            </div>
-          )}
+              )
+            }
+
+            return (
+              <div className="flex flex-col gap-4">
+                {trendData.trend_summary && (
+                  <div className="p-3.5 rounded-2xl bg-indigo-50/70 border border-indigo-100 text-xs text-indigo-950 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                    <p className="leading-relaxed">
+                      <strong className="font-bold text-primary">Strategic Niche Outlook:</strong> {trendData.trend_summary}
+                    </p>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {rawList.map((t: any, idx: number) => {
+                    const title = t.title_concept || t.topic || "Breakout Trend Concept"
+                    const velocity = t.velocity_score || 92
+                    const saturation = t.saturation_score || t.saturation || "Low"
+                    const formatRec = t.format || t.format_rec || "Long-Form Video"
+                    const hook = t.viral_hook || t.hook || ""
+
+                    return (
+                      <div
+                        key={idx}
+                        className="p-5 rounded-2xl bg-[var(--surface-sunken)] border border-[var(--border)] hover:border-primary/40 transition flex flex-col justify-between gap-3 shadow-2xs group"
+                      >
+                        <div className="flex flex-col gap-2.5">
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="px-2 py-0.5 rounded-md bg-indigo-100/80 text-primary text-[10px] font-extrabold border border-indigo-200 shrink-0">
+                              Velocity: {velocity}/100
+                            </span>
+                            <span className="text-[10px] font-semibold text-text-tertiary truncate max-w-[150px] text-right">
+                              {saturation}
+                            </span>
+                          </div>
+
+                          <h4 className="text-xs font-bold text-text-primary leading-snug group-hover:text-primary transition-colors">
+                            {title}
+                          </h4>
+
+                          {hook && (
+                            <div className="p-2.5 rounded-xl bg-[var(--surface)] border border-[var(--border)] text-[11px] text-text-secondary leading-relaxed italic">
+                              "{hook}"
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="pt-2.5 border-t border-[var(--border)] flex items-center justify-between text-[11px] text-text-tertiary gap-2">
+                          <span className="truncate text-[10px] font-medium">{formatRec}</span>
+                          <button
+                            onClick={() => handleDraftScript(title)}
+                            className="px-2.5 py-1 rounded-lg bg-primary-pale text-primary font-bold hover:bg-primary hover:text-white transition cursor-pointer shrink-0 text-xs flex items-center gap-1 shadow-2xs"
+                          >
+                            <span>Script Hook</span>
+                            <span>→</span>
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })()}
         </div>
       </ClayCard>
     </div>

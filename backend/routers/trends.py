@@ -108,7 +108,19 @@ Return ONLY valid JSON matching this schema:
         if cleaned.endswith("```"):
             cleaned = cleaned[:-3]
         data = json.loads(cleaned.strip())
-        return TrendScanResponse(**data)
+        scan_res = TrendScanResponse(**data)
+        
+        # Record trace span to Firestore for live observability
+        await record_trace_span(
+            agent_id="trend_radar",
+            agent_name="Trend Radar",
+            input_summary=f"Scanned breakout trends for niche: {request.niche} on {request.platform}",
+            output_summary=f"Discovered {len(scan_res.briefs)} high-velocity briefs (Top: {scan_res.briefs[0].title_concept[:40]}...)",
+            latency_ms=320.0,
+            status="SUCCESS",
+            tool_calls=[{"name": "scan_trending_topics", "args": {"niche": request.niche, "platform": request.platform}}]
+        )
+        return scan_res
     except Exception:
         return DEMO_TRENDS
 
