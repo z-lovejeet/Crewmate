@@ -12,13 +12,13 @@ import {
 } from "firebase/auth"
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyAtXRRcLAZVKrJBy_eMx_UNqhXvdBLppvg",
-  authDomain: "crewmate-507013.firebaseapp.com",
-  projectId: "crewmate-507013",
-  storageBucket: "crewmate-507013.firebasestorage.app",
-  messagingSenderId: "285381944529",
-  appId: "1:285381944529:web:8e15cd8e0507ec8e6dd1f0",
-  measurementId: "G-5S3X1WK9DH"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "crewmate-507013.firebaseapp.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "crewmate-507013",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "crewmate-507013.firebasestorage.app",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "285381944529",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:285381944529:web:8e15cd8e0507ec8e6dd1f0",
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "G-5S3X1WK9DH"
 }
 
 // Initialize Firebase singleton
