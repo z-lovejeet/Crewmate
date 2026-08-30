@@ -16,6 +16,9 @@ import Fleet from "./pages/Fleet"
 import ScriptsStudio from "./pages/ScriptsStudio"
 import MediaStudio from "./pages/MediaStudio"
 import ChannelProfile from "./pages/ChannelProfile"
+import Privacy from "./pages/Privacy"
+import Terms from "./pages/Terms"
+import Security from "./pages/Security"
 import { useAuth } from "./context/AuthContext"
 import { Navigate } from "react-router-dom"
 
@@ -160,6 +163,9 @@ export default function App() {
                   <Route path="/fleet" element={<Fleet />} />
                   <Route path="/channel" element={<ChannelProfile />} />
                   <Route path="/profile" element={<ChannelProfile />} />
+                  <Route path="/privacy" element={<Privacy />} />
+                  <Route path="/terms" element={<Terms />} />
+                  <Route path="/security" element={<Security />} />
 
                   {/* Backward-compatibility aliases */}
                   <Route path="/distribution" element={<Distribution />} />
