@@ -63,18 +63,19 @@ export default function ScriptsStudio() {
   return (
     <div className="flex flex-col gap-8 max-w-6xl mx-auto">
       {/* Hero */}
-      <div className="pt-1 pb-2">
-        <div className="flex items-baseline gap-3">
-          <h1 className="text-[28px] font-bold text-text-primary tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
+      <div className="pt-2 pb-3 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 border-b border-[var(--border)]/60">
+        <div>
+          <h1 className="text-2xl sm:text-[30px] font-bold text-text-primary tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
             Script Architect
           </h1>
-          <span className="text-xs font-medium text-text-tertiary bg-[var(--surface-sunken)] px-2 py-0.5 rounded-md">
-            Gemini 3.7 Flash
-          </span>
+          <p className="mt-1.5 text-sm sm:text-[15px] text-text-secondary leading-relaxed">
+            Generate 3-second viral hooks, retention curves, and scene teleprompters.
+          </p>
         </div>
-        <p className="mt-1.5 text-[15px] text-text-secondary">
-          Generate retention hooks and timestamped video scripts.
-        </p>
+        <span className="self-start sm:self-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-text-secondary bg-[var(--surface-sunken)] border border-[var(--border)]">
+          <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+          <span>Gemini 3.7 Flash</span>
+        </span>
       </div>
 
       {/* Studio Header Card */}

@@ -138,20 +138,7 @@ export default function App() {
       <Navbar notifications={3} />
 
       <main className="flex flex-1 flex-col">
-        {isDashboard && currentNav && (
-          <header className="px-4 pt-8 sm:px-6 md:px-10">
-            <PageHeader
-              icon={currentNav.icon}
-              kicker={currentNav.kicker}
-              title={currentNav.title}
-              subtitle={currentNav.subtitle}
-              badgeText={currentNav.badgeText}
-              badgeTone={currentNav.badgeTone}
-            />
-          </header>
-        )}
-
-        <div className="flex-1 px-4 pb-12 sm:px-6 md:px-10">
+        <div className="flex-1 px-4 py-6 sm:px-6 md:px-10">
           <ErrorBoundary key={location.pathname} locationKey={location.pathname}>
             <AnimatePresence mode="wait">
               <motion.div

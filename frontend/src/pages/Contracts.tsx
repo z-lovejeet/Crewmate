@@ -184,13 +184,21 @@ export default function Contracts() {
   return (
     <div className="flex flex-col gap-8 max-w-7xl mx-auto">
       {/* Hero */}
-      <div className="pt-1 pb-2">
-        <h1 className="text-[28px] font-bold text-text-primary tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
-          Contracts
-        </h1>
-        <p className="mt-1.5 text-[15px] text-text-secondary">
-          Upload a sponsorship agreement for AI-powered risk analysis{recentDeals.length > 0 && <> · <span className="font-semibold text-text-primary">{recentDeals.length} deals</span> in memory</>}.
-        </p>
+      <div className="pt-2 pb-3 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 border-b border-[var(--border)]/60">
+        <div>
+          <h1 className="text-2xl sm:text-[30px] font-bold text-text-primary tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
+            Contract Auditor
+          </h1>
+          <p className="mt-1.5 text-sm sm:text-[15px] text-text-secondary leading-relaxed">
+            AI-powered sponsorship clause extraction, exclusivity traps detection, and counter-proposals.
+          </p>
+        </div>
+        {recentDeals.length > 0 && (
+          <span className="self-start sm:self-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-text-secondary bg-[var(--surface-sunken)] border border-[var(--border)]">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+            <span>{recentDeals.length} Deals in Memory</span>
+          </span>
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[55fr_45fr]">

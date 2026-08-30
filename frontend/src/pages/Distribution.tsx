@@ -61,24 +61,21 @@ export default function Distribution() {
   return (
     <div className="flex flex-col gap-8 max-w-7xl mx-auto">
       {/* Hero */}
-      <div className="pt-1 pb-2">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h1 className="text-[28px] font-bold text-text-primary tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
-              Trends & Strategy
-            </h1>
-            <p className="mt-1.5 text-[15px] text-text-secondary max-w-xl">
-              Content ideas personalized for <span className="font-semibold text-text-primary">{channelProfile.channelName}</span> based on
-              your niche, audience, and past performance.
-            </p>
-          </div>
-          <button
-            onClick={() => navigate("/channel")}
-            className="mt-1 px-3 py-1.5 rounded-lg text-xs font-medium text-text-tertiary hover:text-primary border border-transparent hover:border-[var(--border)] transition cursor-pointer shrink-0"
-          >
-            Edit profile →
-          </button>
+      <div className="pt-2 pb-3 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 border-b border-[var(--border)]/60">
+        <div>
+          <h1 className="text-2xl sm:text-[30px] font-bold text-text-primary tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
+            Trends & Strategy
+          </h1>
+          <p className="mt-1.5 text-sm sm:text-[15px] text-text-secondary leading-relaxed max-w-xl">
+            Breakout trend velocity analysis and personalized concepts for <span className="font-semibold text-text-primary">{channelProfile.channelName}</span>.
+          </p>
         </div>
+        <button
+          onClick={() => navigate("/channel")}
+          className="self-start sm:self-auto px-3.5 py-1.5 rounded-xl text-xs font-semibold text-text-secondary hover:text-primary bg-[var(--surface-sunken)] border border-[var(--border)] transition cursor-pointer shrink-0"
+        >
+          Edit Channel DNA →
+        </button>
       </div>
 
       {/* ─── 1. Personalized Ideas Tailored to Creator ──────────────────── */}

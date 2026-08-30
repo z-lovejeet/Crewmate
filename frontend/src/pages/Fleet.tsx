@@ -221,25 +221,23 @@ export default function Fleet() {
   return (
     <div className="flex flex-col gap-8 max-w-7xl mx-auto">
       {/* Hero */}
-      <div className="pt-1 pb-2">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-[28px] font-bold text-text-primary tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
-              Fleet Overview
-            </h1>
-            <p className="mt-1.5 text-[15px] text-text-secondary">
-              {activeAgentsCount} autonomous agents active · Zero-Trust RBAC & OpenTelemetry Protected
-            </p>
-          </div>
-          <div className="hidden sm:flex items-center gap-1 px-3 py-2 rounded-xl bg-[var(--surface-sunken)] border border-[var(--border)]">
-            {agents.slice(0, 14).map((a, i) => (
-              <span
-                key={i}
-                className={`w-2 h-2 rounded-full ${!disabledAgents.includes(a.id) ? 'bg-emerald-500' : 'bg-zinc-300'}`}
-                title={a.name}
-              />
-            ))}
-          </div>
+      <div className="pt-2 pb-3 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 border-b border-[var(--border)]/60">
+        <div>
+          <h1 className="text-2xl sm:text-[30px] font-bold text-text-primary tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
+            Fleet Command
+          </h1>
+          <p className="mt-1.5 text-sm sm:text-[15px] text-text-secondary leading-relaxed">
+            {activeAgentsCount} autonomous agents operational · Zero-Trust RBAC & OpenTelemetry Protected.
+          </p>
+        </div>
+        <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--surface-sunken)] border border-[var(--border)]">
+          {agents.slice(0, 14).map((a, i) => (
+            <span
+              key={i}
+              className={`w-2 h-2 rounded-full transition-colors ${!disabledAgents.includes(a.id) ? 'bg-emerald-500' : 'bg-zinc-300'}`}
+              title={a.name}
+            />
+          ))}
         </div>
       </div>
 

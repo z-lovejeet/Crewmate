@@ -173,12 +173,12 @@ export default function MediaStudio() {
   return (
     <div className="flex flex-col gap-8 max-w-6xl mx-auto">
       {/* Hero */}
-      <div className="pt-1 pb-1">
-        <h1 className="text-[28px] font-bold text-text-primary tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
+      <div className="pt-2 pb-3 border-b border-[var(--border)]/60">
+        <h1 className="text-2xl sm:text-[30px] font-bold text-text-primary tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
           Media Studio
         </h1>
-        <p className="mt-1.5 text-[15px] text-text-secondary">
-          Extract clips, generate thumbnails, and create background music.
+        <p className="mt-1.5 text-sm sm:text-[15px] text-text-secondary leading-relaxed">
+          Viral mini-clips extraction, Imagen 3 thumbnail concepts, and Lyria AI music synthesis.
         </p>
       </div>
       {/* Studio Tab Switcher */}

@@ -214,14 +214,12 @@ export default function CommandCenter() {
   return (
     <div className="flex flex-col gap-8 max-w-7xl mx-auto">
       {/* Hero */}
-      <div className="pt-1 pb-2">
-        <h1 className="text-[28px] font-bold text-text-primary tracking-tight leading-tight" style={{ fontFamily: 'var(--font-display)' }}>
-          Welcome back, {creatorName} <span className="inline-block animate-[wave_2s_ease-in-out_infinite] origin-[70%_70%] text-2xl">👋</span>
+      <div className="pt-2 pb-3">
+        <h1 className="text-2xl sm:text-[30px] font-bold text-text-primary tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
+          Welcome back, {creatorName}
         </h1>
-        <p className="mt-2 text-[15px] text-text-secondary leading-relaxed max-w-2xl">
-          Your fleet ran <span className="font-semibold text-text-primary">{obsStats.total_traces || 28} operations</span> today
-          at <span className="font-semibold text-emerald-600">{obsStats.success_rate_percent || 100}%</span> success rate —
-          all <span className="font-semibold text-text-primary">{activeAgentsCount} agents</span> are standing by.
+        <p className="mt-1.5 text-sm sm:text-[15px] text-text-secondary leading-relaxed max-w-2xl">
+          Fleet completed <span className="font-semibold text-text-primary">{obsStats.total_traces || 28} operations</span> today with <span className="font-semibold text-emerald-600">{obsStats.success_rate_percent || 100}%</span> success rate · <span className="font-semibold text-text-primary">{activeAgentsCount} autonomous agents</span> active.
         </p>
       </div>
 

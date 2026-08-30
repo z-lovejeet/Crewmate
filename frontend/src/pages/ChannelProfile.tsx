@@ -76,13 +76,19 @@ export default function ChannelProfile() {
   return (
     <div className="flex flex-col gap-8 max-w-5xl mx-auto">
       {/* Hero */}
-      <div className="pt-1 pb-2">
-        <h1 className="text-[28px] font-bold text-text-primary tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
-          Channel DNA
-        </h1>
-        <p className="mt-1.5 text-[15px] text-text-secondary">
-          Define your niche, audience, and deal rules — all 14 agents adapt to this profile.
-        </p>
+      <div className="pt-2 pb-3 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 border-b border-[var(--border)]/60">
+        <div>
+          <h1 className="text-2xl sm:text-[30px] font-bold text-text-primary tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
+            Channel DNA
+          </h1>
+          <p className="mt-1.5 text-sm sm:text-[15px] text-text-secondary leading-relaxed">
+            Teach your autonomous agent fleet about your niche, tone, and deal floor rules.
+          </p>
+        </div>
+        <span className="self-start sm:self-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-text-tertiary bg-[var(--surface-sunken)] border border-[var(--border)]">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+          <span>Firestore Synced</span>
+        </span>
       </div>
 
       {/* Save Feedback */}

@@ -220,24 +220,22 @@ Verified by Crewmate Autonomous Fleet Engine.`
   return (
     <div className="flex flex-col gap-6 max-w-7xl mx-auto">
       {/* Hero */}
-      <div className="pt-1 pb-2">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-[28px] font-bold text-text-primary tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
-              Compliance
-            </h1>
-            <p className="mt-1.5 text-[15px] text-text-secondary">
-              FTC disclosure & copyright scanner for your video assets.
-            </p>
-          </div>
-          <div className="hidden sm:flex items-center gap-2.5">
-            <span className={`text-3xl font-bold tracking-tight ${compositeScore >= 80 ? 'text-emerald-600' : compositeScore >= 50 ? 'text-amber-500' : 'text-red-500'}`} style={{ fontFamily: 'var(--font-display)' }}>
-              {compositeScore}%
-            </span>
-            <span className="text-xs text-text-tertiary leading-tight">
-              Shield<br/>Score
-            </span>
-          </div>
+      <div className="pt-2 pb-3 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 border-b border-[var(--border)]/60">
+        <div>
+          <h1 className="text-2xl sm:text-[30px] font-bold text-text-primary tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
+            Compliance Shield
+          </h1>
+          <p className="mt-1.5 text-sm sm:text-[15px] text-text-secondary leading-relaxed">
+            Automated FTC 16 CFR § 255 evaluation, copyright safety, and sponsor audit certificates.
+          </p>
+        </div>
+        <div className="self-start sm:self-auto inline-flex items-center gap-2 px-3.5 py-1.5 rounded-2xl bg-[var(--surface-sunken)] border border-[var(--border)]">
+          <span className={`text-xl font-bold tracking-tight ${compositeScore >= 80 ? 'text-emerald-600' : compositeScore >= 50 ? 'text-amber-500' : 'text-red-500'}`} style={{ fontFamily: 'var(--font-display)' }}>
+            {compositeScore}%
+          </span>
+          <span className="text-[11px] font-semibold text-text-tertiary">
+            Composite Shield Score
+          </span>
         </div>
       </div>
 
