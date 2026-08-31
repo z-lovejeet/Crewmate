@@ -483,6 +483,26 @@ export const api = {
     })
   },
 
+  // ── AI Video Generation (Veo) ──────────────────────────────────────
+  getVideoModels: async () => {
+    return fetchFromBackend<any>("/api/videos/models")
+  },
+
+  generateVideo: async (title: string, description = "", style = "cinematic", aspect_ratio = "16:9", model_key = "veo-3.1-fast") => {
+    return fetchFromBackend<any>("/api/videos/generate", {
+      method: "POST",
+      body: JSON.stringify({ title, description, style, aspect_ratio, model_key })
+    })
+  },
+
+  getVideoStatus: async (jobId: string) => {
+    return fetchFromBackend<any>(`/api/videos/status/${jobId}`)
+  },
+
+  getVideoDownloadUrl: (jobId: string) => {
+    return `http://localhost:8000/api/videos/download/${jobId}`
+  },
+
   generateScript: async (
     topic: string,
     targetDurationMinutes = 8,

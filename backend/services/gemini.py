@@ -151,3 +151,55 @@ async def generate_image_async(
     return await loop.run_in_executor(
         None, lambda: generate_image(prompt, model)
     )
+
+
+def generate_video(
+    prompt: str,
+    model: str = "veo-3.1-fast-generate-001",
+    aspect_ratio: str = "16:9",
+) -> object:
+    """Start a Veo video generation operation (async long-running).
+    
+    Returns the operation object which must be polled via check_video_operation().
+    """
+    client = _get_image_client()  # reuse us-central1 client
+
+    logger.info(f"Starting video generation with {model}: {prompt[:80]}...")
+
+    operation = client.models.generate_videos(
+        model=model,
+        prompt=prompt,
+        config=types.GenerateVideosConfig(
+            aspect_ratio=aspect_ratio,
+            number_of_videos=1,
+        ),
+    )
+
+    logger.info(f"Video operation started: {operation.name}")
+    return operation
+
+
+def check_video_operation(operation_name: str) -> object:
+    """Check the status of a Veo video generation operation."""
+    client = _get_image_client()
+    
+    # Reconstruct a minimal operation object to poll
+    from google.genai.types import GenerateVideosOperation
+    op = GenerateVideosOperation(name=operation_name)
+    updated = client.operations.get(op)
+    return updated
+
+
+def save_generated_video(operation: object, output_path: str) -> str:
+    """Save the generated video from a completed operation to disk."""
+    import os
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    
+    if operation.response and operation.response.generated_videos:
+        video = operation.response.generated_videos[0]
+        video.video.save(output_path)
+        logger.info(f"Video saved to {output_path}")
+        return output_path
+    
+    raise RuntimeError("Operation has no generated videos")
+

@@ -15,11 +15,12 @@ import {
 } from "../lib/icons"
 
 import { RealThumbnailStudio } from "../components/media/RealThumbnailStudio"
+import { AIVideoGenerator } from "../components/media/AIVideoGenerator"
 
-type MediaTab = "clips" | "thumbnails" | "music"
+type MediaTab = "video" | "thumbnails" | "music"
 
 export default function MediaStudio() {
-  const [activeTab, setActiveTab] = useState<MediaTab>("clips")
+  const [activeTab, setActiveTab] = useState<MediaTab>("video")
 
   // --- 1. Mini-Clips Extractor State ---
   const [videoTitle, setVideoTitle] = useState("10 AI Tools That Changed How I Build Software in 2026")
@@ -180,21 +181,21 @@ export default function MediaStudio() {
           Media Studio
         </h1>
         <p className="mt-1.5 text-sm sm:text-[15px] text-text-secondary leading-relaxed">
-          Viral mini-clips extraction, Imagen 3 thumbnail concepts, and Lyria AI music synthesis.
+          Veo 3.1 AI video generation, Gemini 2.5 Flash thumbnails, and Lyria AI music synthesis.
         </p>
       </div>
       {/* Studio Tab Switcher */}
       <div className="flex items-center justify-between p-1.5 rounded-2xl bg-[var(--surface-sunken)] border border-[var(--border)] max-w-xl">
         <button
-          onClick={() => setActiveTab("clips")}
+          onClick={() => setActiveTab("video")}
           className={`flex-1 py-2.5 px-3 rounded-xl font-bold text-xs transition flex items-center justify-center gap-2 cursor-pointer ${
-            activeTab === "clips"
+            activeTab === "video"
               ? "bg-[var(--surface)] text-primary clay-sm shadow-xs"
               : "text-text-secondary hover:text-text-primary"
           }`}
         >
-          <ScissorsIcon size={16} />
-          <span>Mini-Clips Extractor</span>
+          <VideoAiIcon size={16} />
+          <span>AI Video Generator (Veo 3.1)</span>
         </button>
 
         <button
@@ -206,7 +207,7 @@ export default function MediaStudio() {
           }`}
         >
           <Edit03Icon size={16} />
-          <span>Imagen 3 Thumbnails</span>
+          <span>Gemini Thumbnails</span>
         </button>
 
         <button
@@ -218,176 +219,13 @@ export default function MediaStudio() {
           }`}
         >
           <MusicNote01Icon size={16} />
-          <span>Lyria Background Music</span>
+          <span>Lyria Music</span>
         </button>
       </div>
 
-      {/* TAB 1: Smart Mini-Clips Extractor */}
-      {activeTab === "clips" && (
-        <div className="flex flex-col gap-6">
-          <ClayCard accent="var(--primary)">
-            <div className="flex flex-col gap-5 p-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-primary flex items-center justify-center">
-                    <ScissorsIcon size={22} />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-extrabold text-text-primary tracking-tight font-[var(--font-display)]">
-                      Smart Mini-Clips & Repurposing Director
-                    </h2>
-                    <p className="text-xs text-text-tertiary">
-                      Agent 12 · Extract viral 30-60s moments from long-form videos with vertical 9:16 crop packages
-                    </p>
-                  </div>
-                </div>
-                <span className="clay-sm px-3 py-1 rounded-full text-xs font-semibold text-primary bg-primary-pale">
-                  Limit: {maxClips} Clips
-                </span>
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <div>
-                  <label className="block text-xs font-semibold text-text-secondary mb-1">
-                    Original Video Title
-                  </label>
-                  <input
-                    type="text"
-                    value={videoTitle}
-                    onChange={(e) => setVideoTitle(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl bg-[var(--surface-sunken)] border border-[var(--border)] text-xs text-text-primary focus:outline-none focus:border-primary transition"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-text-secondary mb-1">
-                    Video Transcript or Key Timestamps
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={transcript}
-                    onChange={(e) => setTranscript(e.target.value)}
-                    placeholder="Paste your video transcript, notes, or chapter timestamps here..."
-                    className="w-full px-4 py-2.5 rounded-xl bg-[var(--surface-sunken)] border border-[var(--border)] text-xs text-text-primary focus:outline-none focus:border-primary transition leading-relaxed resize-none"
-                  />
-                </div>
-
-                {/* Clip Limit Selector */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs font-semibold text-text-secondary">
-                      Max Clips Limit:
-                    </span>
-                    <div className="flex gap-1.5">
-                      {[1, 2, 3, 4, 5].map((num) => (
-                        <button
-                          key={num}
-                          type="button"
-                          onClick={() => setMaxClips(num)}
-                          className={`w-8 h-8 rounded-xl text-xs font-bold transition cursor-pointer border ${
-                            maxClips === num
-                              ? "bg-primary text-white border-primary shadow-xs"
-                              : "bg-[var(--surface-sunken)] border-[var(--border)] text-text-secondary hover:text-text-primary"
-                          }`}
-                        >
-                          {num}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={handleExtractClips}
-                    disabled={extractingClips}
-                    className="px-6 py-2.5 rounded-xl bg-primary text-white font-bold text-xs hover:brightness-110 active:scale-[0.98] transition cursor-pointer shadow-sm flex items-center justify-center gap-2 disabled:opacity-60"
-                  >
-                    {extractingClips ? (
-                      <>
-                        <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                        <span>Detecting Viral Moments...</span>
-                      </>
-                    ) : (
-                      <>
-                        <ScissorsIcon size={14} />
-                        <span>Extract {maxClips} Viral Clips</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </ClayCard>
-
-          {/* Render Extracted Clips */}
-          <AnimatePresence>
-            {clipsData?.clips?.length > 0 ? (
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="grid grid-cols-1 md:grid-cols-3 gap-5"
-              >
-                {clipsData.clips.map((clip: any) => (
-                  <div
-                    key={clip.clip_id}
-                    className="p-5 rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-sm flex flex-col justify-between gap-4"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="px-2.5 py-0.5 rounded-lg bg-indigo-50 text-primary font-mono text-[11px] font-bold">
-                        {clip.start_timestamp} - {clip.end_timestamp} ({clip.duration_seconds}s)
-                      </span>
-                      <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">
-                        {clip.predicted_virality_score}% Virality
-                      </span>
-                    </div>
-
-                    <div>
-                      <h4 className="font-bold text-text-primary text-sm font-[var(--font-display)]">
-                        {clip.title}
-                      </h4>
-                      <p className="text-xs text-text-secondary mt-1 leading-relaxed">
-                        {clip.viral_hook_reason}
-                      </p>
-                    </div>
-
-                    <div className="p-3 rounded-2xl bg-[var(--surface-sunken)] border border-[var(--border)] flex flex-col gap-1.5 text-[11px]">
-                      <div className="flex items-center justify-between font-semibold text-text-tertiary">
-                        <span>9:16 Vertical Crop Guide:</span>
-                        <span className="text-primary font-bold">Shorts & Reels</span>
-                      </div>
-                      <p className="text-text-primary font-medium">
-                        {clip.crop_guide_9_16}
-                      </p>
-                    </div>
-
-                    <div className="pt-2 border-t border-[var(--border)] flex flex-col gap-1.5 text-[11px]">
-                      <span className="font-semibold text-text-tertiary">Suggested Platform Titles:</span>
-                      {clip.platform_packages?.map((pkg: any, i: number) => (
-                        <div key={i} className="text-text-primary text-[11px] leading-snug">
-                          <span className="font-bold uppercase text-primary text-[10px] mr-1.5">
-                            {pkg.platform === "youtube_shorts" ? "Shorts" : "Reels"}:
-                          </span>
-                          "{pkg.suggested_title}"
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-16 text-center px-4 bg-[var(--surface)] rounded-3xl border border-[var(--border)]">
-                <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-primary flex items-center justify-center mb-3">
-                  <ScissorsIcon size={24} />
-                </div>
-                <h4 className="font-bold text-text-primary text-sm font-[var(--font-display)]">
-                  Extract 1 to 5 Viral Clips from Any Video
-                </h4>
-                <p className="text-xs text-text-secondary max-w-sm mt-1 leading-relaxed">
-                  Enter your video title and transcript above, choose your clip limit, and click <b>"Extract Viral Clips"</b> to produce short-form assets.
-                </p>
-              </div>
-            )}
-          </AnimatePresence>
-        </div>
+      {/* TAB 1: AI Video Generator (Google Veo) */}
+      {activeTab === "video" && (
+        <AIVideoGenerator />
       )}
 
       {/* TAB 2: Real High-CTR Thumbnail Studio */}
