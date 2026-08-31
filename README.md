@@ -18,7 +18,7 @@ Built for the **[All Things Agentic Hackathon 2026](https://allthingsagentichack
 | | |
 |:---|:---|
 | **🎯 GCP Project ID** | `crewmate-507013` |
-| **🌐 Live Deployment** | Google Cloud Run (us-central1) |
+| **🌐 Live Deployment** | [crewmate-285381944529.us-central1.run.app](https://crewmate-285381944529.us-central1.run.app) |
 | **🧠 Primary Model** | Gemini 3.7 Flash (Vertex AI) |
 | **🎬 Video Model** | Veo 3.1 |
 | **🖼️ Image Model** | Gemini 3 Pro Image |
