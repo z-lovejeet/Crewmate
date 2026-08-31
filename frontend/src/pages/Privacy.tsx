@@ -82,7 +82,7 @@ export default function Privacy() {
           Regulatory Compliance & Certifications
         </h4>
         <p>
-          Crewmate complies with Google Cloud enterprise security guidelines, SOC 2 Type II data handling principles, and FTC 16 CFR § 255 commercial disclosure transparency frameworks. Last updated: August 2026.
+          Crewmate complies with Google Cloud enterprise security guidelines, SOC 2 Type II data handling principles, and FTC 16 CFR Part 255 commercial disclosure transparency frameworks. Last updated: August 2026.
         </p>
       </div>
     </div>

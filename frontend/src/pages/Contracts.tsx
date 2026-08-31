@@ -111,7 +111,7 @@ export default function Contracts() {
       `## Extracted Clauses & AI Counter-Proposals\n`,
       ...clausesList.map(
         (c) =>
-          `### §${c.number}. ${c.title} [Status: ${c.status.toUpperCase()}]\n` +
+          `### Section ${c.number}: ${c.title} [Status: ${c.status.toUpperCase()}]\n` +
           `Analysis: ${c.explanation}\n` +
           (c.counter ? `Proposed Counter-Language:\n> "${c.counter}"\n` : "")
       ),
@@ -137,7 +137,7 @@ export default function Contracts() {
   const handleSendCounter = () => {
     const counterClauses = clausesList
       .filter((c) => c.counter && c.status !== "approved")
-      .map((c) => `• Section §${c.number} (${c.title}):\n  Revised Term: "${c.counter}"`)
+      .map((c) => `• Section ${c.number} (${c.title}):\n  Revised Term: "${c.counter}"`)
       .join("\n\n")
 
     const emailDraft = [
@@ -193,7 +193,7 @@ export default function Contracts() {
           const mapped = data.clauses.map((c: any, i: number) => ({
             id: c.clause_id || c.id || `c${i+1}`,
             number: i + 1,
-            title: c.category || c.clause || `Clause §${i+1}`,
+            title: c.category || c.clause || `Clause ${i+1}`,
             status: (c.risk_level?.toLowerCase() === "critical" || c.risk?.toLowerCase() === "critical") ? "critical" : (c.risk_level?.toLowerCase() === "high" || c.risk?.toLowerCase() === "high") ? "flagged" : "approved",
             explanation: c.text || c.analysis || "Standard clause evaluated.",
             counter: c.proposed_text || c.counter_proposal || "Accept clause as drafted."
@@ -248,7 +248,7 @@ export default function Contracts() {
           const mapped = data.clauses.map((c: any, i: number) => ({
             id: c.clause_id || c.id || `c${i+1}`,
             number: i + 1,
-            title: c.category || c.clause || `Clause §${i+1}`,
+            title: c.category || c.clause || `Clause ${i+1}`,
             status: (c.risk_level?.toLowerCase() === "critical" || c.risk?.toLowerCase() === "critical") ? "critical" : (c.risk_level?.toLowerCase() === "high" || c.risk?.toLowerCase() === "high") ? "flagged" : "approved",
             explanation: c.text || c.analysis || "Standard clause evaluated.",
             counter: c.proposed_text || c.counter_proposal || "Accept clause as drafted."
@@ -581,7 +581,7 @@ export default function Contracts() {
                           className="text-sm font-bold text-text-primary"
                           style={{ fontFamily: "var(--font-display)" }}
                         >
-                          §{c.number} · {c.title}
+                          Clause {c.number}: {c.title}
                         </span>
                         <StatusBadge
                           type={badgeType[c.status as keyof typeof badgeType] || "flagged"}

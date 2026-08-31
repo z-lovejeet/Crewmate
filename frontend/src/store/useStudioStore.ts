@@ -106,7 +106,7 @@ const DEFAULT_NOTES: PinNote[] = [
   {
     id: "n1",
     tag: "Deal Shield",
-    text: "BrandX $8.5K: Exclusivity counter drafted (§2.1 Net-30 required). Awaiting creator sign-off.",
+    text: "BrandX $8.5K: Exclusivity counter drafted (Clause 2.1 Net-30 required). Awaiting creator sign-off.",
     color: "#eef2ff",
     pin: "#6366f1",
     date: "Today",

@@ -56,7 +56,7 @@ export default function Terms() {
               FTC & Platform Compliance
             </h3>
             <p className="text-xs text-text-secondary leading-relaxed">
-              The Compliance Shield scans titles and descriptions against FTC 16 CFR § 255 and platform community guidelines. Exported Compliance Certificates provide proof of diligence for commercial brand partners and regulatory bodies.
+              The Compliance Shield scans titles and descriptions against FTC 16 CFR Part 255 and platform community guidelines. Exported Compliance Certificates provide proof of diligence for commercial brand partners and regulatory bodies.
             </p>
           </div>
         </ClayCard>

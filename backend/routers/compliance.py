@@ -20,6 +20,7 @@ class ComplianceCheckItem(BaseModel):
     status: str  # passed, warning, critical
     finding: str
     remediation: str
+    platform: Optional[str] = "both"
 
 class LyriaAudioAlternative(BaseModel):
     original_track: str
@@ -30,11 +31,16 @@ class LyriaAudioAlternative(BaseModel):
     cleared: bool = True
 
 class ComplianceScanRequest(BaseModel):
-    content_title: str
-    content_description: str
+    content_title: Optional[str] = None
+    title: Optional[str] = None
+    content_description: Optional[str] = None
+    description: Optional[str] = None
     platform: str = "youtube"
     has_paid_partnership: bool = True
+    has_sponsorship: Optional[bool] = None
     audio_track: Optional[str] = None
+    audio_description: Optional[str] = None
+    tags: Optional[List[str]] = None
 
 class ComplianceResult(BaseModel):
     id: Optional[str] = None
@@ -45,6 +51,7 @@ class ComplianceResult(BaseModel):
     checks: List[ComplianceCheckItem]
     audio_shield: Optional[LyriaAudioAlternative] = None
     summary: str
+    remediations: Optional[List[str]] = None
     created_at: Optional[str] = None
 
 DEMO_COMPLIANCE = ComplianceResult(
@@ -58,19 +65,29 @@ DEMO_COMPLIANCE = ComplianceResult(
             category="FTC Sponsorship Disclosure",
             status="passed",
             finding="First 3 lines of video description contain explicit '#ad' and 'Sponsored by BrandX' tag.",
-            remediation="Compliant with 16 CFR § 255. No action required."
+            remediation="Compliant with FTC 16 CFR Part 255. No action required.",
+            platform="both"
         ),
         ComplianceCheckItem(
             category="Copyright Fingerprint Shield",
             status="passed",
             finding="Original background track 'Blinding Lights (Remix)' flagged for Content ID match in 142 territories.",
-            remediation="Automated Lyria AI replacement: 'Neon Horizon - Synthwave Chill (124 BPM)'. Cleared globally with zero copyright strikes."
+            remediation="Automated Lyria AI replacement: 'Neon Horizon - Synthwave Chill (124 BPM)'. Cleared globally with zero copyright strikes.",
+            platform="both"
         ),
         ComplianceCheckItem(
             category="Community Guidelines & Brand Safety",
             status="passed",
             finding="No profanity in the first 30 seconds (preserves Tier-1 ad CPM monetization).",
-            remediation="Full monetization eligibility confirmed."
+            remediation="Full monetization eligibility confirmed.",
+            platform="youtube"
+        ),
+        ComplianceCheckItem(
+            category="Instagram Branded Content",
+            status="passed",
+            finding="Paid Partnership label active and hashtag placed before caption truncation.",
+            remediation="Complies with Meta Branded Content Policy.",
+            platform="instagram"
         )
     ],
     audio_shield=LyriaAudioAlternative(
@@ -81,7 +98,8 @@ DEMO_COMPLIANCE = ComplianceResult(
         mood="Energetic Synthwave",
         cleared=True
     ),
-    summary="Content is 100% shielded and ready for multi-platform distribution. FTC disclosures formatted correctly and background audio safely replaced with royalty-free Lyria AI composition."
+    summary="Content is 100% shielded and ready for multi-platform distribution. FTC disclosures formatted correctly and background audio safely replaced with royalty-free Lyria AI composition.",
+    remediations=["All disclosures verified above fold.", "Lyria AI audio safe for commercial monetization."]
 )
 
 
@@ -98,40 +116,51 @@ async def scan_compliance(request: ComplianceScanRequest):
     start_time = time.time()
     trace_id = f"trace_compliance_{uuid.uuid4().hex[:8]}"
 
+    target_title = request.title or request.content_title or "Untitled Video Deliverable"
+    target_desc = request.description or request.content_description or ""
+    is_sponsored = request.has_sponsorship if request.has_sponsorship is not None else request.has_paid_partnership
+    audio_info = request.audio_description or request.audio_track or "Original voiceover & background music"
+
     # Step 1: Gemma Classification
     gemma_eval = await classify_content_and_safety(
-        title=request.content_title,
-        description=request.content_description
+        title=target_title,
+        description=target_desc
     )
 
     prompt = f"""Scan this creator content for regulatory and platform compliance:
 Platform: {request.platform}
-Title: {request.content_title}
-Description: {request.content_description}
-Has Paid Partnership: {request.has_paid_partnership}
-Audio Track: {request.audio_track or 'None'}
+Title: {target_title}
+Description: {target_desc}
+Has Paid Sponsorship/Affiliate: {is_sponsored}
+Audio Track: {audio_info}
 Gemma Safety Score: {gemma_eval.get('brand_safety_score', 95)}/100
 
-Perform 3 strict checks:
-1. FTC Sponsorship Disclosure: Are hashtags (#ad/#sponsored) prominent?
-2. Copyright Audio Shield: Is audio safe or does it need Lyria AI royalty-free replacement?
-3. Platform Community Guidelines: Advertiser-friendliness & language rules.
+Perform strict checks for YouTube, Instagram, and FTC:
+1. FTC Sponsorship Disclosure:
+   - If sponsored/affiliate, are '#ad', '#sponsored', or explicit 'Sponsored by' included in description?
+   - If missing on a sponsored video, status is 'critical' with score < 60.
+2. Copyright Audio Shield:
+   - Does audio need Lyria AI royalty-free replacement?
+3. Platform Community Guidelines & Brand Safety:
+   - Safe language, no false guarantees, monetization eligibility.
 
 Return ONLY valid JSON matching this schema:
 {{
   "platform": "{request.platform}",
-  "overall_score": 96,
+  "overall_score": 95,
   "shield_status": "SECURED",
   "ftc_compliant": true,
   "checks": [
-    {{"category": "FTC Sponsorship Disclosure", "status": "passed", "finding": "...", "remediation": "..."}},
-    {{"category": "Copyright Fingerprint Shield", "status": "passed", "finding": "...", "remediation": "..."}},
-    {{"category": "Community Guidelines", "status": "passed", "finding": "...", "remediation": "..."}}
+    {{"category": "FTC Sponsorship Disclosure", "status": "passed", "finding": "...", "remediation": "...", "platform": "both"}},
+    {{"category": "Copyright Fingerprint Shield", "status": "passed", "finding": "...", "remediation": "...", "platform": "both"}},
+    {{"category": "YouTube Guidelines", "status": "passed", "finding": "...", "remediation": "...", "platform": "youtube"}},
+    {{"category": "Instagram Guidelines", "status": "passed", "finding": "...", "remediation": "...", "platform": "instagram"}}
   ],
-  "summary": "..."
+  "summary": "...",
+  "remediations": ["..."]
 }}
 """
-    system_inst = "You are the Crewmate Content Compliance agent. Ensure 100% platform and regulatory safety."
+    system_inst = "You are the Crewmate Content Compliance agent. Ensure 100% platform and FTC 16 CFR Part 255 regulatory safety."
 
     try:
         response_text = await generate_text(prompt=prompt, system_instruction=system_inst)
@@ -148,13 +177,13 @@ Return ONLY valid JSON matching this schema:
         data["id"] = doc_id
 
         # Attach Lyria audio alternative if track provided or in demo mode
-        if request.audio_track and "lyria" not in request.audio_track.lower():
+        if audio_info and "lyria" not in audio_info.lower() and "original" not in audio_info.lower():
             data["audio_shield"] = {
-                "original_track": request.audio_track,
-                "original_risk": "Content ID Risk (Claim Potential)",
-                "suggested_lyria_track": f"Echo Pulse - {request.platform.title()} Edit (Lyria Gen-3)",
-                "bpm": 128,
-                "mood": "Uplifting Modern Electronic",
+                "original_track": audio_info,
+                "original_risk": "Commercial Rights Required (Potential Content ID Claim)",
+                "suggested_lyria_track": f"Neon Horizon - {request.platform.title()} Edit (Lyria Gen-3)",
+                "bpm": 124,
+                "mood": "Energetic Synthwave",
                 "cleared": True
             }
         else:
@@ -171,9 +200,9 @@ Return ONLY valid JSON matching this schema:
             action="autonomous_compliance_scan",
             latency_ms=latency_ms,
             tool_calls=[
-                {"tool": "gemma_classifier", "arguments": {"title": request.content_title}, "result_preview": f"Safety Score: {gemma_eval.get('brand_safety_score')}", "latency_ms": 25.0},
-                {"tool": "ftc_rule_checker", "arguments": {"partnership": request.has_paid_partnership}, "result_preview": "16 CFR § 255 compliant", "latency_ms": 18.0},
-                {"tool": "lyria_audio_resolver", "arguments": {"audio": request.audio_track or "synthwave"}, "result_preview": "Lyria royalty-free track matched", "latency_ms": 30.0}
+                {"tool": "gemma_classifier", "arguments": {"title": target_title}, "result_preview": f"Safety Score: {gemma_eval.get('brand_safety_score')}", "latency_ms": 25.0},
+                {"tool": "ftc_rule_checker", "arguments": {"partnership": is_sponsored}, "result_preview": "FTC 16 CFR Part 255 evaluated", "latency_ms": 18.0},
+                {"tool": "lyria_audio_resolver", "arguments": {"audio": audio_info}, "result_preview": "Lyria royalty-free track matched", "latency_ms": 30.0}
             ],
             output_summary=f"Compliance Score: {data.get('overall_score')}/100 ({data.get('shield_status')}). FTC: {data.get('ftc_compliant')}"
         )

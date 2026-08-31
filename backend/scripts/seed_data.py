@@ -167,7 +167,7 @@ async def seed_all():
             "tool_calls_count": 3,
             "tool_calls": [
                 {"tool": "gemma_classifier", "arguments": {"title": "Top 5 AI Tools I Use Daily"}, "result_preview": "Category: Tech, Safety Score: 98", "latency_ms": 22.0},
-                {"tool": "ftc_rule_checker", "arguments": {"partnership": True}, "result_preview": "16 CFR § 255 verified", "latency_ms": 15.0},
+                {"tool": "ftc_rule_checker", "arguments": {"partnership": True}, "result_preview": "16 CFR Part 255 verified", "latency_ms": 15.0},
                 {"tool": "lyria_audio_resolver", "arguments": {"audio": "Neon Horizon"}, "result_preview": "Royalty-free track matched (124 BPM)", "latency_ms": 25.0}
             ],
             "output_summary": "Shield Score: 96/100. Audio safe with Lyria Gen-3 replacement."

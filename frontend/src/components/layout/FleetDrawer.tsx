@@ -84,7 +84,7 @@ export const FleetDrawer: React.FC<FleetDrawerProps> = ({ isOpen, onClose }) => 
           {
             id: "alt-3",
             agent_name: "Content Compliance",
-            action: "Scanned YouTube tutorial: FTC 16 CFR § 255 disclosure shield active",
+            action: "Scanned YouTube tutorial: FTC 16 CFR Part 255 disclosure shield active",
             status: "success",
             created_at: new Date(Date.now() - 1200000).toISOString(),
             latency_ms: 225,
