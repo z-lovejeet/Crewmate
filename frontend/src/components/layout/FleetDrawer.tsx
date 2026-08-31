@@ -68,7 +68,7 @@ export const FleetDrawer: React.FC<FleetDrawerProps> = ({ isOpen, onClose }) => 
           {
             id: "alt-1",
             agent_name: "Fleet Orchestrator",
-            action: "System health check verified (14/14 agents active on Vertex AI)",
+            action: "System health check verified (15/15 agents active on Vertex AI)",
             status: "success",
             created_at: new Date().toISOString(),
             latency_ms: 180,
@@ -104,7 +104,7 @@ export const FleetDrawer: React.FC<FleetDrawerProps> = ({ isOpen, onClose }) => 
         {
           id: "alt-1",
           agent_name: "Fleet Orchestrator",
-          action: "14 Autonomous Agents initialized on Vertex AI",
+          action: "15 Autonomous Agents initialized on Vertex AI",
           status: "success",
           created_at: new Date().toISOString(),
           latency_ms: 195,
@@ -147,7 +147,7 @@ export const FleetDrawer: React.FC<FleetDrawerProps> = ({ isOpen, onClose }) => 
       const errorMsg: ChatMessage = {
         id: `err-${Date.now()}`,
         sender: "copilot",
-        text: `Orchestrator feedback: Completed task. All 14 fleet nodes are synchronized.`,
+        text: `Orchestrator feedback: Completed task. All 15 fleet nodes are synchronized.`,
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         agent: "Fleet Orchestrator",
       }
@@ -197,7 +197,7 @@ export const FleetDrawer: React.FC<FleetDrawerProps> = ({ isOpen, onClose }) => 
                   </h3>
                   <div className="flex items-center gap-1.5 text-[11px] text-text-tertiary">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>14 Agents Active · Vertex AI</span>
+                    <span>15 Agents Active · Vertex AI</span>
                   </div>
                 </div>
               </div>

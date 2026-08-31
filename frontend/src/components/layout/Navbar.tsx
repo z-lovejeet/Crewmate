@@ -33,7 +33,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { user, isAuthenticated, logout, openAuthModal } = useAuth()
   const { disabledAgents } = useStudioStore()
-  const activeCount = Math.max(0, 14 - (disabledAgents?.length || 0))
+  const activeCount = Math.max(0, 15 - (disabledAgents?.length || 0))
 
   return (
     <nav className="sticky top-0 z-40 w-full bg-[var(--surface)]/95 backdrop-blur-md border-b border-[var(--border)] h-16 flex items-center justify-between px-3 sm:px-6 lg:px-8 transition-all">
@@ -109,7 +109,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
         <NavLink
           to="/fleet"
           className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/60 text-emerald-700 text-xs font-semibold hover:bg-emerald-100/60 transition no-underline"
-          title={`${activeCount} of 14 Autonomous Agents Active on Vertex AI`}
+          title={`${activeCount} of 15 Autonomous Agents Active on Vertex AI`}
         >
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           <span>{activeCount} Online</span>

@@ -254,13 +254,13 @@ export default function CommandCenter() {
 
         <ClayCard accent="var(--accent)">
           <StatDisplay
-            value={`${activeAgentsCount}/14`}
+            value={`${activeAgentsCount}/15`}
             label="Autonomous Agents Active"
-            trend={Math.round((activeAgentsCount / 14) * 100)}
+            trend={Math.round((activeAgentsCount / 15) * 100)}
             tintColor="transparent"
           />
           <p className="mt-2 text-xs text-text-tertiary">
-            Vertex AI Gemini 3.7 Flash & 3.5 Pro
+            Vertex AI Gemini 3.7 Flash & 3.1 Pro
           </p>
         </ClayCard>
       </div>
@@ -399,8 +399,8 @@ export default function CommandCenter() {
         </div>
       </ClayCard>
 
-      {/* Fleet Overview (14 Agents Grid) */}
-      <Section title="Agent Fleet" hint="14 specialized agents continuously operating">
+      {/* Fleet Overview (15 Agents Grid) */}
+      <Section title="Agent Fleet" hint="15 specialized agents continuously operating">
         <motion.div
           variants={stagger}
           initial="initial"

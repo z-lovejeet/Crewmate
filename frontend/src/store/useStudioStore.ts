@@ -69,12 +69,12 @@ const DEFAULT_PROFILE: ChannelProfile = {
 const DEFAULT_IDEAS: PersonalizedIdea[] = [
   {
     id: "idea_1",
-    title: "I Built an Autonomous 14-Agent Dev Team That Tests & Ships PRs",
+    title: "I Built an Autonomous 15-Agent Dev Team That Tests & Ships PRs",
     match_score: 98,
     format: "Deep-Dive Tutorial",
     duration: "15 Min",
-    viral_angle: "Hands-on engineering demo showing 14 specialized Gemini 3.7 Flash agents collaborating in VS Code to test and deploy production code.",
-    hook_teaser: "I stopped writing unit tests manually—here is the exact 14-agent swarm currently reviewing and shipping code to my repo.",
+    viral_angle: "Hands-on engineering demo showing 15 specialized Gemini 3.7 Flash agents collaborating in VS Code to test and deploy production code.",
+    hook_teaser: "I stopped writing unit tests manually—here is the exact 15-agent swarm currently reviewing and shipping code to my repo.",
     predicted_views: "210K - 280K views",
     reasoning: "Matches your audience preference for deep-dive tutorials on Autonomous Multi-Agent swarms with Gemini 3.7.",
   },

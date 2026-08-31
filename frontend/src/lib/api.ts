@@ -243,9 +243,9 @@ export const api = {
   getFleetHealth: async () => {
     try {
       const data = await fetchFromBackend<{ status: string; agents: number }>("/health")
-      return { healthy: data.agents || 14, total: 14, uptime: "99.9%" }
+      return { healthy: data.agents || 15, total: 15, uptime: "99.9%" }
     } catch {
-      return { healthy: 14, total: 14, uptime: "99.9%" }
+      return { healthy: 15, total: 15, uptime: "99.9%" }
     }
   },
 

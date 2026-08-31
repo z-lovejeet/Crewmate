@@ -482,9 +482,9 @@ export default function Landing() {
               variants={item}
               className="mx-auto mt-6 max-w-2xl text-base sm:text-lg text-text-secondary leading-relaxed font-normal"
             >
-              Your 24/7 autonomous backstage crew for YouTube & Instagram. 14
+              Your 24/7 autonomous backstage crew for YouTube & Instagram. 15
               specialized AI agents that spot predatory contracts, swap copyright
-              audio with Lyria, and extract 4 viral Shorts from every upload.
+              audio with Lyria, and generate 8-second Veo video clips & 3 Pro thumbnails.
             </motion.p>
 
             {/* Hero CTAs */}
@@ -502,7 +502,7 @@ export default function Landing() {
               </Link>
               <Link to="/about">
                 <ClayButton
-                  label="Explore 14 Crew Agents"
+                  label="Explore 15 Crew Agents"
                   variant="secondary"
                   size="lg"
                   icon={<LayersLogoIcon size={20} />}
@@ -517,7 +517,7 @@ export default function Landing() {
             >
               <span className="flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                14 Google ADK Agents
+                15 Google ADK Agents
               </span>
               <span>•</span>
               <span className="flex items-center gap-1.5">
@@ -704,9 +704,9 @@ export default function Landing() {
         >
           {[
             {
-              metric: "14 Agents",
+              metric: "15 Agents",
               title: "Autonomous Fleet",
-              desc: "1 Hub Supervisor + 13 domain specialists covering legal, growth, and compliance.",
+              desc: "1 Hub Supervisor + 14 domain specialists covering creation, legal, growth, and compliance.",
               color: "var(--primary)",
             },
             {
@@ -1518,7 +1518,7 @@ export default function Landing() {
                 className="mx-auto mb-8 max-w-xl text-sm font-normal text-text-secondary sm:text-base"
               >
                 Join solo creators automating legal reviews, compliance checks,
-                script drafting, and distribution with 14 specialized AI agents.
+                video & thumbnail synthesis, and distribution with 15 specialized AI agents.
               </motion.p>
               <motion.div variants={item}>
                 <Link to="/dashboard">

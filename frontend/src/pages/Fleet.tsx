@@ -231,7 +231,7 @@ export default function Fleet() {
           </p>
         </div>
         <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--surface-sunken)] border border-[var(--border)]">
-          {agents.slice(0, 14).map((a, i) => (
+          {agents.slice(0, 15).map((a, i) => (
             <span
               key={i}
               className={`w-2 h-2 rounded-full transition-colors ${!disabledAgents.includes(a.id) ? 'bg-emerald-500' : 'bg-zinc-300'}`}
@@ -241,7 +241,7 @@ export default function Fleet() {
         </div>
       </div>
 
-      {/* ─── 2. 14-Agent Status & Orchestration Grid ────────────────────── */}
+      {/* ─── 2. 15-Agent Status & Orchestration Grid ────────────────────── */}
       <div className="flex flex-col gap-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
@@ -256,7 +256,7 @@ export default function Fleet() {
             </p>
           </div>
           <span className="text-xs font-semibold text-text-tertiary">
-            14 Canonical Workers · RBAC Protected
+            15 Canonical Agents · RBAC Protected
           </span>
         </div>
 

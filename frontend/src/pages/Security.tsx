@@ -42,7 +42,7 @@ export default function Security() {
               Zero-Trust Agent Identity & RBAC
             </h3>
             <p className="text-xs text-text-secondary leading-relaxed">
-              All 14 autonomous agents execute under least-privilege role-based access control. The Contract Reviewer cannot modify video distribution parameters, and Community Guardian cannot alter deal pricing floors.
+              All 15 autonomous agents execute under least-privilege role-based access control. The Contract Reviewer cannot modify video distribution parameters, and Community Guardian cannot alter deal pricing floors.
             </p>
           </div>
         </ClayCard>

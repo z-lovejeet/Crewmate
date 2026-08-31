@@ -102,7 +102,7 @@ export default function ChannelProfile() {
           >
             <div className="flex items-center gap-2">
               <CheckmarkSquare03Icon size={16} />
-              <span>Channel DNA synced to all 14 Fleet Agents in Google Cloud Firestore!</span>
+              <span>Channel DNA synced to all 15 Fleet Agents in Google Cloud Firestore!</span>
             </div>
             <button
               onClick={() => navigate("/trends")}
