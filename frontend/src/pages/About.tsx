@@ -247,7 +247,7 @@ export default function About() {
               </div>
             </ClayCard>
 
-            {/* Sahib Babbar */}
+            {/* Sachit Babbar */}
             <ClayCard hover={true} accent="var(--accent)">
               <div className="flex flex-col gap-4 p-3">
                 <div className="flex items-center gap-3.5">
@@ -260,7 +260,7 @@ export default function About() {
                         className="text-base font-extrabold text-text-primary"
                         style={{ fontFamily: "var(--font-display)" }}
                       >
-                        Sahib Babbar
+                        Sachit Babbar
                       </h4>
                       <span className="px-2 py-0.5 rounded-md bg-accent-pale border border-accent/20 text-[10px] font-extrabold uppercase text-accent">
                         Research & Docs Lead

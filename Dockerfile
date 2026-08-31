@@ -1,19 +1,3 @@
-# ─── Stage 1: Build React Frontend ─────────────────────────
-FROM node:20-slim AS frontend-builder
-WORKDIR /app/frontend
-
-# Install pnpm
-RUN npm install -g pnpm
-
-# Copy package files and install dependencies
-COPY frontend/package.json frontend/pnpm-lock.yaml* ./
-RUN pnpm install --frozen-lockfile || pnpm install
-
-# Copy source code and build production bundle
-COPY frontend/ ./
-RUN pnpm build
-
-# ─── Stage 2: Production Python Backend + Static SPA ───────
 FROM python:3.13-slim
 WORKDIR /app
 
@@ -38,12 +22,10 @@ RUN pip install --no-cache-dir \
     httpx \
     python-dotenv
 
-# Copy backend source code
+# Copy backend source and pre-built frontend assets
 COPY backend/ ./backend/
-
-# Copy built frontend assets from stage 1 into both dist and static locations
-COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
-COPY --from=frontend-builder /app/frontend/dist ./backend/static
+COPY frontend/dist/ ./frontend/dist/
+COPY backend/static/ ./backend/static/
 
 # Cloud Run environment settings
 ENV PORT=8080

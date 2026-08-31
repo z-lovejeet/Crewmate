@@ -22,7 +22,7 @@ Built for the **[All Things Agentic Hackathon 2026](https://allthingsagentichack
 | **🧠 Primary Model** | Gemini 3.7 Flash (Vertex AI) |
 | **🎬 Video Model** | Veo 3.1 |
 | **🖼️ Image Model** | Gemini 3 Pro Image |
-| **👥 Team** | Lovejeet Singh & Sahib Babbar |
+| **👥 Team** | Lovejeet Singh & Sachit Babbar |
 
 ---
 

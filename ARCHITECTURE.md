@@ -1171,5 +1171,5 @@ firebase deploy --only hosting
 
 ---
 
-> **Built with ❤️ by Lovejeet Singh & Sahib Babbar for the All Things Agentic Hackathon 2026**  
+> **Built with ❤️ by Lovejeet Singh & Sachit Babbar for the All Things Agentic Hackathon 2026**  
 > **Track**: The Fortified Enterprise Fleet (Track 3)
