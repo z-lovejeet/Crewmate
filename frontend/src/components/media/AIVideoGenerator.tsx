@@ -182,7 +182,7 @@ export const AIVideoGenerator: React.FC = () => {
                   </span>
                 </div>
                 <p className="text-xs text-text-secondary mt-0.5">
-                  Generate 10-second high-definition video clips from scratch using Google's Veo foundation models
+                  Generate 8-second high-definition video clips from scratch using Google's Veo foundation models
                 </p>
               </div>
             </div>
@@ -302,7 +302,7 @@ export const AIVideoGenerator: React.FC = () => {
             ) : (
               <>
                 <ZapIcon size={14} />
-                <span>Generate 10-Second AI Video Clip</span>
+                <span>Generate 8-Second AI Video Clip</span>
               </>
             )}
           </button>
@@ -438,7 +438,7 @@ export const AIVideoGenerator: React.FC = () => {
                   </div>
                   <div className="flex items-center justify-between text-[11px]">
                     <span className="text-text-secondary">Clip Duration</span>
-                    <span className="font-bold text-text-primary">10.0 seconds</span>
+                    <span className="font-bold text-text-primary">8.0 seconds</span>
                   </div>
                   <div className="flex items-center justify-between text-[11px]">
                     <span className="text-text-secondary">Aspect Ratio</span>
@@ -480,7 +480,7 @@ export const AIVideoGenerator: React.FC = () => {
                 AI Video Synthesis
               </h3>
               <p className="text-xs text-text-secondary mt-1 max-w-md">
-                Enter your video title and visual scene description to generate a real 10-second cinematic video clip using Google Veo foundation models.
+                Enter your video title and visual scene description to generate a real 8-second cinematic video clip using Google Veo foundation models.
               </p>
             </div>
           </div>

@@ -123,7 +123,7 @@ async def start_video_generation(req: VideoGenerateRequest):
     
     Pipeline:
     1. Gemini 3.7 Flash crafts a cinematic video generation prompt
-    2. Selected Veo model generates a real 10-second video clip
+    2. Selected Veo model generates a real 8-second video clip
     3. Returns job_id for polling status
     """
     logger.info(f"Video generation request: {req.title} (model={req.model_key})")
@@ -140,7 +140,7 @@ Description: "{req.description}"
 Visual Style: "{req.style}"
 Aspect Ratio: "{req.aspect_ratio}"
 
-Create a single, highly detailed prompt for generating a 10-second video clip. Include:
+Create a single, highly detailed prompt for generating an 8-second video clip. Include:
 - Specific camera movement (slow dolly in, aerial pan, tracking shot, steady close-up)
 - Lighting description (golden hour, neon, dramatic volumetric, soft ambient)
 - Subject positioning and action
@@ -159,7 +159,7 @@ Return ONLY the prompt text, nothing else."""
         crafted_prompt = crafted_prompt.strip().strip('"').strip("'")
     except Exception as e:
         logger.warning(f"LLM prompt crafting failed: {e}, using fallback")
-        crafted_prompt = f"Cinematic 8K video of {req.description or req.title}, {req.style} style, dramatic lighting, smooth camera movement, photorealistic, 10 seconds"
+        crafted_prompt = f"Cinematic 8K video of {req.description or req.title}, {req.style} style, dramatic lighting, smooth camera movement, photorealistic, 8 seconds"
 
     logger.info(f"Crafted video prompt: {crafted_prompt[:100]}...")
 
