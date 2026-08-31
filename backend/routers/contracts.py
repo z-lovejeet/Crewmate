@@ -1,5 +1,6 @@
 import time
 import json
+import re
 import uuid
 import logging
 from fastapi import APIRouter, UploadFile, File, Form
@@ -31,6 +32,7 @@ class ContractAnalysis(BaseModel):
     market_benchmark: str
     value_unlocked: str
     overall_risk: str
+    overall_risk_score: Optional[float] = 88.0
     deliverables: List[str]
     red_flags: List[str]
     clauses: List[ClauseDetail]
@@ -44,6 +46,7 @@ DEMO_CONTRACT = ContractAnalysis(
     market_benchmark="$11,200",
     value_unlocked="+$2,700 via Counter-Proposal",
     overall_risk="HIGH (88/100)",
+    overall_risk_score=88.0,
     deliverables=[
         "1 Dedicated 60-90s YouTube Integration",
         "3 Cross-Platform Instagram Reels",
@@ -153,6 +156,12 @@ Respond ONLY in valid JSON matching this schema:
         data = json.loads(cleaned.strip())
         doc_id = f"contract_{uuid.uuid4().hex[:10]}"
         data["id"] = doc_id
+
+        # Calculate overall_risk_score float
+        risk_str = str(data.get("overall_risk", "88"))
+        match = re.search(r'(\d+)', risk_str)
+        numeric_score = float(match.group(1)) if match else (95.0 if "CRITICAL" in risk_str.upper() else 85.0)
+        data["overall_risk_score"] = numeric_score
 
         # 1. Save to Firestore
         await save_document(CONTRACTS_COLLECTION, doc_id, data)

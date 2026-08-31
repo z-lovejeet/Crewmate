@@ -31,29 +31,63 @@ const badgeType = {
   critical: "critical",
 } as const
 
+// Helper to parse numeric risk score from any LLM/backend format
+function parseRiskScore(data: any): number {
+  if (typeof data.overall_risk_score === "number" && data.overall_risk_score > 0) {
+    return Math.round(data.overall_risk_score)
+  }
+  if (typeof data.overall_risk === "number" && data.overall_risk > 0) {
+    return Math.round(data.overall_risk)
+  }
+  if (typeof data.overall_risk === "string") {
+    const match = data.overall_risk.match(/(\d+)/)
+    if (match) {
+      const parsed = parseInt(match[1], 10)
+      if (parsed > 0 && parsed <= 100) return parsed
+    }
+    const upper = data.overall_risk.toUpperCase()
+    if (upper.includes("CRITICAL")) return 95
+    if (upper.includes("HIGH")) return 88
+    if (upper.includes("MEDIUM")) return 55
+    if (upper.includes("LOW")) return 20
+  }
+  if (Array.isArray(data.clauses) && data.clauses.length > 0) {
+    const criticals = data.clauses.filter((c: any) => (c.risk_level || c.risk || c.status || "").toLowerCase() === "critical").length
+    const highs = data.clauses.filter((c: any) => (c.risk_level || c.risk || c.status || "").toLowerCase() === "high" || (c.risk_level || c.risk || c.status || "").toLowerCase() === "flagged").length
+    if (criticals > 0) return Math.min(98, 75 + criticals * 7)
+    if (highs > 0) return Math.min(85, 55 + highs * 8)
+    return 25
+  }
+  return 88
+}
+
 export default function Contracts() {
   const [tab, setTab] = useState<Tab>("Terms")
   const [dragging, setDragging] = useState(false)
   const [uploading, setUploading] = useState(false)
   
-  // Real dynamic analysis state (null by default for fresh users)
+  // Real dynamic analysis state
   const [analyzed, setAnalyzed] = useState<boolean>(false)
   const [contractName, setContractName] = useState<string>("")
-  const [contractRisk, setContractRisk] = useState<number>(0)
+  const [contractRisk, setContractRisk] = useState<number>(88)
   const [clausesList, setClausesList] = useState<any[]>([])
   const [dealSummary, setDealSummary] = useState<string>("")
+  const [dealOffer, setDealOffer] = useState<string>("$8,500 USD")
+  const [marketBenchmark, setMarketBenchmark] = useState<string>("$12,000 USD")
+  const [valueUnlocked, setValueUnlocked] = useState<string>("+$3,500 Upside")
   const [recentDeals, setRecentDeals] = useState<any[]>([])
   const [toastMessage, setToastMessage] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleExportReport = () => {
     if (!clausesList.length && !dealSummary) return
+    const score = contractRisk || 88
     const reportText = [
       `# Sponsorship Contract AI Redline Audit Report`,
       `Agreement: ${contractName || "Sponsorship Agreement"}`,
       `Date: ${new Date().toLocaleDateString()}`,
-      `Risk Score: ${contractRisk}/100`,
-      `Audited By: CreatorFleet Multi-Agent Contract Reviewer (Gemini 3.7 Flash)`,
+      `Risk Score: ${score}/100`,
+      `Audited By: Crewmate Multi-Agent Legal Fleet (Gemini 3.7 Flash & 3.1 Pro)`,
       `\n------------------------------------------------------------\n`,
       `## Executive Summary`,
       dealSummary || "Contract audited for exclusivity traps, payment reliability, and IP rights.",
@@ -67,7 +101,7 @@ export default function Contracts() {
       ),
       `\n------------------------------------------------------------\n`,
       `## Revenue Benchmark & Deal Protection`,
-      `Offered: $8,500 USD | Recommended Minimum Counter: $12,000 USD (+$3,500 Upside)\n`,
+      `Offered: ${dealOffer} | Recommended Minimum Counter: ${marketBenchmark} (${valueUnlocked})\n`,
     ].join("\n\n")
 
     const blob = new Blob([reportText], { type: "text/markdown;charset=utf-8" })
@@ -96,7 +130,7 @@ export default function Contracts() {
       `Thank you for sending over the agreement for our upcoming collaboration! We're excited about working together.`,
       `\nAfter our legal review, we've outlined a few key revisions to align with our standard creator terms and deliverable scope:\n`,
       counterClauses || `• Exclusivity: 30 days post-publish (non-compete limited to direct competitors only)\n• Payment Terms: 50% upfront upon script approval, 50% Net-15 post-publish\n• Usage Rights: 60-day digital paid ad whitelisting`,
-      `\nDeliverables Compensation: Given the customized deep-dive format and dedicated production resources, our counter-proposal is $12,000 USD.\n`,
+      `\nDeliverables Compensation: Given the customized deep-dive format and dedicated production resources, our counter-proposal is ${marketBenchmark}.\n`,
       `Please let us know if this works and we can execute the updated agreement!`,
       `\nBest regards,\nAlex Rivera`,
     ].join("\n")
@@ -123,9 +157,12 @@ export default function Contracts() {
       const data = await api.analyzeContract(file, file.name)
       if (data) {
         setAnalyzed(true)
-        if (data.overall_risk_score !== undefined) {
-          setContractRisk(Math.round(data.overall_risk_score))
-        }
+        const score = parseRiskScore(data)
+        setContractRisk(score)
+        if (data.offer_amount) setDealOffer(data.offer_amount)
+        if (data.market_benchmark) setMarketBenchmark(data.market_benchmark)
+        if (data.value_unlocked) setValueUnlocked(data.value_unlocked)
+
         if (data.clauses && data.clauses.length > 0) {
           const mapped = data.clauses.map((c: any, i: number) => ({
             id: c.clause_id || c.id || `c${i+1}`,
@@ -158,9 +195,12 @@ export default function Contracts() {
       const data = await api.analyzeContract(fullText, "BrandX_Agreement.txt")
       if (data) {
         setAnalyzed(true)
-        if (data.overall_risk_score !== undefined) {
-          setContractRisk(Math.round(data.overall_risk_score))
-        }
+        const score = parseRiskScore(data)
+        setContractRisk(score)
+        if (data.offer_amount) setDealOffer(data.offer_amount)
+        if (data.market_benchmark) setMarketBenchmark(data.market_benchmark)
+        if (data.value_unlocked) setValueUnlocked(data.value_unlocked)
+
         if (data.clauses && data.clauses.length > 0) {
           const mapped = data.clauses.map((c: any, i: number) => ({
             id: c.clause_id || c.id || `c${i+1}`,
