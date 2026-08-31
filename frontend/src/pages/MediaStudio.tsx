@@ -207,7 +207,7 @@ export default function MediaStudio() {
           }`}
         >
           <Edit03Icon size={16} />
-          <span>Gemini Thumbnails</span>
+          <span>Gemini 3 Pro Thumbnails</span>
         </button>
 
         <button

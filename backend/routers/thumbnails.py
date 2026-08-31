@@ -158,7 +158,7 @@ Return ONLY valid JSON:
         ]
 
     # ── Step 2: Generate real images concurrently ────────────────────────────
-    logger.info(f"Generating {len(raw_variants)} images with Gemini 2.5 Flash Image...")
+    logger.info(f"Generating {len(raw_variants)} images with Gemini 3 Pro Image (gemini-3-pro-image)...")
 
     image_tasks = []
     for item in raw_variants:
@@ -213,6 +213,6 @@ Return ONLY valid JSON:
     return ThumbnailGenerateResponse(
         title=req.title,
         aspect_ratio=req.aspect_ratio,
-        model_used="gemini-2.5-flash-image",
+        model_used="gemini-3-pro-image",
         variants=variants
     )

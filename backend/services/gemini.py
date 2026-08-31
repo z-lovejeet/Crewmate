@@ -30,25 +30,19 @@ def get_genai_client() -> genai.Client:
     return _client
 
 
-def _get_image_client() -> genai.Client:
-    """Get a cached GenAI client for image generation (requires us-central1)."""
-    global _image_client
-    if _image_client is None:
-        settings = get_settings()
-        if settings.USE_VERTEX_AI:
-            # Image generation models require us-central1, not global
-            _image_client = genai.Client(
-                vertexai=True,
-                project=settings.GCP_PROJECT_ID,
-                location="us-central1",
-            )
-            logger.info("Image GenAI client initialized (us-central1)")
-        elif settings.GOOGLE_GENAI_API_KEY:
-            _image_client = genai.Client(api_key=settings.GOOGLE_GENAI_API_KEY)
-            logger.info("Image GenAI client initialized with API key")
-        else:
-            raise RuntimeError("No Vertex AI or API key configured for image generation")
-    return _image_client
+def _get_image_client(location: str = "global") -> genai.Client:
+    """Get a GenAI client for image/video generation with specified region."""
+    settings = get_settings()
+    if settings.USE_VERTEX_AI:
+        return genai.Client(
+            vertexai=True,
+            project=settings.GCP_PROJECT_ID,
+            location=location,
+        )
+    elif settings.GOOGLE_GENAI_API_KEY:
+        return genai.Client(api_key=settings.GOOGLE_GENAI_API_KEY)
+    else:
+        raise RuntimeError("No Vertex AI or API key configured for image generation")
 
 
 def generate_text(
@@ -101,31 +95,49 @@ def generate_image(
 ) -> tuple[bytes, str]:
     """Generate a real image from scratch using Gemini native image generation.
     
-    Uses gemini-2.5-flash-image via Vertex AI (us-central1).
+    Tries gemini-3-pro-image (global) -> gemini-3.1-flash-image (global) -> gemini-2.5-flash-image (us-central1).
     Returns (image_bytes, mime_type).
     """
     settings = get_settings()
-    image_model = model or settings.IMAGE_MODEL or "gemini-2.5-flash-image"
-    client = _get_image_client()
+    models_to_try = [
+        model or settings.IMAGE_MODEL or "gemini-3-pro-image",
+        "gemini-3-pro-image",
+        "gemini-3.1-flash-image",
+        "gemini-2.5-flash-image",
+    ]
+    unique_models = list(dict.fromkeys(models_to_try))
 
-    logger.info(f"Generating image with {image_model}: {prompt[:80]}...")
+    last_error = None
 
-    response = client.models.generate_content(
-        model=image_model,
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            response_modalities=["IMAGE", "TEXT"],
-        ),
-    )
+    for candidate_model in unique_models:
+        # Determine appropriate location for model
+        location = "us-central1" if "2.5" in candidate_model else "global"
+        try:
+            logger.info(f"Generating image with {candidate_model} @ {location}: {prompt[:70]}...")
+            client = _get_image_client(location=location)
 
-    for part in response.candidates[0].content.parts:
-        if part.inline_data:
-            img_bytes = part.inline_data.data
-            mime_type = part.inline_data.mime_type
-            logger.info(f"Image generated: {mime_type}, {len(img_bytes)} bytes")
-            return img_bytes, mime_type
+            response = client.models.generate_content(
+                model=candidate_model,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_modalities=["IMAGE", "TEXT"],
+                ),
+            )
 
-    raise RuntimeError(f"Model {image_model} returned no image data")
+            for part in response.candidates[0].content.parts:
+                if part.inline_data:
+                    img_bytes = part.inline_data.data
+                    mime_type = part.inline_data.mime_type
+                    logger.info(f"Image successfully generated via {candidate_model} ({mime_type}, {len(img_bytes):,} bytes)")
+                    return img_bytes, mime_type
+
+            logger.warning(f"Model {candidate_model} returned text without inline image, trying fallback...")
+        except Exception as e:
+            last_error = e
+            logger.warning(f"Model {candidate_model} @ {location} failed: {e}. Trying fallback...")
+            continue
+
+    raise last_error or RuntimeError("All Gemini image generation attempts failed")
 
 
 async def generate_text_async(

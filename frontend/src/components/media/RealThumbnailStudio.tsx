@@ -267,11 +267,11 @@ export const RealThumbnailStudio: React.FC = () => {
                     AI Thumbnail Generator
                   </h2>
                   <span className="px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 font-bold text-[10px] border border-emerald-200">
-                    Gemini 2.5 Flash Image
+                    Gemini 3 Pro Image
                   </span>
                 </div>
                 <p className="text-xs text-text-secondary mt-0.5">
-                  Generates real images from scratch using Google's native Gemini image generation model — no third-party APIs
+                  Generates real 1376×768 images from scratch using Google's frontier Gemini 3 Pro Image model — no third-party APIs
                 </p>
               </div>
             </div>
@@ -375,7 +375,7 @@ export const RealThumbnailStudio: React.FC = () => {
                 {generating ? (
                   <>
                     <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                    <span>Generating with Gemini 2.5 Flash Image...</span>
+                    <span>Generating with Gemini 3 Pro Image...</span>
                   </>
                 ) : (
                   <>
@@ -396,7 +396,7 @@ export const RealThumbnailStudio: React.FC = () => {
               </div>
               <div className="flex flex-col gap-1 text-[11px] text-text-secondary">
                 <span>Step 1: Gemini 3.7 Flash → analyzing title & crafting 3 visual concepts</span>
-                <span>Step 2: Gemini 2.5 Flash Image → generating 3 real images (concurrent)</span>
+                <span>Step 2: Gemini 3 Pro Image → generating 3 real 1376×768 images (concurrent)</span>
                 <span className="text-text-tertiary">This takes ~10-20 seconds</span>
               </div>
             </div>
@@ -404,7 +404,7 @@ export const RealThumbnailStudio: React.FC = () => {
 
           {generationTime !== null && !generating && (
             <div className="text-[11px] text-text-tertiary text-right">
-              Generated in {generationTime}s via Gemini 2.5 Flash Image (Vertex AI)
+              Generated in {generationTime}s via Gemini 3 Pro Image (Vertex AI)
             </div>
           )}
         </div>
