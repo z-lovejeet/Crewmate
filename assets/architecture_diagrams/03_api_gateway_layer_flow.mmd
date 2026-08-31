@@ -1,0 +1,6 @@
+stateDiagram-v2
+    [*] --> CLOSED
+    CLOSED --> OPEN : failure_count ≥ 3
+    OPEN --> HALF_OPEN : recovery_timeout (30s) elapsed
+    HALF_OPEN --> CLOSED : probe_success
+    HALF_OPEN --> OPEN : probe_failure

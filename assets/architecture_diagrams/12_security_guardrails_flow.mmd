@@ -1,0 +1,36 @@
+flowchart TD
+    subgraph USER["End Users"]
+        BROWSER["🌐 Browser"]
+    end
+
+    subgraph FIREBASE_HOSTING["Firebase Hosting (CDN)"]
+        SPA["React 19 SPA\nClaymorphism Dashboard"]
+        FAUTH["Firebase Auth\nGoogle SSO"]
+    end
+
+    subgraph CLOUD_RUN["Google Cloud Run (us-central1)"]
+        CONTAINER["🐳 Docker Container\nPython 3.13-slim"]
+        FASTAPI["FastAPI + Uvicorn\nPort 8080"]
+        MIDDLEWARE["Gateway → Model Armor → RBAC"]
+        AGENTS_RT["15 ADK Agents"]
+    end
+
+    subgraph GCP_SERVICES["Google Cloud Platform"]
+        VERTEX["Vertex AI\nGemini 3.7 Flash\nGemini 3.1 Pro Preview\nVeo 3.1\nGemini 3 Pro Image"]
+        FIRESTORE_DB[("Cloud Firestore\nNative Mode\n5 Collections")]
+        ARTIFACT["Artifact Registry\nus-central1-docker.pkg.dev"]
+        SECRET["Secret Manager\nAPI keys & credentials"]
+        IAM["IAM\nService accounts"]
+        TRACE["Cloud Trace\nDistributed tracing"]
+    end
+
+    BROWSER --> SPA
+    SPA --> FAUTH
+    SPA -->|"API calls"| FASTAPI
+    CONTAINER --> FASTAPI --> MIDDLEWARE --> AGENTS_RT
+    AGENTS_RT --> VERTEX
+    AGENTS_RT --> FIRESTORE_DB
+    ARTIFACT -->|"Container image"| CONTAINER
+    SECRET -.-> CONTAINER
+    IAM -.-> CONTAINER
+    AGENTS_RT --> TRACE

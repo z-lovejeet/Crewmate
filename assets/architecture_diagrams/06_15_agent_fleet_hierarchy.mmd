@@ -1,0 +1,38 @@
+flowchart LR
+    subgraph BUSINESS["💼 Business Intelligence"]
+        CR["Contract Reviewer\ngemini-3.7-flash"]
+        RO["Revenue Optimizer\ngemini-3.7-flash"]
+    end
+
+    subgraph LEGAL["⚖️ Legal & Compliance"]
+        CC["Content Compliance\ngemini-3.7-flash"]
+        BS["Brand Safety\ngemini-3.7-flash"]
+    end
+
+    subgraph GROWTH["📈 Growth Engine"]
+        DM["Distribution Manager\ngemini-3.7-flash"]
+        CAL["Content Calendar\ngemini-3.7-flash"]
+        TR["Trend Radar\ngemini-3.7-flash"]
+        HA["Hook Architect\ngemini-3.7-flash"]
+    end
+
+    subgraph CREATION["🎬 Media Creation"]
+        VC["Video Cinematographer\nveo-3.1-fast-generate-001"]
+        TD["Thumbnail Director\ngemini-3-pro-image"]
+        CD["Clipping Director\ngemini-3.7-flash"]
+    end
+
+    subgraph ANALYTICS["📊 Analytics"]
+        AA["Audience Analyst\ngemini-3.7-flash"]
+        RG["Report Generator\ngemini-3.7-flash"]
+    end
+
+    subgraph SECURITY["🛡️ Security"]
+        TS["Threat Sentinel\ngemini-3.7-flash"]
+    end
+
+    subgraph COMMUNITY["👥 Community"]
+        CG["Community Guardian\ngemini-3.7-flash + Gemma"]
+    end
+
+    CAPTAIN["🧠 Fleet Orchestrator\ngemini-3.1-pro-preview"] --> BUSINESS & LEGAL & GROWTH & CREATION & ANALYTICS & SECURITY & COMMUNITY

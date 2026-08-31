@@ -1,0 +1,18 @@
+flowchart TD
+    subgraph FIRESTORE["Google Cloud Firestore (Native Mode)"]
+        AGENTS_COL["📋 agents\n15 agent registrations"]
+        MEMORY_COL["🧠 memory\nCreator preferences +\nBrand deal histories"]
+        TRACES_COL["📊 traces\nOpenTelemetry spans"]
+        TASKS_COL["⚙️ tasks\nRuntime lifecycle records"]
+        ARMOR_COL["🛡️ armor_logs\nSecurity audit events"]
+    end
+
+    subgraph MEMORY_BANK["Persistent Memory Bank"]
+        PREFS["Creator Preferences\n• Min deal value: $6,500\n• Max exclusivity: 30 days\n• Target CPM: $45\n• Forbidden categories\n• Voice tone"]
+        BRANDS["Brand Histories\n• NordVPN: 3 deals, $7,500 last\n• BrandX: 1 deal, red flags\n• Past CPMs & quirks"]
+    end
+
+    MEMORY_BANK --> MEMORY_COL
+    
+    APP["Application Layer"] --> |"async CRUD via\nasyncio.to_thread()"| FIRESTORE
+    APP -.-> |"Graceful Fallback"| INMEM["In-Memory Store\n(when Firestore unavailable)"]

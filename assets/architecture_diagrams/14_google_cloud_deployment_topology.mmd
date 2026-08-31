@@ -1,0 +1,41 @@
+flowchart TD
+    subgraph REACT["React 19 Application"]
+        ROUTER["React Router v7\n14 Routes"]
+        ANIM["Framer Motion\nPage Transitions"]
+        ERRB["Error Boundary\nGraceful Recovery"]
+    end
+
+    subgraph STATE["State Layer"]
+        ZUSTAND["Zustand Store\nuseStudioStore"]
+        AUTH_CTX["Auth Context\nFirebase Auth State"]
+    end
+
+    subgraph PAGES["Dashboard Pages"]
+        CMD["Command Center"]
+        CONT["Contracts"]
+        COMP["Compliance"]
+        FLEET["Fleet Status"]
+        TREND["Trends & Distribution"]
+        SCRIPT["Scripts Studio"]
+        MEDIA["Media Studio"]
+        CHAN["Channel Profile"]
+    end
+
+    subgraph COMPONENTS["Shared Components"]
+        NAV["Navbar"]
+        FOOT["Footer"]
+        HEADER["Page Header"]
+        CLAY["Clay Design System"]
+    end
+
+    subgraph SERVICES["Data Services"]
+        API["API Client\nlib/api.ts"]
+        FIREBASE_SVC["Firebase Service\nAuth + Firestore"]
+    end
+
+    ROUTER --> PAGES
+    ANIM --> ROUTER
+    ERRB --> ROUTER
+    STATE --> PAGES
+    COMPONENTS --> PAGES
+    SERVICES --> PAGES

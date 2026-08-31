@@ -1,0 +1,49 @@
+sequenceDiagram
+    actor User
+    participant UI as React Dashboard
+    participant GW as API Gateway
+    participant MA as Model Armor
+    participant RBAC as Agent Identity
+    participant ORCH as Fleet Orchestrator
+    participant AGENT as Specialist Agent
+    participant FS as Firestore
+    participant MEM as Memory Bank
+    participant OTEL as Observability
+
+    User->>UI: "Review this NordVPN contract"
+    UI->>GW: POST /api/contracts/review
+    
+    Note over GW: Layer 2: Rate Limit Check
+    GW->>GW: Sliding window: 47/120 ✅
+    
+    Note over MA: Layer 3a: Input Screening
+    GW->>MA: Screen query params & body
+    MA->>MA: 15+ regex patterns → PASS ✅
+    
+    Note over RBAC: Layer 3b: Identity Verification
+    MA->>RBAC: Verify contract_reviewer permissions
+    RBAC->>RBAC: Action: extract_clauses ✅
+    RBAC->>RBAC: Collection: contracts (read) ✅
+    
+    Note over ORCH: Layer 4: Task Decomposition
+    RBAC->>ORCH: Authorized request
+    ORCH->>ORCH: Decompose goal into sub-tasks
+    
+    Note over AGENT: Layer 5: Agent Execution
+    ORCH->>AGENT: Dispatch contract_reviewer
+    AGENT->>MEM: Recall NordVPN brand history
+    MEM-->>AGENT: 3 past deals, $7,500 last, 60-day exclusivity quirk
+    AGENT->>AGENT: Extract clauses, score risk
+    
+    Note over OTEL: Layer 7: Record Trace
+    AGENT->>OTEL: Record span (1,247ms, success)
+    OTEL->>FS: Persist to traces collection
+    
+    Note over MA: Layer 3c: Output Sanitization
+    AGENT->>MA: Screen output for PII
+    MA->>MA: Check SSN/CC patterns → CLEAN ✅
+    
+    MA->>GW: Sanitized response
+    Note over GW: Inject telemetry headers
+    GW->>UI: Response + X-Response-Time-Ms
+    UI->>User: Contract analysis with risk scores

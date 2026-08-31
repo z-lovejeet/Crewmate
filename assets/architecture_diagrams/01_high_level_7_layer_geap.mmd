@@ -1,0 +1,63 @@
+flowchart TD
+    subgraph L1["🎨 Layer 1 — Presentation"]
+        UI["React 19 + 3D Claymorphism Dashboard"]
+        Voice["🎙️ Web Speech API Voice Gateway"]
+        Auth["🔐 Firebase Auth (Google SSO)"]
+    end
+
+    subgraph L2["🔀 Layer 2 — API Gateway"]
+        GW["FastAPI Gateway (Cloud Run)"]
+        RL["⏱️ Sliding-Window Rate Limiter\n120 req/min per IP"]
+        CB["⚡ Circuit Breaker\nCLOSED → OPEN → HALF_OPEN"]
+    end
+
+    subgraph L3["🛡️ Layer 3 — Security & Identity"]
+        MA_IN["Model Armor — Input Screening\n15+ Injection Patterns + PII Filters"]
+        RBAC["Agent Identity — RBAC\n15 Scoped Permission Matrices"]
+        MA_OUT["Model Armor — Output Sanitization\nPII Redaction"]
+    end
+
+    subgraph L4["🧠 Layer 4 — Orchestration Engine"]
+        ORCH["Fleet Orchestrator Captain\ngemini-3.1-pro-preview"]
+        REG["Agent Registry Service\nFirestore Catalog"]
+    end
+
+    subgraph L5["🤖 Layer 5 — Autonomous Agent Fleet"]
+        direction LR
+        A1["Contract\nReviewer"]
+        A2["Content\nCompliance"]
+        A3["Distribution\nManager"]
+        A4["Report\nGenerator"]
+        A5["Revenue\nOptimizer"]
+        A6["Brand\nSafety"]
+        A7["Content\nCalendar"]
+        A8["Threat\nSentinel"]
+        A9["Audience\nAnalyst"]
+        A10["Trend\nRadar"]
+        A11["Hook\nArchitect"]
+        A12["Video\nCinematographer"]
+        A13["Thumbnail\nDirector"]
+        A14["Community\nGuardian"]
+    end
+
+    subgraph L6["💾 Layer 6 — State & Memory Bank"]
+        FS[("Google Cloud Firestore\nNative Mode")]
+        MEM["🧠 Persistent Memory Bank\nCreator Context + Brand History"]
+        TRACES["📊 Traces Collection\nOpenTelemetry Spans"]
+    end
+
+    subgraph L7["📈 Layer 7 — Observability & Telemetry"]
+        OTEL["Live Reasoning Spans\nLatency • Tokens • Tool Calls"]
+        AUDIT["🚨 Security Audit Log\nModel Armor Events"]
+    end
+
+    UI & Voice --> GW
+    Auth -.-> UI
+    GW --> RL --> CB --> MA_IN
+    MA_IN --> RBAC --> ORCH
+    ORCH <--> REG
+    ORCH --> L5
+    L5 <--> FS & MEM
+    L5 --> MA_OUT --> GW
+    L5 --> OTEL --> TRACES
+    MA_IN --> AUDIT

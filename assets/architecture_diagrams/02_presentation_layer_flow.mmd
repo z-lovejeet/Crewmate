@@ -1,0 +1,8 @@
+flowchart LR
+    REQ["Incoming HTTP Request"] --> IP["Extract Client IP"]
+    IP --> SW["Sliding Window\nRate Check"]
+    SW -->|"≤ 120 req/60s"| PASS["✅ Forward to\nMiddleware Stack"]
+    SW -->|"> 120 req/60s"| BLOCK["❌ 429\nGATEWAY_RATE_LIMIT"]
+    PASS --> EXEC["Execute Handler"]
+    EXEC --> HEADERS["Inject Telemetry Headers\nX-Gateway-Engine: Crewmate-GEAP-v2\nX-Response-Time-Ms: {latency}"]
+    HEADERS --> RES["Return Response"]

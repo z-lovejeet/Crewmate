@@ -1,0 +1,31 @@
+flowchart TD
+    subgraph PERIMETER["🔒 Perimeter Defense"]
+        CORS["CORS Middleware\nConfigurable Origins"]
+        RATE["Rate Limiter\n120 req/min/IP"]
+        CB["Circuit Breaker\nCascade Failure Prevention"]
+    end
+
+    subgraph INPUT_SCREEN["🛡️ Input Screening"]
+        INJ["Prompt Injection Detection\n12 pattern categories"]
+        PII_IN["PII Input Filter\nSSN + Credit Card"]
+        AUDIT_IN["Audit Logger\nFirestore armor_logs"]
+    end
+
+    subgraph IDENTITY["🔐 Identity & Access"]
+        RBAC_CHK["Per-Agent RBAC\n15 permission matrices"]
+        ACTION_CHK["Action Authorization\nDeclared allowed_actions"]
+        COL_CHK["Collection Access Control\nRead/Write scope validation"]
+    end
+
+    subgraph OUTPUT_SCREEN["🛡️ Output Sanitization"]
+        PII_OUT["PII Output Redaction\n[REDACTED_BY_MODEL_ARMOR]"]
+        AUDIT_OUT["Sanitization Audit Log"]
+    end
+
+    subgraph AUTH["🔐 User Authentication"]
+        FIREBASE["Firebase Auth\nGoogle SSO Provider"]
+        CONTEXT["AuthContext\nProtectedRoute wrapper"]
+    end
+
+    PERIMETER --> INPUT_SCREEN --> IDENTITY --> OUTPUT_SCREEN
+    AUTH -.-> PERIMETER

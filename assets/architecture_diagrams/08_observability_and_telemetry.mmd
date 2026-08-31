@@ -1,0 +1,6 @@
+flowchart LR
+    AGENT["Agent Execution"] --> SPAN["Create SpanContext\ntrace_id + span_id"]
+    SPAN --> TOOLS["Record Tool Calls\nname • args • latency"]
+    TOOLS --> FINISH["Finish Span\nstatus • output • error"]
+    FINISH --> STORE["Persist to Firestore\ntraces collection"]
+    STORE --> DASH["Fleet Dashboard\nReal-time metrics"]

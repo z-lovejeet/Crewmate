@@ -1,0 +1,6 @@
+flowchart TD
+    REQ["Agent Action Request"] --> LOOKUP["Look Up Agent\nin RBAC Matrix"]
+    LOOKUP -->|"Found"| CHECK["Validate:\n1. Action Allowed?\n2. Collection Access?"]
+    LOOKUP -->|"Not Found"| DENY["❌ Unknown Agent\nDENIED"]
+    CHECK -->|"Authorized"| EXEC["✅ Execute"]
+    CHECK -->|"Unauthorized"| LOG["❌ Log Violation\n& DENY"]

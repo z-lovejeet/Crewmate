@@ -1,0 +1,4 @@
+flowchart LR
+    PRIMARY["gemini-3.7-flash\n(Primary)"] -->|"fails"| FALLBACK["gemini-3.5-flash\n(Fallback)"]
+    FALLBACK -->|"fails"| REASONING["gemini-3.1-pro-preview\n(Deep Reasoning)"]
+    REASONING -->|"fails"| ERROR["❌ RuntimeError"]

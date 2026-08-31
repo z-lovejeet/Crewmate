@@ -1,0 +1,71 @@
+erDiagram
+    AGENTS {
+        string id PK "e.g. contract_reviewer"
+        string name "Contract Reviewer"
+        string role "Legal & Sponsorship Risk Auditor"
+        string version "2.1.0"
+        string model "gemini-3.7-flash"
+        string status "active"
+        string health "healthy"
+        string category "business"
+        array capabilities "['pdf_clause_extraction', ...]"
+        int max_concurrency "3"
+        int timeout_seconds "30"
+        string last_heartbeat "ISO 8601"
+    }
+
+    MEMORY {
+        string id PK "prefs_{creator_id} or brand_{creator_id}_{brand}"
+        string creator_id "solo_creator_main"
+        string creator_name "Alex TechVoyager Rivera"
+        int minimum_deal_value_usd "6500"
+        float target_cpm_usd "45.0"
+        int maximum_exclusivity_days "30"
+        array strictly_forbidden_categories "['gambling', ...]"
+        string preferred_payment_terms "50% upfront..."
+        string voice_tone "Analytical, warm..."
+    }
+
+    TRACES {
+        string trace_id PK
+        string span_id
+        string agent_id FK
+        string action
+        float latency_ms
+        string status "success | error"
+        array tool_calls
+        int tokens_used
+        string output_summary
+        string created_at "ISO 8601"
+    }
+
+    TASKS {
+        string task_id PK "task_{uuid}"
+        string agent_id FK
+        string creator_id
+        string goal
+        string status "pending | running | completed | failed"
+        int progress_percent "0-100"
+        array steps_completed
+        object result
+        string error
+        string created_at "ISO 8601"
+        string started_at "ISO 8601"
+        string completed_at "ISO 8601"
+    }
+
+    ARMOR_LOGS {
+        string id PK "armor_{timestamp}_{hash}"
+        string event_type "input_blocked | output_sanitized"
+        string violation "prompt_injection | pii_violation"
+        string detail "Pattern name"
+        string prompt_hash "SHA-256 first 16 chars"
+        string snippet "First 120 chars"
+        string client_ip
+        string action_taken "BLOCKED | SANITIZED"
+        string timestamp "ISO 8601"
+    }
+
+    AGENTS ||--o{ TRACES : "generates"
+    AGENTS ||--o{ TASKS : "executes"
+    MEMORY ||--o{ AGENTS : "provides context to"
