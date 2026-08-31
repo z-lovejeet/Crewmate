@@ -210,7 +210,7 @@ export const PLATFORMS: Record<string, PlatformStatus> = {
   instagram: { name: "Instagram", handle: "@techvoyager.ai", complianceScore: 91, activeWarnings: 0, pendingActions: 2 },
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000"
+const API_BASE = import.meta.env.VITE_API_URL !== undefined ? import.meta.env.VITE_API_URL : (import.meta.env.PROD ? "" : "http://localhost:8000")
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
   const token = await getCurrentUserToken()
@@ -512,7 +512,7 @@ export const api = {
   },
 
   getVideoDownloadUrl: (jobId: string) => {
-    return `http://localhost:8000/api/videos/download/${jobId}`
+    return `${API_BASE}/api/videos/download/${jobId}`
   },
 
   generateScript: async (

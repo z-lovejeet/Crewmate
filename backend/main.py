@@ -127,21 +127,61 @@ app.include_router(music.router)
 app.include_router(thumbnails.router)
 app.include_router(videos.router)
 
-@app.get("/", summary="Crewmate GEAP Health & Info")
-async def root():
-    return {
-        "platform": "Crewmate — Enterprise Multi-Agent Fleet",
-        "track": "The Fortified Enterprise Fleet (Track 3)",
-        "version": "2.0.0",
-        "geap_components": {
-            "agent_registry": "/api/registry/agents",
-            "memory_bank": "/api/memory",
-            "observability_traces": "/api/traces",
-            "agent_runtime": "/api/runtime/tasks",
-            "model_armor": "active_middleware",
-            "agent_identity": "active_rbac",
-            "agent_gateway": "active_circuit_breaker"
-        },
-        "agents_count": 14,
-        "status": "operational"
-    }
+# Static Files & SPA Frontend Serving
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse, JSONResponse
+
+_FRONTEND_DIST_CANDIDATES = [
+    _BACKEND_DIR / "static",
+    _ROOT_DIR / "frontend" / "dist",
+    _ROOT_DIR / "dist",
+    Path("/app/frontend/dist"),
+    Path("/app/backend/static"),
+    Path("/app/dist"),
+]
+
+frontend_dist = next((p for p in _FRONTEND_DIST_CANDIDATES if p.is_dir() and (p / "index.html").exists()), None)
+
+if frontend_dist:
+    logger.info(f"🌐 Serving Frontend SPA from {frontend_dist}")
+    assets_dir = frontend_dist / "assets"
+    if assets_dir.is_dir():
+        app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="assets")
+
+    @app.get("/api/info", summary="Crewmate GEAP Health & Info")
+    async def api_info():
+        return {
+            "platform": "Crewmate — Enterprise Multi-Agent Fleet",
+            "track": "The Fortified Enterprise Fleet (Track 3)",
+            "version": "2.0.0",
+            "agents_count": 15,
+            "status": "operational"
+        }
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def serve_spa(full_path: str):
+        if full_path.startswith("api/") or full_path in ("health", "docs", "redoc", "openapi.json"):
+            return JSONResponse({"detail": "Not Found"}, status_code=404)
+        file_path = frontend_dist / full_path
+        if file_path.is_file():
+            return FileResponse(str(file_path))
+        return FileResponse(str(frontend_dist / "index.html"))
+else:
+    @app.get("/", summary="Crewmate GEAP Health & Info")
+    async def root():
+        return {
+            "platform": "Crewmate — Enterprise Multi-Agent Fleet",
+            "track": "The Fortified Enterprise Fleet (Track 3)",
+            "version": "2.0.0",
+            "geap_components": {
+                "agent_registry": "/api/registry/agents",
+                "memory_bank": "/api/memory",
+                "observability_traces": "/api/traces",
+                "agent_runtime": "/api/runtime/tasks",
+                "model_armor": "active_middleware",
+                "agent_identity": "active_rbac",
+                "agent_gateway": "active_circuit_breaker"
+            },
+            "agents_count": 15,
+            "status": "operational"
+        }
