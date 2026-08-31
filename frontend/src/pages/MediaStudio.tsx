@@ -618,10 +618,18 @@ export default function MediaStudio() {
                     {musicTrack.waveform_amplitudes?.map((amp: number, i: number) => (
                       <motion.div
                         key={i}
-                        animate={isPlaying ? { height: [`${amp * 100}%`, `${(1 - amp) * 100}%`, `${amp * 100}%`] } : { height: `${amp * 100}%` }}
-                        transition={{ repeat: Infinity, duration: 0.8 + i * 0.1 }}
-                        className="flex-1 rounded-full bg-secondary"
-                        style={{ minHeight: 4 }}
+                        animate={
+                          isPlaying
+                            ? { height: [`${amp * 100}%`, `${Math.max(15, (1 - amp) * 100)}%`, `${amp * 100}%`] }
+                            : { height: `${Math.max(15, amp * 100)}%` }
+                        }
+                        transition={
+                          isPlaying
+                            ? { repeat: Infinity, duration: 0.6 + (i % 6) * 0.1, ease: "easeInOut" }
+                            : { repeat: 0, duration: 0.25, ease: "easeOut" }
+                        }
+                        className="flex-1 rounded-full bg-secondary transition-colors"
+                        style={{ minHeight: 6 }}
                       />
                     ))}
                   </div>
