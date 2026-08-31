@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence, type Variants } from "framer-motion"
 import { Link } from "react-router-dom"
 import {
@@ -52,6 +52,52 @@ const item: Variants = {
     transition: { type: "spring", stiffness: 300, damping: 24 },
   },
 }
+
+// ─── Live Agent Stream Data (Auto-Rotating Ticker) ───────────────────────────
+const LIVE_AGENT_STREAM = [
+  {
+    agent: "Fleet Orchestrator (A00)",
+    action: "Decomposing BrandX sponsorship into legal risk and rate benchmark tasks...",
+    badge: "Gemini 3.1 Pro",
+    color: "#4f46e5",
+    icon: <BotIconComp size={14} />,
+  },
+  {
+    agent: "Contract Reviewer (A01)",
+    action: "Flagged Clause 4.2: 12-Month Category Exclusivity without compensation (Risk: 0.91 CRITICAL)",
+    badge: "Gemini 3.7 Flash",
+    color: "#dc2626",
+    icon: <Scroll01Icon size={14} />,
+  },
+  {
+    agent: "Revenue Optimizer (A05)",
+    action: "Benchmarked tier median: $11,200 (+31% upside). Drafted Net-30 counter-proposal.",
+    badge: "ADK Parallel",
+    color: "#059669",
+    icon: <Cash02Icon size={14} />,
+  },
+  {
+    agent: "AI Video Cinematographer (A12)",
+    action: "Synthesizing 8-second 1080p cinematic B-roll scene with Google Veo 3 generative model...",
+    badge: "Google Veo 3",
+    color: "#6366f1",
+    icon: <VideoAiIcon size={14} />,
+  },
+  {
+    agent: "Master Thumbnail Director (A13)",
+    action: "Engineered 3 high-contrast Imagen 3 thumbnail variants with 92% predicted CTR.",
+    badge: "Google Imagen 3",
+    color: "#d97706",
+    icon: <ViewIcon size={14} />,
+  },
+  {
+    agent: "Content Compliance (A02)",
+    action: "Injected FTC 16 CFR Part 255 #ad tags & swapped commercial track with Google Lyria AI synthwave.",
+    badge: "Lyria AI Gen-3",
+    color: "#059669",
+    icon: <Shield01Icon size={14} />,
+  },
+]
 
 // ─── Interactive Workflow Simulator Data ─────────────────────────────────────
 const SIMULATOR_SCENARIOS = [
@@ -341,6 +387,15 @@ export default function Landing() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [musicPlaying, setMusicPlaying] = useState(false)
   const [selectedVeoPrompt, setSelectedVeoPrompt] = useState(0)
+  const [streamIdx, setStreamIdx] = useState(0)
+
+  // Live Auto-Rotating Agent Stream Ticker
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStreamIdx((prev) => (prev + 1) % LIVE_AGENT_STREAM.length)
+    }, 3200)
+    return () => clearInterval(interval)
+  }, [])
 
   const [heroTab, setHeroTab] =
     useState<"contract" | "compliance" | "studio">("contract")
@@ -434,29 +489,154 @@ export default function Landing() {
   }
 
   const currentHero = HERO_SCENARIOS[heroTab]
+  const currentStream = LIVE_AGENT_STREAM[streamIdx]
 
   return (
-    <div className="min-h-screen bg-bg-app relative">
-      {/* ─── 1. HERO SECTION ────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden px-6 pt-16 pb-20 sm:pt-24 sm:pb-28 lg:px-8">
-        {/* Ambient Gradient Glows & Particle Dot Grid Background */}
-        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-gradient-to-tr from-primary/20 via-indigo-400/15 to-accent/15 blur-[120px] rounded-full" />
-          <div className="absolute top-1/4 -left-32 w-80 h-80 bg-primary/10 blur-[100px] rounded-full" />
-          <div className="absolute top-1/3 -right-32 w-80 h-80 bg-accent/10 blur-[100px] rounded-full" />
-          <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:28px_28px] opacity-35 [mask-image:radial-gradient(ellipse_65%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+    <div className="min-h-screen bg-bg-app relative overflow-x-hidden">
+      {/* ─── 1. DYNAMIC 3D ANIMATED HERO SECTION ──────────────────────────── */}
+      <section className="relative px-6 pt-12 pb-20 sm:pt-20 sm:pb-28 lg:px-8">
+        {/* 3D Concentric Orbital Gyroscope Rings */}
+        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none flex items-center justify-center">
+          {/* Ambient Glow Clusters */}
+          <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-gradient-to-tr from-primary/25 via-indigo-500/20 to-accent/20 blur-[130px] rounded-full" />
+          <div className="absolute top-1/4 left-10 w-96 h-96 bg-primary-light/15 blur-[110px] rounded-full" />
+          <div className="absolute top-1/3 right-10 w-96 h-96 bg-accent/15 blur-[110px] rounded-full" />
+
+          {/* Concentric Gyroscope Rotating Rings */}
+          <div className="absolute w-[680px] h-[680px] rounded-full border border-primary/15 animate-spin [animation-duration:50s]">
+            <span className="absolute top-0 left-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full bg-primary shadow-sm shadow-primary/50" />
+            <span className="absolute bottom-10 right-20 w-3 h-3 rounded-full bg-accent shadow-sm shadow-accent/50" />
+          </div>
+          <div className="absolute w-[980px] h-[980px] rounded-full border border-dashed border-indigo-400/15 animate-spin [animation-duration:80s] [animation-direction:reverse]">
+            <span className="absolute top-24 left-14 w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-sm" />
+            <span className="absolute bottom-1/4 left-4 w-3.5 h-3.5 rounded-full bg-amber-400 shadow-sm" />
+          </div>
+          <div className="absolute w-[1240px] h-[1240px] rounded-full border border-primary/10 animate-spin [animation-duration:110s]" />
+
+          {/* Dot Matrix Mask */}
+          <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1.2px,transparent_1.2px)] [background-size:28px_28px] opacity-40 [mask-image:radial-gradient(ellipse_70%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
         </div>
 
-        <div className="mx-auto max-w-7xl">
+        {/* ─── 4 FLOATING 3D BOBBING CLAY BADGES (Desktop & Tablet) ────────── */}
+        {/* 1. Top-Left: Contract Shield */}
+        <motion.div
+          animate={{ y: [-8, 8, -8], rotate: [-2, 2, -2] }}
+          transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+          className="hidden xl:flex absolute top-28 left-8 2xl:left-20 z-20"
+        >
+          <div className="clay-md flex items-center gap-3 p-3 rounded-2xl bg-surface/95 border border-primary/20 backdrop-blur-md shadow-lg max-w-[240px]">
+            <div className="w-10 h-10 rounded-xl bg-primary-pale text-primary flex items-center justify-center shrink-0">
+              <Scroll01Icon size={20} />
+            </div>
+            <div>
+              <p className="text-xs font-extrabold text-text-primary leading-tight">
+                Contract Defense (A01)
+              </p>
+              <p className="text-[11px] text-text-secondary mt-0.5 font-medium">
+                12-Mo Exclusivity Redlined
+              </p>
+              <span className="inline-block mt-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 font-extrabold text-[10px]">
+                +$2,700 Recovered
+              </span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* 2. Top-Right: Lyria Audio with Live Equalizer */}
+        <motion.div
+          animate={{ y: [8, -8, 8], rotate: [2, -2, 2] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="hidden xl:flex absolute top-28 right-8 2xl:right-20 z-20"
+        >
+          <div className="clay-md flex items-center gap-3 p-3 rounded-2xl bg-surface/95 border border-accent/25 backdrop-blur-md shadow-lg max-w-[250px]">
+            <div className="w-10 h-10 rounded-xl bg-accent-pale text-accent flex items-center justify-center shrink-0">
+              <MusicNote01Icon size={20} />
+            </div>
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-xs font-extrabold text-text-primary leading-tight">
+                  Lyria Audio Shield
+                </p>
+                {/* Live bouncing equalizer visualizer */}
+                <div className="flex items-center gap-0.5 h-3">
+                  {[0.7, 1, 0.4, 0.8, 0.6].map((h, i) => (
+                    <motion.span
+                      key={i}
+                      animate={{ scaleY: [0.3, 1, 0.4, 0.9, 0.3] }}
+                      transition={{ duration: 0.7 + i * 0.15, repeat: Infinity, ease: "easeInOut" }}
+                      className="w-1 rounded-full bg-accent origin-bottom h-full"
+                    />
+                  ))}
+                </div>
+              </div>
+              <p className="text-[11px] text-text-secondary font-medium">
+                Royalty-Free Synthwave Cleared
+              </p>
+              <span className="inline-block px-2 py-0.5 rounded-md bg-accent-pale text-accent font-extrabold text-[10px]">
+                0 Copyright Strikes ✓
+              </span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* 3. Bottom-Left: Veo 3 Video Gen */}
+        <motion.div
+          animate={{ y: [-6, 6, -6], rotate: [1.5, -1.5, 1.5] }}
+          transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut" }}
+          className="hidden xl:flex absolute bottom-36 left-12 2xl:left-24 z-20"
+        >
+          <div className="clay-md flex items-center gap-3 p-3 rounded-2xl bg-surface/95 border border-indigo-300/30 backdrop-blur-md shadow-lg max-w-[240px]">
+            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+              <VideoAiIcon size={20} />
+            </div>
+            <div>
+              <p className="text-xs font-extrabold text-text-primary leading-tight">
+                Google Veo 3 (A12)
+              </p>
+              <p className="text-[11px] text-text-secondary mt-0.5 font-medium">
+                8s Cinematic 1080p B-Roll
+              </p>
+              <span className="inline-block mt-1 px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-extrabold text-[10px]">
+                Vertex AI Synthesized
+              </span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* 4. Bottom-Right: Model Armor */}
+        <motion.div
+          animate={{ y: [7, -7, 7], rotate: [-1.5, 1.5, -1.5] }}
+          transition={{ duration: 5.8, repeat: Infinity, ease: "easeInOut" }}
+          className="hidden xl:flex absolute bottom-36 right-12 2xl:right-24 z-20"
+        >
+          <div className="clay-md flex items-center gap-3 p-3 rounded-2xl bg-surface/95 border border-amber-300/30 backdrop-blur-md shadow-lg max-w-[240px]">
+            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+              <Shield01Icon size={20} />
+            </div>
+            <div>
+              <p className="text-xs font-extrabold text-text-primary leading-tight">
+                Model Armor Guard (A08)
+              </p>
+              <p className="text-[11px] text-text-secondary mt-0.5 font-medium">
+                Zero Prompt Injections
+              </p>
+              <span className="inline-block mt-1 px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 font-extrabold text-[10px]">
+                100% RBAC Secured
+              </span>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mx-auto max-w-7xl relative z-10">
           <motion.div
             initial="hidden"
             animate="show"
             variants={container}
             className="mx-auto max-w-4xl text-center"
           >
-            {/* Live Hackathon & Multi-Agent Announcement Pill */}
+            {/* Live Hackathon Status Pill */}
             <motion.div variants={item} className="mb-6 flex justify-center">
-              <div className="clay-sm inline-flex items-center gap-3 p-1.5 pr-4 rounded-full bg-surface/90 border border-primary/20 backdrop-blur-md shadow-xs">
+              <div className="clay-sm inline-flex items-center gap-3 p-1.5 pr-4 rounded-full bg-surface/95 border border-primary/20 backdrop-blur-md shadow-xs">
                 <img
                   src="/logo-icon.png"
                   alt="Crewmate Logo"
@@ -467,7 +647,7 @@ export default function Landing() {
                     <span className="w-2 h-2 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20 animate-pulse" />
                     Google ADK Fleet
                   </span>
-                  <span>15 Autonomous Agents Active</span>
+                  <span>15 Autonomous Agents Operational</span>
                   <span className="text-primary font-mono font-extrabold">⚡</span>
                 </span>
               </div>
@@ -491,8 +671,56 @@ export default function Landing() {
               variants={item}
               className="mx-auto mt-6 max-w-2xl text-base sm:text-lg text-text-secondary leading-relaxed font-normal"
             >
-              The 24/7 autonomous backstage media engine for YouTube & Instagram creators. Spot predatory sponsor clauses, replace copyrighted audio with Google Lyria AI, and generate broadcast-grade 8s Veo 3 B-roll & Imagen 3 thumbnails.
+              Your 24/7 autonomous backstage media engine for YouTube & Instagram. 15 specialized AI agents that spot predatory contracts, replace copyright audio with Google Lyria AI, and generate 8-second Veo video clips & 3 Pro thumbnails.
             </motion.p>
+
+            {/* ─── LIVE AGENT REASONING STREAM TICKER ───────────────────────── */}
+            <motion.div variants={item} className="mt-7 flex justify-center">
+              <div className="clay-md w-full max-w-2xl rounded-2xl bg-surface/95 border border-primary/25 p-3 shadow-md backdrop-blur-md">
+                <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] pb-2 mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-text-primary">
+                      Live Multi-Agent Telemetry Stream
+                    </span>
+                  </div>
+                  <span className="px-2 py-0.5 rounded-full bg-primary-pale text-primary font-mono text-[10px] font-bold">
+                    Sub-Second ADK Chain
+                  </span>
+                </div>
+
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={streamIdx}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex items-center gap-3 text-left py-1 px-1"
+                  >
+                    <div
+                      className="w-8 h-8 rounded-xl flex items-center justify-center text-white shrink-0 shadow-xs"
+                      style={{ background: currentStream.color }}
+                    >
+                      {currentStream.icon}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-text-primary">
+                          {currentStream.agent}
+                        </span>
+                        <span className="px-1.5 py-0.2 rounded text-[10px] font-mono font-semibold bg-[var(--surface-sunken)] border border-[var(--border)] text-text-tertiary">
+                          {currentStream.badge}
+                        </span>
+                      </div>
+                      <p className="text-xs text-text-secondary truncate mt-0.5">
+                        "{currentStream.action}"
+                      </p>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </motion.div>
 
             {/* 3 Value Pillars Mini Grid */}
             <motion.div
