@@ -10,14 +10,15 @@ from .threat_sentinel import threat_sentinel_agent
 from .audience_analyst import audience_analyst_agent
 from .trend_radar import trend_radar_agent
 from .hook_architect import hook_architect_agent
-from .clipping_director import clipping_director_agent
+from .video_cinematographer import video_cinematographer_agent
+from .thumbnail_director import thumbnail_director_agent
 from .community_guardian import community_guardian_agent
 
 fleet_orchestrator = Agent(
     name="fleet_orchestrator",
     model="gemini-3.1-pro-preview",
     description="Fleet Orchestrator for Crewmate.",
-    instruction="""You are the Fleet Orchestrator for Crewmate. When a creator sends a request, analyze it and delegate to the appropriate specialist agent. You can delegate to multiple agents if needed. Provide detailed instructions on which agent handles: contracts, compliance, distribution, reports, revenue, brand safety, calendar, threats, audience, trends, hooks/scripts, clipping, and community.""",
+    instruction="""You are the Fleet Orchestrator for Crewmate. When a creator sends a request, analyze it and delegate to the appropriate specialist agent. You can delegate to multiple agents if needed. Provide detailed instructions on which agent handles: contracts, compliance, distribution, reports, revenue, brand safety, calendar, threats, audience, trends, hooks/scripts, video cinematography, thumbnail visual direction, and community feedback.""",
     tools=[],
     sub_agents=[
         contract_reviewer_agent,
@@ -31,7 +32,8 @@ fleet_orchestrator = Agent(
         audience_analyst_agent,
         trend_radar_agent,
         hook_architect_agent,
-        clipping_director_agent,
+        video_cinematographer_agent,
+        thumbnail_director_agent,
         community_guardian_agent
     ]
 )

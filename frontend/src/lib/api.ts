@@ -1,14 +1,14 @@
 import { getCurrentUserToken } from "../services/firebase"
 import { Agent, AgentStatus, Clause, FeedMessage, Note, PlatformStatus } from "../types"
 
-// Canonical Master Fleet definitions (14 Agents)
+// Canonical Master Fleet definitions (15 Agents)
 export const AGENTS: (Agent & { role?: string; model?: string; description?: string })[] = [
   {
     id: "orchestrator",
     name: "Fleet Orchestrator (Captain)",
     role: "Supervisor & Task Decomposition",
     status: "active",
-    taskCount: 14,
+    taskCount: 15,
     enabled: true,
     progress: 98,
     model: "gemini-3.1-pro-preview",
@@ -124,14 +124,24 @@ export const AGENTS: (Agent & { role?: string; model?: string; description?: str
     model: "gemini-3.7-flash",
   },
   {
-    id: "clipping_director",
-    name: "Smart Repurposing Director",
-    role: "Viral Moment & Short-Form Extractor",
+    id: "video_cinematographer",
+    name: "AI Video Cinematographer",
+    role: "Veo 3.1 8-Second Video & Camera Director",
     status: "active",
-    taskCount: 7,
+    taskCount: 9,
     enabled: true,
-    progress: 82,
-    model: "gemini-3.7-flash",
+    progress: 93,
+    model: "veo-3.1-fast-generate-001",
+  },
+  {
+    id: "thumbnail_director",
+    name: "Master Thumbnail Director",
+    role: "Visual Hook & Gemini 3 Pro Diffusion",
+    status: "active",
+    taskCount: 14,
+    enabled: true,
+    progress: 97,
+    model: "gemini-3-pro-image",
   },
   {
     id: "community_guardian",

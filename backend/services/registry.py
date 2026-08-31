@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 AGENTS_COLLECTION = "agents"
 
-# Master definitions of all 14 Fleet Agents
+# Master definitions of all 15 Fleet Agents
 CANONICAL_AGENTS = [
     {
         "id": "orchestrator",
@@ -25,7 +25,7 @@ CANONICAL_AGENTS = [
             "cross_agent_synthesis",
             "circuit_breaker_monitoring"
         ],
-        "description": "Decomposes complex creator goals into sub-tasks and orchestrates the 13 specialist workers.",
+        "description": "Decomposes complex creator goals into sub-tasks and orchestrates the 14 specialist workers.",
         "max_concurrency": 5,
         "timeout_seconds": 60,
     },
@@ -236,23 +236,42 @@ CANONICAL_AGENTS = [
         "timeout_seconds": 35,
     },
     {
-        "id": "clipping_director",
-        "name": "Smart Repurposing Director",
-        "role": "Viral Moment & Short-Form Extractor",
-        "version": "2.0.0",
-        "model": "gemini-3.7-flash",
+        "id": "video_cinematographer",
+        "name": "AI Video Cinematographer",
+        "role": "Veo 3.1 8-Second Video & Camera Director",
+        "version": "2.2.0",
+        "model": "veo-3.1-fast-generate-001",
         "status": "active",
         "health": "healthy",
-        "category": "growth",
+        "category": "creation",
         "capabilities": [
-            "transcript_energy_scoring",
-            "viral_moment_extraction",
-            "vertical_crop_planning",
-            "shorts_caption_packaging"
+            "veo_video_synthesis",
+            "cinematography_prompting",
+            "camera_movement_planning",
+            "aspect_ratio_formatting"
         ],
-        "description": "Turns a single 15-minute long-form YouTube video into 3-5 high-engagement Instagram Reels and Shorts.",
+        "description": "Synthesizes real 8-second cinematic videos from text/prompts using Google Veo foundation models with custom lighting, camera movement, and visual styles.",
+        "max_concurrency": 2,
+        "timeout_seconds": 90,
+    },
+    {
+        "id": "thumbnail_director",
+        "name": "Master Thumbnail Director",
+        "role": "Visual Hook & Gemini 3 Pro Diffusion",
+        "version": "2.2.0",
+        "model": "gemini-3-pro-image",
+        "status": "active",
+        "health": "healthy",
+        "category": "creation",
+        "capabilities": [
+            "gemini_3_pro_diffusion",
+            "visual_scene_deconstruction",
+            "ctr_prediction",
+            "anti_glitch_composition"
+        ],
+        "description": "Generates the definitive 1376x768 native widescreen thumbnail with high-converting composition, color balance, and zero-glitch anti-text guardrails.",
         "max_concurrency": 3,
-        "timeout_seconds": 35,
+        "timeout_seconds": 30,
     },
     {
         "id": "community_guardian",
@@ -277,7 +296,7 @@ CANONICAL_AGENTS = [
 
 
 async def seed_agent_registry() -> List[Dict[str, Any]]:
-    """Seed the Firestore Agent Registry with all 14 canonical agents in parallel."""
+    """Seed the Firestore Agent Registry with all 15 canonical agents in parallel."""
     async def _seed_one(agent: Dict[str, Any]):
         try:
             existing = await asyncio.wait_for(get_document(AGENTS_COLLECTION, agent["id"]), timeout=2.0)

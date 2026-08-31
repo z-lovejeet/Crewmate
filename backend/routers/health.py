@@ -15,7 +15,7 @@ async def health_check():
     settings = get_settings()
     return HealthResponse(
         status="ok",
-        agents=14,
+        agents=15,
         version="1.0.0",
         environment=getattr(settings, "ENVIRONMENT", "development")
     )
