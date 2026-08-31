@@ -10,7 +10,14 @@ import {
 } from "../components/clay"
 import Section from "../components/layout/Section"
 import { api } from "../lib/api"
-import { ACTION_ICONS, DownloadSquare01Icon, ZapIcon, File01Icon } from "../lib/icons"
+import {
+  ACTION_ICONS,
+  DownloadSquare01Icon,
+  ZapIcon,
+  File01Icon,
+  Shield01Icon,
+  CheckmarkSquare03Icon,
+} from "../lib/icons"
 
 const TABS = ["Terms", "Rights", "Payment", "Exit"] as const
 type Tab = typeof TABS[number]
@@ -30,6 +37,13 @@ const badgeType = {
   flagged: "flagged",
   critical: "critical",
 } as const
+
+const PIPELINE_STEPS = [
+  { id: 1, label: "Document Ingestion & Text Extraction", detail: "Extracting legal clauses via pypdf" },
+  { id: 2, label: "Model Armor Security & PII Shield", detail: "Screening prompt injection & data privacy" },
+  { id: 3, label: "Contract Reviewer (A01) Clause Risk Audit", detail: "Scanning exclusivity traps & Net-90 terms" },
+  { id: 4, label: "Revenue Optimizer (A05) Benchmark", detail: "Calculating market value & redline counter-proposals" },
+]
 
 // Helper to parse numeric risk score from any LLM/backend format
 function parseRiskScore(data: any): number {
@@ -65,6 +79,8 @@ export default function Contracts() {
   const [tab, setTab] = useState<Tab>("Terms")
   const [dragging, setDragging] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
+  const [uploadStep, setUploadStep] = useState(1)
   
   // Real dynamic analysis state
   const [analyzed, setAnalyzed] = useState<boolean>(false)
@@ -141,7 +157,6 @@ export default function Contracts() {
   }
 
   useEffect(() => {
-    // Load historical contracts from Firestore
     api.getContractsList().then((list) => {
       if (list && list.length > 0) {
         setRecentDeals(list)
@@ -151,12 +166,23 @@ export default function Contracts() {
 
   const handleFileUpload = async (file: File) => {
     setUploading(true)
+    setUploadProgress(15)
+    setUploadStep(1)
     const name = file.name.replace(/\.[^/.]+$/, "")
     setContractName(name)
+
+    const t1 = setTimeout(() => { setUploadProgress(40); setUploadStep(2) }, 600)
+    const t2 = setTimeout(() => { setUploadProgress(70); setUploadStep(3) }, 1500)
+    const t3 = setTimeout(() => { setUploadProgress(90); setUploadStep(4) }, 2600)
+
     try {
       const data = await api.analyzeContract(file, file.name)
+      clearTimeout(t1)
+      clearTimeout(t2)
+      clearTimeout(t3)
+      setUploadProgress(100)
+
       if (data) {
-        setAnalyzed(true)
         const score = parseRiskScore(data)
         setContractRisk(score)
         if (data.offer_amount) setDealOffer(data.offer_amount)
@@ -176,25 +202,42 @@ export default function Contracts() {
         }
         if (data.summary) setDealSummary(data.summary)
 
-        // Refresh recent deals
+        setTimeout(() => {
+          setAnalyzed(true)
+          setUploading(false)
+        }, 300)
+
         const updated = await api.getContractsList()
         if (updated) setRecentDeals(updated)
       }
     } catch (err) {
+      clearTimeout(t1)
+      clearTimeout(t2)
+      clearTimeout(t3)
       console.error("Contract analysis error:", err)
-    } finally {
       setUploading(false)
     }
   }
 
   const handleRunSampleAnalysis = async () => {
     setUploading(true)
+    setUploadProgress(15)
+    setUploadStep(1)
     setContractName("BrandX Sponsorship Agreement (Demo)")
     const fullText = Object.values(SAMPLE_CONTRACT_TEXT).join("\n\n")
+
+    const t1 = setTimeout(() => { setUploadProgress(40); setUploadStep(2) }, 600)
+    const t2 = setTimeout(() => { setUploadProgress(70); setUploadStep(3) }, 1500)
+    const t3 = setTimeout(() => { setUploadProgress(90); setUploadStep(4) }, 2600)
+
     try {
       const data = await api.analyzeContract(fullText, "BrandX_Agreement.txt")
+      clearTimeout(t1)
+      clearTimeout(t2)
+      clearTimeout(t3)
+      setUploadProgress(100)
+
       if (data) {
-        setAnalyzed(true)
         const score = parseRiskScore(data)
         setContractRisk(score)
         if (data.offer_amount) setDealOffer(data.offer_amount)
@@ -213,10 +256,17 @@ export default function Contracts() {
           setClausesList(mapped)
         }
         if (data.summary) setDealSummary(data.summary)
+
+        setTimeout(() => {
+          setAnalyzed(true)
+          setUploading(false)
+        }, 300)
       }
     } catch (err) {
+      clearTimeout(t1)
+      clearTimeout(t2)
+      clearTimeout(t3)
       console.error("Sample analysis error:", err)
-    } finally {
       setUploading(false)
     }
   }
@@ -242,282 +292,430 @@ export default function Contracts() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[55fr_45fr]">
-      {/* Hidden file input */}
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={(e) => {
-          if (e.target.files && e.target.files[0]) {
-            handleFileUpload(e.target.files[0])
-          }
-        }}
-        accept=".pdf,.txt,.docx"
-        className="hidden"
-      />
-
-      {/* Left Column: Upload & Contract Text */}
-      <div className="flex flex-col gap-5">
-        {/* Drop zone */}
-        <motion.div
-          onDragOver={(e) => {
-            e.preventDefault()
-            setDragging(true)
-          }}
-          onDragLeave={() => setDragging(false)}
-          onDrop={(e) => {
-            e.preventDefault()
-            setDragging(false)
-            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-              handleFileUpload(e.dataTransfer.files[0])
+        {/* Hidden file input */}
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={(e) => {
+            if (e.target.files && e.target.files[0]) {
+              handleFileUpload(e.target.files[0])
             }
           }}
-          animate={dragging ? { scale: 1.01 } : { scale: 1 }}
-        >
-          <GlassOverlay>
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              disabled={uploading}
-              className="focus-clay flex w-full flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed py-10 px-6 text-center cursor-pointer transition bg-[var(--surface)] hover:bg-[var(--surface-sunken)]"
-              style={{
-                borderColor: dragging
-                  ? "var(--primary)"
-                  : "var(--primary-light)",
-              }}
-            >
-              <motion.span
-                animate={uploading ? { rotate: 360 } : { y: [0, 6, 0] }}
-                transition={uploading ? { repeat: Infinity, duration: 1, ease: "linear" } : { repeat: Infinity, duration: 1.4 }}
-                className="text-primary flex items-center justify-center w-14 h-14 rounded-2xl bg-[var(--primary-pale)]"
-              >
-                <DownloadSquare01Icon size={32} />
-              </motion.span>
-              <div>
-                <h3
-                  className="text-base font-bold text-text-primary"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  {uploading
-                    ? "Extracting PDF & Reasoning on Vertex AI..."
-                    : "Upload Sponsorship Contract (PDF or Text)"}
-                </h3>
-                <p className="text-xs text-text-tertiary mt-1 max-w-sm mx-auto">
-                  Drag & drop your agreement here. Contract Reviewer agent will extract clauses, flag exclusivity traps, and redline counter-proposals.
-                </p>
-              </div>
+          accept=".pdf,.txt,.docx"
+          className="hidden"
+        />
 
-              {/* Quick sample test pill */}
-              <div className="mt-2 flex items-center gap-2">
-                <span className="text-[11px] text-text-tertiary">Don't have a PDF right now?</span>
-                <span
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleRunSampleAnalysis()
-                  }}
-                  className="clay-sm px-3 py-1 rounded-full text-xs font-bold text-primary bg-primary-pale hover:brightness-105 transition cursor-pointer flex items-center gap-1.5"
-                >
-                  <ZapIcon size={12} />
-                  <span>Test with Sample BrandX Deal</span>
-                </span>
-              </div>
-            </button>
-          </GlassOverlay>
-        </motion.div>
-
-        {/* Contract Viewer Card (Only when analyzed or sample active) */}
-        {analyzed && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <ClayCard>
-              <div className="mb-4 flex items-center justify-between">
-                <div>
-                  <h3
-                    className="text-base font-bold text-text-primary"
-                    style={{ fontFamily: "var(--font-display)" }}
-                  >
-                    {contractName}
-                  </h3>
-                  <p className="text-xs text-text-tertiary">
-                    Audited with Gemini 3.7 Flash · Saved to Firestore
-                  </p>
-                </div>
-                <StatusBadge type={contractRisk > 70 ? "critical" : contractRisk > 40 ? "flagged" : "approved"} text={contractRisk > 70 ? "High Risk Deal" : "Under Review"} />
-              </div>
-
-              <div className="mb-4 flex flex-wrap gap-2">
-                {TABS.map((t) => (
-                  <button
-                    key={t}
-                    onClick={() => setTab(t)}
-                    className={`focus-clay rounded-full px-4 py-1.5 text-[13px] font-semibold transition ${
-                      tab === t
-                        ? "clay-sm text-primary"
-                        : "text-text-secondary hover:bg-bg-secondary"
-                    }`}
-                    style={{
-                      background: tab === t ? "var(--primary-pale)" : undefined,
-                      fontFamily: "var(--font-display)",
-                    }}
-                  >
-                    {t}
-                  </button>
-                ))}
-              </div>
-
-              <ContentCard>
-                <div className="flex flex-col gap-2">
-                  <p className="text-sm leading-relaxed text-text-secondary">
-                    {(() => {
-                      const matched = clausesList.find((c) =>
-                        c.title?.toLowerCase().includes(tab.toLowerCase()) ||
-                        (tab === "Exit" && (c.title?.toLowerCase().includes("terminat") || c.title?.toLowerCase().includes("exclusiv"))) ||
-                        (tab === "Terms" && (c.title?.toLowerCase().includes("deliver") || c.title?.toLowerCase().includes("scope"))) ||
-                        (tab === "Rights" && (c.title?.toLowerCase().includes("licens") || c.title?.toLowerCase().includes("right") || c.title?.toLowerCase().includes("usage") || c.title?.toLowerCase().includes("ip"))) ||
-                        (tab === "Payment" && (c.title?.toLowerCase().includes("pay") || c.title?.toLowerCase().includes("fee") || c.title?.toLowerCase().includes("compensation")))
-                      )
-                      return matched ? matched.explanation : SAMPLE_CONTRACT_TEXT[tab]
-                    })()}
-                  </p>
-                </div>
-              </ContentCard>
-            </ClayCard>
-          </motion.div>
-        )}
-
-        {/* Deals in Firestore */}
-        {recentDeals.length > 0 && (
-          <ClayCard>
-            <Section title="Deals in Firestore" hint="Persistent creator memory bank">
-              <div className="flex flex-col gap-2 mt-2">
-                {recentDeals.map((d: any, idx: number) => (
-                  <div key={d.id || idx} className="flex items-center justify-between p-2.5 rounded-xl bg-[var(--surface-sunken)] border border-[var(--border)] text-xs">
-                    <div>
-                      <p className="font-bold text-text-primary">{d.contract_name || d.brand_name || "Sponsorship Deal"}</p>
-                      <p className="text-[11px] text-text-tertiary">${d.offer_amount || "8,500"} USD · {d.flagged_count || d.total_clauses || 4} clauses</p>
-                    </div>
-                    <StatusBadge type={d.risk_level === "CRITICAL" ? "critical" : "flagged"} text={d.risk_level || "Audited"} size="sm" />
-                  </div>
-                ))}
-              </div>
-            </Section>
-          </ClayCard>
-        )}
-      </div>
-
-      {/* Right Column: AI Analysis */}
-      <ClayCard hover={false}>
-        <Section title="AI Contract Redlines" hint="Audited live by Contract Reviewer agent">
-          {analyzed ? (
+        {/* Left Column: Upload & Contract Text */}
+        <div className="flex flex-col gap-5">
+          {/* Drop zone / Active Uploading Pipeline Card */}
+          {uploading ? (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex flex-col gap-4"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.25 }}
             >
-              <div className="flex justify-center py-2">
-                <ClayProgressRing
-                  value={contractRisk}
-                  label="Risk score"
-                  size="lg"
-                  variant={contractRisk > 70 ? "danger" : contractRisk > 40 ? "warning" : "accent"}
-                />
-              </div>
-
-              <div className="flex flex-col gap-3">
-                {clausesList.map((c) => (
-                  <ContentCard key={c.id}>
-                    <div className="mb-1.5 flex items-center justify-between gap-2">
-                      <span
-                        className="text-sm font-bold text-text-primary"
-                        style={{ fontFamily: "var(--font-display)" }}
-                      >
-                        §{c.number} · {c.title}
-                      </span>
-                      <StatusBadge
-                        type={badgeType[c.status as keyof typeof badgeType] || "flagged"}
-                        text={c.status}
-                        size="sm"
-                      />
-                    </div>
-                    <p className="text-[13px] text-text-secondary">
-                      {c.explanation}
-                    </p>
-                    {c.status !== "approved" && (
-                      <div className="clay-inset mt-2.5 rounded-xl p-2.5">
-                        <p
-                          className="text-[11px] font-bold uppercase tracking-wide text-primary"
+              <ClayCard accent="var(--primary)">
+                <div className="flex flex-col gap-5 p-2">
+                  {/* Active Header */}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-50 to-primary-pale border border-primary/20 text-primary flex items-center justify-center shrink-0 shadow-2xs">
+                        <File01Icon size={22} />
+                      </div>
+                      <div className="min-w-0">
+                        <h3
+                          className="text-base font-bold text-text-primary tracking-tight truncate"
                           style={{ fontFamily: "var(--font-display)" }}
                         >
-                          AI Negotiated Counter-Proposal
-                        </p>
-                        <p className="text-[13px] text-text-primary">{c.counter}</p>
+                          {contractName || "Sponsorship Agreement"}
+                        </h3>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                          <p className="text-xs text-text-tertiary">
+                            Multi-Agent Legal Audit in Progress · Vertex AI
+                          </p>
+                        </div>
                       </div>
-                    )}
-                  </ContentCard>
-                ))}
-              </div>
+                    </div>
+                    <span className="px-3 py-1 rounded-full bg-primary-pale text-primary text-xs font-bold shrink-0 border border-primary/20 font-mono">
+                      {uploadProgress}%
+                    </span>
+                  </div>
 
-              <div
-                className="clay-inset mt-2 flex items-center justify-between rounded-2xl p-4"
-                style={{ background: "var(--bg-secondary)" }}
-              >
-                <div>
-                  <p className="text-xs font-semibold text-text-secondary">
-                    Autonomous Revenue Benchmark
-                  </p>
-                  <p className="text-sm text-text-primary">
-                    Offered: <b>$8.5K</b> · Benchmarked: <b>$12.0K</b> (+<b>$3.5K</b> Upside)
-                  </p>
+                  {/* Progress Bar with glow */}
+                  <div className="w-full bg-[var(--surface-sunken)] h-2.5 rounded-full overflow-hidden border border-[var(--border)] p-0.5">
+                    <motion.div
+                      className="h-full bg-gradient-to-r from-primary to-indigo-500 rounded-full"
+                      initial={{ width: "10%" }}
+                      animate={{ width: `${uploadProgress}%` }}
+                      transition={{ ease: "easeInOut", duration: 0.35 }}
+                    />
+                  </div>
+
+                  {/* Multi-Step Pipeline State */}
+                  <div className="flex flex-col gap-2 pt-1">
+                    <p className="text-[11px] font-bold text-text-tertiary uppercase tracking-wider">
+                      Autonomous Audit Pipeline
+                    </p>
+                    <div className="flex flex-col gap-2">
+                      {PIPELINE_STEPS.map((step) => {
+                        const isDone = uploadStep > step.id
+                        const isCurrent = uploadStep === step.id
+                        return (
+                          <div
+                            key={step.id}
+                            className={`p-3 rounded-xl border transition-all flex items-center justify-between gap-3 ${
+                              isCurrent
+                                ? "bg-primary-pale/40 border-primary/40 shadow-xs"
+                                : isDone
+                                ? "bg-[var(--surface-sunken)] border-[var(--border)] opacity-90"
+                                : "bg-[var(--surface-sunken)]/30 border-[var(--border)]/50 opacity-40"
+                            }`}
+                          >
+                            <div className="flex items-center gap-2.5 min-w-0">
+                              <span
+                                className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-colors ${
+                                  isDone
+                                    ? "bg-emerald-500 text-white"
+                                    : isCurrent
+                                    ? "bg-primary text-white animate-pulse"
+                                    : "bg-zinc-200 text-zinc-500"
+                                }`}
+                              >
+                                {isDone ? "✓" : step.id}
+                              </span>
+                              <div className="min-w-0 truncate">
+                                <p className="text-xs font-bold text-text-primary truncate">
+                                  {step.label}
+                                </p>
+                                <p className="text-[11px] text-text-tertiary truncate">
+                                  {step.detail}
+                                </p>
+                              </div>
+                            </div>
+
+                            <span
+                              className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
+                                isDone
+                                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                                  : isCurrent
+                                  ? "bg-primary-pale text-primary border border-primary/30 animate-pulse"
+                                  : "bg-zinc-100 text-zinc-400"
+                              }`}
+                            >
+                              {isDone ? "Completed" : isCurrent ? "Processing..." : "Pending"}
+                            </span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
                 </div>
-                <StatusBadge type="critical" text="+$4,000 Unlocked" size="sm" />
-              </div>
-
-              <div className="mt-3 flex flex-wrap gap-2.5">
-                <ClayButton
-                  label="Export Redlined PDF"
-                  variant="primary"
-                  icon={ACTION_ICONS.file}
-                  onClick={handleExportReport}
-                />
-                <ClayButton
-                  label="Send Counter to Sponsor"
-                  variant="secondary"
-                  icon={ACTION_ICONS.edit}
-                  onClick={handleSendCounter}
-                />
-              </div>
-
-              {/* Toast Feedback */}
-              <AnimatePresence>
-                {toastMessage && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2 mt-2"
-                  >
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>{toastMessage}</span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              </ClayCard>
             </motion.div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-16 text-center px-4">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-primary flex items-center justify-center mb-4 border border-indigo-100">
-                <File01Icon size={24} />
-              </div>
-              <h4 className="font-bold text-text-primary text-sm font-[var(--font-display)]">
-                No Contract Loaded Yet
-              </h4>
-              <p className="text-xs text-text-secondary max-w-xs mt-1 leading-relaxed">
-                Upload a sponsorship agreement on the left or click <b>"Test with Sample Deal"</b> to see live Gemini reasoning, clause risk scores, and counter-proposals.
-              </p>
-            </div>
+            <motion.div
+              onDragOver={(e) => {
+                e.preventDefault()
+                setDragging(true)
+              }}
+              onDragLeave={() => setDragging(false)}
+              onDrop={(e) => {
+                e.preventDefault()
+                setDragging(false)
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                  handleFileUpload(e.dataTransfer.files[0])
+                }
+              }}
+              animate={dragging ? { scale: 1.01 } : { scale: 1 }}
+            >
+              <GlassOverlay>
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="focus-clay flex w-full flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed py-10 px-6 text-center cursor-pointer transition bg-[var(--surface)] hover:bg-[var(--surface-sunken)]"
+                  style={{
+                    borderColor: dragging
+                      ? "var(--primary)"
+                      : "var(--primary-light)",
+                  }}
+                >
+                  <span className="text-primary flex items-center justify-center w-14 h-14 rounded-2xl bg-[var(--primary-pale)]">
+                    <DownloadSquare01Icon size={32} />
+                  </span>
+                  <div>
+                    <h3
+                      className="text-base font-bold text-text-primary"
+                      style={{ fontFamily: "var(--font-display)" }}
+                    >
+                      Upload Sponsorship Contract (PDF or Text)
+                    </h3>
+                    <p className="text-xs text-text-tertiary mt-1 max-w-sm mx-auto">
+                      Drag & drop your agreement here. Contract Reviewer agent will extract clauses, flag exclusivity traps, and redline counter-proposals.
+                    </p>
+                  </div>
+
+                  {/* Quick sample test pill */}
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className="text-[11px] text-text-tertiary">Don't have a PDF right now?</span>
+                    <span
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleRunSampleAnalysis()
+                      }}
+                      className="clay-sm px-3 py-1 rounded-full text-xs font-bold text-primary bg-primary-pale hover:brightness-105 transition cursor-pointer flex items-center gap-1.5"
+                    >
+                      <ZapIcon size={12} />
+                      <span>Test with Sample BrandX Deal</span>
+                    </span>
+                  </div>
+                </button>
+              </GlassOverlay>
+            </motion.div>
           )}
-        </Section>
-      </ClayCard>
-    </div>
+
+          {/* Contract Viewer Card (Only when analyzed and not actively uploading) */}
+          {analyzed && !uploading && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <ClayCard>
+                <div className="mb-4 flex items-center justify-between">
+                  <div>
+                    <h3
+                      className="text-base font-bold text-text-primary"
+                      style={{ fontFamily: "var(--font-display)" }}
+                    >
+                      {contractName}
+                    </h3>
+                    <p className="text-xs text-text-tertiary">
+                      Audited with Gemini 3.7 Flash · Saved to Firestore
+                    </p>
+                  </div>
+                  <StatusBadge type={contractRisk > 70 ? "critical" : contractRisk > 40 ? "flagged" : "approved"} text={contractRisk > 70 ? "High Risk Deal" : "Under Review"} />
+                </div>
+
+                <div className="mb-4 flex flex-wrap gap-2">
+                  {TABS.map((t) => (
+                    <button
+                      key={t}
+                      onClick={() => setTab(t)}
+                      className={`focus-clay rounded-full px-4 py-1.5 text-[13px] font-semibold transition ${
+                        tab === t
+                          ? "clay-sm text-primary"
+                          : "text-text-secondary hover:bg-bg-secondary"
+                      }`}
+                      style={{
+                        background: tab === t ? "var(--primary-pale)" : undefined,
+                        fontFamily: "var(--font-display)",
+                      }}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+
+                <ContentCard>
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm leading-relaxed text-text-secondary">
+                      {(() => {
+                        const matched = clausesList.find((c) =>
+                          c.title?.toLowerCase().includes(tab.toLowerCase()) ||
+                          (tab === "Exit" && (c.title?.toLowerCase().includes("terminat") || c.title?.toLowerCase().includes("exclusiv"))) ||
+                          (tab === "Terms" && (c.title?.toLowerCase().includes("deliver") || c.title?.toLowerCase().includes("scope"))) ||
+                          (tab === "Rights" && (c.title?.toLowerCase().includes("licens") || c.title?.toLowerCase().includes("right") || c.title?.toLowerCase().includes("usage") || c.title?.toLowerCase().includes("ip"))) ||
+                          (tab === "Payment" && (c.title?.toLowerCase().includes("pay") || c.title?.toLowerCase().includes("fee") || c.title?.toLowerCase().includes("compensation")))
+                        )
+                        return matched ? matched.explanation : SAMPLE_CONTRACT_TEXT[tab]
+                      })()}
+                    </p>
+                  </div>
+                </ContentCard>
+              </ClayCard>
+            </motion.div>
+          )}
+
+          {/* Deals in Firestore */}
+          {recentDeals.length > 0 && (
+            <ClayCard>
+              <Section title="Deals in Firestore" hint="Persistent creator memory bank">
+                <div className="flex flex-col gap-2 mt-2">
+                  {recentDeals.map((d: any, idx: number) => (
+                    <div key={d.id || idx} className="flex items-center justify-between p-2.5 rounded-xl bg-[var(--surface-sunken)] border border-[var(--border)] text-xs">
+                      <div>
+                        <p className="font-bold text-text-primary">{d.contract_name || d.brand_name || "Sponsorship Deal"}</p>
+                        <p className="text-[11px] text-text-tertiary">${d.offer_amount || "8,500"} USD · {d.flagged_count || d.total_clauses || 4} clauses</p>
+                      </div>
+                      <StatusBadge type={d.risk_level === "CRITICAL" ? "critical" : "flagged"} text={d.risk_level || "Audited"} size="sm" />
+                    </div>
+                  ))}
+                </div>
+              </Section>
+            </ClayCard>
+          )}
+        </div>
+
+        {/* Right Column: AI Analysis */}
+        <ClayCard hover={false}>
+          <Section title="AI Contract Redlines" hint="Audited live by Contract Reviewer agent">
+            {analyzed && !uploading ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex flex-col gap-4"
+              >
+                <div className="flex justify-center py-2">
+                  <ClayProgressRing
+                    value={contractRisk}
+                    label="Risk score"
+                    size="lg"
+                    variant={contractRisk > 70 ? "danger" : contractRisk > 40 ? "warning" : "accent"}
+                  />
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  {clausesList.map((c) => (
+                    <ContentCard key={c.id}>
+                      <div className="mb-1.5 flex items-center justify-between gap-2">
+                        <span
+                          className="text-sm font-bold text-text-primary"
+                          style={{ fontFamily: "var(--font-display)" }}
+                        >
+                          §{c.number} · {c.title}
+                        </span>
+                        <StatusBadge
+                          type={badgeType[c.status as keyof typeof badgeType] || "flagged"}
+                          text={c.status}
+                          size="sm"
+                        />
+                      </div>
+                      <p className="text-[13px] text-text-secondary">
+                        {c.explanation}
+                      </p>
+                      {c.status !== "approved" && (
+                        <div className="clay-inset mt-2.5 rounded-xl p-2.5">
+                          <p
+                            className="text-[11px] font-bold uppercase tracking-wide text-primary"
+                            style={{ fontFamily: "var(--font-display)" }}
+                          >
+                            AI Negotiated Counter-Proposal
+                          </p>
+                          <p className="text-[13px] text-text-primary">{c.counter}</p>
+                        </div>
+                      )}
+                    </ContentCard>
+                  ))}
+                </div>
+
+                <div
+                  className="clay-inset mt-2 flex items-center justify-between rounded-2xl p-4"
+                  style={{ background: "var(--bg-secondary)" }}
+                >
+                  <div>
+                    <p className="text-xs font-semibold text-text-secondary">
+                      Autonomous Revenue Benchmark
+                    </p>
+                    <p className="text-sm text-text-primary">
+                      Offered: <b>{dealOffer}</b> · Benchmarked: <b>{marketBenchmark}</b> ({valueUnlocked})
+                    </p>
+                  </div>
+                  <StatusBadge type="critical" text={valueUnlocked} size="sm" />
+                </div>
+
+                <div className="mt-3 flex flex-wrap gap-2.5">
+                  <ClayButton
+                    label="Export Redlined PDF"
+                    variant="primary"
+                    icon={ACTION_ICONS.file}
+                    onClick={handleExportReport}
+                  />
+                  <ClayButton
+                    label="Send Counter to Sponsor"
+                    variant="secondary"
+                    icon={ACTION_ICONS.edit}
+                    onClick={handleSendCounter}
+                  />
+                </div>
+
+                {/* Toast Feedback */}
+                <AnimatePresence>
+                  {toastMessage && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 8 }}
+                      className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2 mt-2"
+                    >
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span>{toastMessage}</span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ) : uploading ? (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex flex-col gap-4 py-2"
+              >
+                {/* Skeleton Header Ring */}
+                <div className="flex flex-col items-center justify-center py-4 gap-2 border-b border-[var(--border)] pb-5">
+                  <div className="relative w-24 h-24 flex items-center justify-center">
+                    <div className="absolute inset-0 rounded-full border-4 border-[var(--surface-sunken)]" />
+                    <div className="absolute inset-0 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+                    <div className="w-16 h-16 rounded-full bg-primary-pale flex flex-col items-center justify-center text-primary font-bold shadow-2xs">
+                      <span className="text-xs font-mono">{uploadProgress}%</span>
+                      <span className="text-[9px] uppercase tracking-tighter">Audit</span>
+                    </div>
+                  </div>
+                  <h4
+                    className="text-sm font-bold text-text-primary mt-2"
+                    style={{ fontFamily: "var(--font-display)" }}
+                  >
+                    Reasoning on Vertex AI...
+                  </h4>
+                  <p className="text-xs text-text-secondary text-center max-w-xs leading-relaxed">
+                    Contract Reviewer & Revenue Optimizer agents are auditing deal terms, exclusivity windows, and counter-proposals.
+                  </p>
+                </div>
+
+                {/* Shimmer Clause Skeletons */}
+                <div className="flex flex-col gap-3">
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="p-3.5 rounded-2xl bg-[var(--surface-sunken)] border border-[var(--border)] flex flex-col gap-2.5 animate-pulse"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="h-3.5 bg-zinc-300/80 rounded-md w-1/3" />
+                        <div className="h-3.5 bg-rose-200 rounded-md w-16" />
+                      </div>
+                      <div className="h-2.5 bg-zinc-200 rounded-md w-full" />
+                      <div className="h-2.5 bg-zinc-200 rounded-md w-4/5" />
+                      <div className="p-2.5 rounded-xl bg-white/60 border border-zinc-200/50 mt-1">
+                        <div className="h-2.5 bg-primary/20 rounded-md w-1/3 mb-1.5" />
+                        <div className="h-2.5 bg-zinc-200 rounded-md w-5/6" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-16 text-center px-4">
+                <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-primary flex items-center justify-center mb-4 border border-indigo-100">
+                  <File01Icon size={24} />
+                </div>
+                <h4 className="font-bold text-text-primary text-sm font-[var(--font-display)]">
+                  No Contract Loaded Yet
+                </h4>
+                <p className="text-xs text-text-secondary max-w-xs mt-1 leading-relaxed">
+                  Upload a sponsorship agreement on the left or click <b>"Test with Sample Deal"</b> to see live Gemini reasoning, clause risk scores, and counter-proposals.
+                </p>
+              </div>
+            )}
+          </Section>
+        </ClayCard>
+      </div>
     </div>
   )
 }
