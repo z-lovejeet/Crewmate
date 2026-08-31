@@ -1,8 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect, useMemo } from "react"
+import { Link } from "react-router-dom"
 import {
   ActivityFeed,
-  AgentStatusCard,
+  ClayButton,
   ClayCard,
   ClayProgressRing,
   ComplianceOrb,
@@ -12,14 +13,17 @@ import {
 import Section from "../components/layout/Section"
 import { api, AGENTS, FEED } from "../lib/api"
 import {
-  AGENT_ICON_MAP,
   PencilEdit01Icon,
-  ScissorsIcon,
+  VideoAiIcon,
+  ViewIcon,
   Satellite01Icon,
   File01Icon,
   CompassIcon,
   ZapIcon,
   Shield01Icon,
+  Rocket01Icon,
+  AiBrain01Icon,
+  BotIconComp,
 } from "../lib/icons"
 import { useAuth } from "../context/AuthContext"
 import { useStudioStore } from "../store/useStudioStore"
@@ -207,8 +211,6 @@ export default function CommandCenter() {
     }
   }
 
-  const toggle = (id: string) => toggleAgentEnabled(id)
-
   const creatorName = user?.displayName || profile?.displayName || "Alex Rivera"
   const activeAgentsCount = agents.filter((a) => !disabledAgents.includes(a.id)).length
 
@@ -267,65 +269,137 @@ export default function CommandCenter() {
 
       {/* Quick-Start Studio Launcher */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <a href="/scripts" className="p-4 rounded-2xl bg-[var(--surface)] clay-sm hover:clay-md transition-all flex flex-col gap-2 border border-[var(--border)] no-underline group">
-          <div className="w-9 h-9 rounded-xl bg-indigo-50 text-primary flex items-center justify-center">
-            <PencilEdit01Icon size={18} />
+        <Link
+          to="/scripts"
+          className="p-4 rounded-2xl bg-[var(--surface)] clay-sm hover:clay-md transition-all flex flex-col gap-2.5 border border-[var(--border)] no-underline group"
+        >
+          <div className="flex items-center justify-between">
+            <div className="w-9 h-9 rounded-xl bg-indigo-50 text-primary flex items-center justify-center shadow-2xs">
+              <PencilEdit01Icon size={18} />
+            </div>
+            <span className="text-[10px] font-bold text-primary bg-primary-pale px-2 py-0.5 rounded-full">
+              Gemini 3.7 Flash
+            </span>
           </div>
-          <h4 className="font-bold text-text-primary text-xs group-hover:text-primary transition-colors">
-            Script & Hook Architect
-          </h4>
-          <p className="text-[11px] text-text-secondary leading-relaxed">
-            Generate 3-second viral hooks and a complete scene-by-scene script teleprompter.
-          </p>
-        </a>
+          <div>
+            <h4 className="font-bold text-text-primary text-sm group-hover:text-primary transition-colors">
+              Script & Hook Architect
+            </h4>
+            <p className="mt-1 text-xs text-text-secondary leading-relaxed">
+              Generate 3-second viral hooks and complete scene-by-scene script teleprompters.
+            </p>
+          </div>
+        </Link>
 
-        <a href="/media" className="p-4 rounded-2xl bg-[var(--surface)] clay-sm hover:clay-md transition-all flex flex-col gap-2 border border-[var(--border)] no-underline group">
-          <div className="w-9 h-9 rounded-xl bg-purple-50 text-secondary flex items-center justify-center">
-            <ScissorsIcon size={18} />
+        <Link
+          to="/media"
+          className="p-4 rounded-2xl bg-[var(--surface)] clay-sm hover:clay-md transition-all flex flex-col gap-2.5 border border-[var(--border)] no-underline group"
+        >
+          <div className="flex items-center justify-between">
+            <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shadow-2xs">
+              <VideoAiIcon size={18} />
+            </div>
+            <span className="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full">
+              Google Veo 3.1
+            </span>
           </div>
-          <h4 className="font-bold text-text-primary text-xs group-hover:text-secondary transition-colors">
-            Mini-Clips & Media Studio
-          </h4>
-          <p className="text-[11px] text-text-secondary leading-relaxed">
-            Extract viral 9:16 vertical clips (with limits), Imagen 3 thumbnails, & Lyria music.
-          </p>
-        </a>
+          <div>
+            <h4 className="font-bold text-text-primary text-sm group-hover:text-purple-600 transition-colors">
+              AI Video Cinematographer
+            </h4>
+            <p className="mt-1 text-xs text-text-secondary leading-relaxed">
+              Synthesize 8-second cinematic video clips with controllable camera dynamics.
+            </p>
+          </div>
+        </Link>
 
-        <a href="/trends" className="p-4 rounded-2xl bg-[var(--surface)] clay-sm hover:clay-md transition-all flex flex-col gap-2 border border-[var(--border)] no-underline group">
-          <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-            <Satellite01Icon size={18} />
+        <Link
+          to="/media"
+          className="p-4 rounded-2xl bg-[var(--surface)] clay-sm hover:clay-md transition-all flex flex-col gap-2.5 border border-[var(--border)] no-underline group"
+        >
+          <div className="flex items-center justify-between">
+            <div className="w-9 h-9 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center shadow-2xs">
+              <ViewIcon size={18} />
+            </div>
+            <span className="text-[10px] font-bold text-cyan-700 bg-cyan-50 px-2 py-0.5 rounded-full">
+              Gemini 3 Pro Image
+            </span>
           </div>
-          <h4 className="font-bold text-text-primary text-xs group-hover:text-amber-600 transition-colors">
-            Trend Radar & Channel Ideas
-          </h4>
-          <p className="text-[11px] text-text-secondary leading-relaxed">
-            Personalized video recommendations and breakout niche trend velocity analysis.
-          </p>
-        </a>
+          <div>
+            <h4 className="font-bold text-text-primary text-sm group-hover:text-cyan-600 transition-colors">
+              Master Thumbnail Studio
+            </h4>
+            <p className="mt-1 text-xs text-text-secondary leading-relaxed">
+              Generate 1376x768 widescreen YouTube thumbnails with zero text glitches.
+            </p>
+          </div>
+        </Link>
 
-        <a href="/contracts" className="p-4 rounded-2xl bg-[var(--surface)] clay-sm hover:clay-md transition-all flex flex-col gap-2 border border-[var(--border)] no-underline group">
-          <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-            <File01Icon size={18} />
+        <Link
+          to="/trends"
+          className="p-4 rounded-2xl bg-[var(--surface)] clay-sm hover:clay-md transition-all flex flex-col gap-2.5 border border-[var(--border)] no-underline group"
+        >
+          <div className="flex items-center justify-between">
+            <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shadow-2xs">
+              <Satellite01Icon size={18} />
+            </div>
+            <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full">
+              Velocity Radar
+            </span>
           </div>
-          <h4 className="font-bold text-text-primary text-xs group-hover:text-emerald-600 transition-colors">
-            Sponsorship Contract Auditor
-          </h4>
-          <p className="text-[11px] text-text-secondary leading-relaxed">
-            Drop your agreement to redline exclusivity traps and negotiate higher sponsorship fees.
-          </p>
-        </a>
+          <div>
+            <h4 className="font-bold text-text-primary text-sm group-hover:text-amber-600 transition-colors">
+              Trend Radar & Channel Ideas
+            </h4>
+            <p className="mt-1 text-xs text-text-secondary leading-relaxed">
+              Personalized video recommendations and breakout niche trend velocity analysis.
+            </p>
+          </div>
+        </Link>
 
-        <a href="/compliance" className="p-4 rounded-2xl bg-[var(--surface)] clay-sm hover:clay-md transition-all flex flex-col gap-2 border border-[var(--border)] no-underline group">
-          <div className="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
-            <Shield01Icon size={18} />
+        <Link
+          to="/contracts"
+          className="p-4 rounded-2xl bg-[var(--surface)] clay-sm hover:clay-md transition-all flex flex-col gap-2.5 border border-[var(--border)] no-underline group"
+        >
+          <div className="flex items-center justify-between">
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shadow-2xs">
+              <File01Icon size={18} />
+            </div>
+            <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+              Legal Shield
+            </span>
           </div>
-          <h4 className="font-bold text-text-primary text-xs group-hover:text-rose-600 transition-colors">
-            Compliance & Revenue Shield
-          </h4>
-          <p className="text-[11px] text-text-secondary leading-relaxed">
-            FTC disclosure scanner, copyright checker, and sponsorship rate optimizer.
-          </p>
-        </a>
+          <div>
+            <h4 className="font-bold text-text-primary text-sm group-hover:text-emerald-600 transition-colors">
+              Sponsorship Contract Auditor
+            </h4>
+            <p className="mt-1 text-xs text-text-secondary leading-relaxed">
+              Drop your agreement to redline exclusivity traps and negotiate higher sponsorship fees.
+            </p>
+          </div>
+        </Link>
+
+        <Link
+          to="/compliance"
+          className="p-4 rounded-2xl bg-[var(--surface)] clay-sm hover:clay-md transition-all flex flex-col gap-2.5 border border-[var(--border)] no-underline group"
+        >
+          <div className="flex items-center justify-between">
+            <div className="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shadow-2xs">
+              <Shield01Icon size={18} />
+            </div>
+            <span className="text-[10px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full">
+              FTC & Lyria
+            </span>
+          </div>
+          <div>
+            <h4 className="font-bold text-text-primary text-sm group-hover:text-rose-600 transition-colors">
+              Compliance Shield & Lyria AI
+            </h4>
+            <p className="mt-1 text-xs text-text-secondary leading-relaxed">
+              FTC disclosure scanner, copyright checker, and royalty-free Lyria music generator.
+            </p>
+          </div>
+        </Link>
       </div>
 
       {/* Captain Multi-Agent Mission Dispatch Studio */}
@@ -399,30 +473,77 @@ export default function CommandCenter() {
         </div>
       </ClayCard>
 
-      {/* Fleet Overview (15 Agents Grid) */}
-      <Section title="Agent Fleet" hint="15 specialized agents continuously operating">
-        <motion.div
-          variants={stagger}
-          initial="initial"
-          animate="animate"
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5"
-        >
-          {agents.map((a) => (
-            <motion.div key={a.id} variants={item}>
-              <AgentStatusCard
-                agentName={a.name}
-                icon={AGENT_ICON_MAP[a.id] || <CompassIcon size={20} />}
-                status={a.status}
-                taskCount={a.taskCount || 4}
-                enabled={!disabledAgents.includes(a.id)}
-                model={a.id === "orchestrator" ? "gemini-3.1-pro-preview" : a.id === "thumbnail_generator" ? "gemini-3-pro-image" : a.id === "video_editor" ? "gemini-omni-1.1" : "gemini-3.7-flash"}
-                role={a.role || a.description || "Autonomous specialist"}
-                onToggle={() => toggle(a.id)}
+      {/* ─── Enterprise Agent Fleet Hub ───────────────────────────────────── */}
+      <ClayCard>
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 p-2">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-50 to-primary-pale border border-primary/20 text-primary flex items-center justify-center shrink-0 shadow-2xs">
+              <BotIconComp size={24} />
+            </div>
+            <div className="flex flex-col gap-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3
+                  className="text-base sm:text-lg font-extrabold text-text-primary tracking-tight"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  Autonomous 15-Agent Fleet Command
+                </h3>
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-bold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>15/15 Active Nodes</span>
+                </span>
+              </div>
+              <p className="text-xs sm:text-sm text-text-secondary leading-relaxed max-w-2xl">
+                Want to inspect agent reasoning, customize system instructions, or run direct single-agent commands? Access all 15 specialized fleet nodes in the Agent Fleet Command Center.
+              </p>
+            </div>
+          </div>
+
+          <div className="shrink-0 w-full lg:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <Link to="/fleet" className="no-underline">
+              <ClayButton
+                label="Access & Inspect Fleet Nodes"
+                variant="primary"
+                icon={<Rocket01Icon size={16} />}
+                className="w-full sm:w-auto"
               />
-            </motion.div>
-          ))}
-        </motion.div>
-      </Section>
+            </Link>
+          </div>
+        </div>
+
+        {/* Quick Capabilities Grid */}
+        <div className="mt-5 pt-4 border-t border-[var(--border)] grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+          <div className="p-3 rounded-xl bg-[var(--surface-sunken)] border border-[var(--border)] flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg bg-indigo-50 text-primary flex items-center justify-center shrink-0">
+              <Shield01Icon size={14} />
+            </div>
+            <div>
+              <p className="font-bold text-text-primary">Zero-Trust Agent RBAC</p>
+              <p className="text-[11px] text-text-tertiary">Least-privilege isolation</p>
+            </div>
+          </div>
+
+          <div className="p-3 rounded-xl bg-[var(--surface-sunken)] border border-[var(--border)] flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <ZapIcon size={14} />
+            </div>
+            <div>
+              <p className="font-bold text-text-primary">OpenTelemetry Traces</p>
+              <p className="text-[11px] text-text-tertiary">Live spans logged to Firestore</p>
+            </div>
+          </div>
+
+          <div className="p-3 rounded-xl bg-[var(--surface-sunken)] border border-[var(--border)] flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+              <AiBrain01Icon size={14} />
+            </div>
+            <div>
+              <p className="font-bold text-text-primary">Persistent Memory Bank</p>
+              <p className="text-[11px] text-text-tertiary">Channel DNA shared fleet-wide</p>
+            </div>
+          </div>
+        </div>
+      </ClayCard>
 
       {/* ─── Live Content Calendar & Agent A07 Cadence Intelligence ────── */}
       <Section
