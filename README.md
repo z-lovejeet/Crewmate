@@ -72,7 +72,6 @@ Built for the **[All Things Agentic Hackathon 2026](https://allthingsagentichack
 - [Project Structure](#project-structure)
 - [API Endpoints](#api-endpoints)
 - [Architecture Deep Dive](#architecture-deep-dive)
-- [Prize Targeting](#prize-targeting)
 
 ---
 
@@ -589,18 +588,6 @@ Crewmate/
 | `POST` | `/api/videos/generate` | Google Veo 3.1 cinematic video synthesis |
 | `POST` | `/api/music/suggest` | Lyria AI royalty-free audio replacements |
 | `POST` | `/api/clips/extract` | Long-form to short-form viral clip extraction |
-
----
-
-## Prize Targeting
-
-| Prize Track | Award | Qualifications |
-|:---|:---|:---|
-| **Grand Prize** | $50,000 | 15+ Google technologies integrated, 15 autonomous agents, full 7-layer GEAP, multimodal UX, live Cloud Run deployment. |
-| **Fortified Enterprise Fleet** | $20,000 | Complete 7/7 GEAP implementation: Agent Registry, Memory Bank, Model Armor, Agent Identity, Gateway, Observability, and Runtime. |
-| **The Collaborative Partner** | $20,000 | 2-person team structure with clear specialization across Full-Stack Agent Engineering and AI Domain Research & Documentation. |
-| **Best Architectural Design** | $5,000 | Strict 7-layer decoupled architecture, 10+ Mermaid flow diagrams, 1,175-line ARCHITECTURE.md. |
-| **Best Multimodal UX** | $5,000 | Voice, Vision (PDF analysis), Diffusion (Gemini 3 Pro Image), Video (Veo 3.1), and 3D Claymorphism UI. |
 
 ---
 
