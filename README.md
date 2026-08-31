@@ -1,158 +1,188 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/Track-Fortified_Enterprise_Fleet-blueviolet?style=for-the-badge" alt="Track 3" />
-  <img src="https://img.shields.io/badge/Hackathon-All_Things_Agentic_2026-blue?style=for-the-badge" alt="Hackathon" />
-  <img src="https://img.shields.io/badge/Agents-15_Autonomous-brightgreen?style=for-the-badge" alt="15 Agents" />
-  <img src="https://img.shields.io/badge/GEAP-7%2F7_Components-orange?style=for-the-badge" alt="GEAP 7/7" />
-  <img src="https://img.shields.io/badge/Google_Tech-15%2B_Integrated-red?style=for-the-badge" alt="15+ Google Tech" />
-  <img src="https://img.shields.io/badge/GCP_Project-crewmate--507013-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white" alt="GCP Project" />
+  <a href="https://crewmate-285381944529.us-central1.run.app" target="_blank">
+    <img src="assets/logo-lockup.png" alt="Crewmate Logo" width="400" />
+  </a>
 </p>
 
-# 🚀 Crewmate — The Fortified Enterprise Fleet for Content Creators
+<p align="center">
+  <strong>The Fortified Enterprise Multi-Agent Fleet for Content Creators</strong>
+</p>
+
+<p align="center">
+  <a href="https://crewmate-285381944529.us-central1.run.app"><img src="https://img.shields.io/badge/Live%20Deployment-crewmate--285381944529.us--central1.run.app-4F46E5?style=for-the-badge&logo=google-cloud&logoColor=white" alt="Live Demo" /></a>
+  <a href="https://allthingsagentichackathon.devpost.com/"><img src="https://img.shields.io/badge/Track-Fortified%20Enterprise%20Fleet-7C3AED?style=for-the-badge" alt="Track 3" /></a>
+  <img src="https://img.shields.io/badge/Fleet-15%20Autonomous%20Agents-059669?style=for-the-badge" alt="15 Agents" />
+  <img src="https://img.shields.io/badge/GEAP-7%2F7%20Components-D97706?style=for-the-badge" alt="GEAP 7/7" />
+  <img src="https://img.shields.io/badge/Google%20Tech-15%2B%20Integrated-DC2626?style=for-the-badge" alt="15+ Google Tech" />
+</p>
+
+<p align="center">
+  <a href="https://crewmate-285381944529.us-central1.run.app"><strong>Launch Live App</strong></a> •
+  <a href="ARCHITECTURE.md"><strong>System Architecture</strong></a> •
+  <a href="#quickstart--local-setup"><strong>Quickstart Guide</strong></a> •
+  <a href="#15-agent-fleet-roster"><strong>Agent Roster</strong></a>
+</p>
+
+---
+
+## Executive Summary
 
 > *"Enterprise-grade agent governance — built for the unlikely hero who deserves a Fortune 500 toolkit."*
 
-**Crewmate** is a fully autonomous **15-agent enterprise fleet** that gives solo content creators the same governance, security, and multi-agent intelligence that Fortune 500 companies have — powered by **Google ADK**, **Gemini**, **Vertex AI**, and **Google Cloud Firestore**.
+**Crewmate** is a production-grade **15-agent autonomous enterprise fleet** that gives content creators the same governance, security, and multi-agent intelligence that Fortune 500 enterprises rely on. Powered by **Google ADK**, **Gemini 3.7 Flash**, **Vertex AI**, **Google Veo 3.1**, and **Google Cloud Firestore**, Crewmate implements the complete 7-pillar **Gemini Enterprise Agent Platform (GEAP)**:
+
+- **Agent Registry**: Firestore-backed discovery, versioning, and real-time health checks
+- **Persistent Memory Bank**: Cross-session brand deal context, creator preferences, and negotiation memory
+- **Model Armor**: Pre-execution prompt injection defense, PII masking, and output content screening
+- **Agent Identity & RBAC**: Least-privilege per-agent permission matrices across collections and tools
+- **Agent Gateway**: Sliding-window rate limiting (120 req/min), 3-state circuit breakers, and telemetry headers
+- **OpenTelemetry Observability**: Distributed span tracing with token counts, tool call latencies, and audit logs
+- **Agent Runtime**: Asynchronous lifecycle state machines (`pending` → `running` → `completed`)
 
 Built for the **[All Things Agentic Hackathon 2026](https://allthingsagentichackathon.devpost.com/)** under **Track 3: The Fortified Enterprise Fleet**.
 
-| | |
+| Parameter | Production Detail |
 |:---|:---|
-| **🎯 GCP Project ID** | `crewmate-507013` |
-| **🌐 Live Deployment** | [crewmate-285381944529.us-central1.run.app](https://crewmate-285381944529.us-central1.run.app) |
-| **🧠 Primary Model** | Gemini 3.7 Flash (Vertex AI) |
-| **🎬 Video Model** | Veo 3.1 |
-| **🖼️ Image Model** | Gemini 3 Pro Image |
-| **👥 Team** | Lovejeet Singh & Sachit Babbar |
+| **Live Web Deployment** | [crewmate-285381944529.us-central1.run.app](https://crewmate-285381944529.us-central1.run.app) |
+| **GCP Project ID** | `crewmate-507013` (us-central1) |
+| **Orchestration Model** | Gemini 3.1 Pro Preview (Supervisor) |
+| **Core Reasoning Fleet** | Gemini 3.7 Flash (Vertex AI) |
+| **Generative Video** | Google Veo 3.1 (8s cinematic clips) |
+| **Generative Vision** | Gemini 3 Pro Image (1376×768 CTR thumbnails) |
+| **Audio Intelligence** | Lyria AI (royalty-free music replacements) |
+| **Edge Classification** | Gemma 2 (comment clustering & sentiment) |
+| **Engineering & Research Team** | Lovejeet Singh & Sachit Babbar |
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
-- [The Problem — Why This Matters](#-the-problem--why-this-matters)
-- [The "Unlikely Hero" Thesis](#-the-unlikely-hero-thesis)
-- [Live Demo](#-live-demo)
-- [System Architecture (7-Layer GEAP)](#%EF%B8%8F-system-architecture-7-layer-geap)
-- [GEAP Component Matrix (7/7)](#%EF%B8%8F-geap-component-matrix-77)
-- [15-Agent Fleet Roster](#-15-agent-fleet-roster)
-- [How It Works — Request Lifecycle](#-how-it-works--request-lifecycle)
-- [Security Architecture](#%EF%B8%8F-security-architecture)
-- [Multimodal UX — Voice, Vision & 3D Dashboard](#-multimodal-ux--voice-vision--3d-dashboard)
-- [Google Technologies Stack (15+ Integrated)](#-google-technologies-stack-15-integrated)
-- [Quickstart & Local Setup](#-quickstart--local-setup)
-- [Google Cloud Run Deployment](#-google-cloud-run-deployment)
-- [Project Structure](#-project-structure)
-- [API Endpoints](#-api-endpoints)
-- [Architecture Deep Dive](#-architecture-deep-dive)
+- [The Problem — Why This Matters](#the-problem--why-this-matters)
+- [The Unlikely Hero Thesis](#the-unlikely-hero-thesis)
+- [Live Demo Walkthrough](#live-demo-walkthrough)
+- [System Architecture (7-Layer GEAP)](#system-architecture-7-layer-geap)
+- [GEAP Component Matrix (7/7)](#geap-component-matrix-77)
+- [15-Agent Fleet Roster](#15-agent-fleet-roster)
+- [How It Works — Request Lifecycle](#how-it-works--request-lifecycle)
+- [Security Architecture](#security-architecture)
+- [Multimodal UX — Voice, Vision & 3D Dashboard](#multimodal-ux--voice-vision--3d-dashboard)
+- [Google Technologies Stack (15+ Integrated)](#google-technologies-stack-15-integrated)
+- [Quickstart & Local Setup](#quickstart--local-setup)
+- [Google Cloud Run Deployment](#google-cloud-run-deployment)
+- [Project Structure](#project-structure)
+- [API Endpoints](#api-endpoints)
+- [Architecture Deep Dive](#architecture-deep-dive)
+- [Prize Targeting](#prize-targeting)
 
 ---
 
-## 🔥 The Problem — Why This Matters
+## The Problem — Why This Matters
 
-The creator economy is worth **$250B+** with **50M+ content creators** worldwide. Yet solo creators managing brand sponsorships, content compliance, and multi-platform distribution rely on **spreadsheets, manual checklists, and gut instinct**.
+The creator economy is worth **$250B+** with **50M+ content creators** worldwide. Yet creators managing brand sponsorships, legal disclosures, content compliance, and multi-platform distribution rely on **spreadsheets, manual checklists, and gut instinct**.
 
 They face catastrophic risks:
 
 ```mermaid
 flowchart LR
-    subgraph RISKS["❌ What Solo Creators Face"]
-        R1["📄 Predatory Contracts\nHidden 12-month exclusivity\nBelow-market rates\nBuried perpetual rights clauses"]
-        R2["⚖️ Compliance Minefields\nFTC 16 CFR § 255 violations\nCopyright takedown strikes\nPlatform demonetization"]
-        R3["📱 Multi-Platform Chaos\nYouTube + Instagram + Shorts\nDifferent specs & metadata\nManual scheduling"]
-        R4["🔓 Zero Governance\nNo audit trails\nNo security screening\nNo memory of past deals"]
+    subgraph RISKS["What Creators Face"]
+        R1["Predatory Contracts\nHidden 12-month exclusivity\nBelow-market rates\nBuried perpetual rights clauses"]
+        R2["Compliance Minefields\nFTC 16 CFR § 255 violations\nCopyright takedown strikes\nPlatform demonetization"]
+        R3["Multi-Platform Chaos\nYouTube + Instagram + Shorts\nDifferent specs & metadata\nManual scheduling"]
+        R4["Zero Governance\nNo audit trails\nNo security screening\nNo memory of past deals"]
     end
 
-    subgraph IMPACT["💥 Real Consequences"]
-        I1["💸 Lost $10K+ per bad deal"]
-        I2["🚫 Account suspension"]
-        I3["😰 Creator burnout"]
+    subgraph IMPACT["Real Consequences"]
+        I1["Lost $10K+ per bad deal"]
+        I2["Account suspension"]
+        I3["Creator burnout"]
     end
 
     R1 & R2 & R3 & R4 --> I1 & I2 & I3
 ```
 
-**A single FTC violation can mean demonetization. A single bad contract can trap a creator for 12 months. A single copyright strike can end a career.**
+A single FTC violation can trigger platform demonetization. A single bad sponsorship contract can lock a creator for 12 months with no compensation. A single copyright strike can jeopardize years of work.
 
-Solo creators cannot afford a full-time legal team, compliance department, or analytics division. **Until now.**
+Creators cannot afford a full-time corporate legal team, compliance department, or analytics division. **Crewmate provides that backstage crew autonomously.**
 
 ---
 
-## 🎯 The "Unlikely Hero" Thesis
+## The Unlikely Hero Thesis
 
-> Enterprise agent fleets are built for Fortune 500 CIOs. **Crewmate builds one for the solo YouTuber.**
+> Enterprise agent fleets are built for Fortune 500 CIOs. **Crewmate builds one for the content creator.**
 
-This is the **"Unlikely Hero"** — the solo content creator who manages a multi-million-view business alone, without corporate support, legal counsel, or governance infrastructure.
+This is the **"Unlikely Hero"** — the creator who operates a multi-million-view media business without corporate support, legal counsel, or governance infrastructure.
 
 ```mermaid
 flowchart TD
-    subgraph BEFORE["😰 Before Crewmate"]
-        B1["Solo creator reviews contracts manually"]
+    subgraph BEFORE["Before Crewmate"]
+        B1["Creator reviews contracts manually"]
         B2["Misses hidden exclusivity traps"]
         B3["Signs $4,500 deal worth $12,000"]
         B4["Gets locked into 12-month exclusivity"]
         B5["Loses $80K+ in potential deals"]
     end
 
-    subgraph AFTER["🚀 After Crewmate"]
+    subgraph AFTER["After Crewmate"]
         A1["Creator uploads contract PDF"]
         A2["15-agent fleet activates autonomously"]
         A3["Contract Reviewer extracts 8 clauses"]
         A4["Revenue Optimizer benchmarks at $12K"]
         A5["Brand Safety clears sponsor reputation"]
-        A6["Memory Bank recalls past NordVPN quirks"]
+        A6["Memory Bank recalls past brand deal history"]
         A7["Report Generator compiles executive summary"]
-        A8["Creator negotiates from $4.5K → $12K"]
+        A8["Creator negotiates from $4.5K to $12K"]
     end
 
-    BEFORE -.->|"Crewmate\nFortified Fleet"| AFTER
+    BEFORE -.->|"Crewmate Fortified Fleet"| AFTER
 ```
 
-**The Twist**: We don't just use enterprise infrastructure to run agents — we built the **full Gemini Enterprise Agent Platform (GEAP)** with all 7 components to protect creators the same way enterprises protect their operations. Every agent request passes through rate limiting, Model Armor security screening, per-agent RBAC identity verification, and full OpenTelemetry observability — **the exact same governance stack that protects banking and healthcare AI**.
+Every agent request passes through rate limiting, Model Armor security screening, per-agent RBAC identity verification, and full OpenTelemetry observability — **the exact same governance stack that protects enterprise banking and healthcare AI**.
 
 ---
 
-## 🎬 Live Demo
+## Live Demo Walkthrough
 
-> 📹 **[Watch the Demo Video →](#)** *(3-4 min walkthrough showing autonomous agent execution)*
+> **Live Application**: [https://crewmate-285381944529.us-central1.run.app](https://crewmate-285381944529.us-central1.run.app)
 
-**What the demo shows:**
-1. **Autonomous Contract Review** — Creator uploads a NordVPN contract PDF → 4 agents activate simultaneously → risk scores, counter-proposals, and executive summary generated autonomously
-2. **Model Armor Security** — Live prompt injection attempt blocked with `403 MODEL_ARMOR_BLOCKED`
-3. **Memory Bank Persistence** — Agent recalls past NordVPN deal history ($7,500 last deal, 60-day exclusivity quirk) across sessions
-4. **Multimodal UX** — Voice commands, PDF vision analysis, AI-generated thumbnails (Gemini 3 Pro Image), and AI video synthesis (Veo 3.1)
-5. **Real-time Observability** — Live reasoning traces with latency, tool calls, and token metrics on the Fleet Dashboard
+**Key Workflows Demonstrated:**
+1. **Autonomous Contract Review**: Creator uploads a contract PDF → 4 agents activate simultaneously → risk scores, redlines, counter-proposals, and executive summary generated autonomously.
+2. **Model Armor Security**: Live prompt injection attempts and malicious inputs blocked with `403 MODEL_ARMOR_BLOCKED`.
+3. **Memory Bank Persistence**: Agent recalls past brand deal histories ($7,500 deal history, exclusivity terms) across sessions via Firestore.
+4. **Multimodal Content Engine**: Voice commands, PDF vision analysis, AI-generated thumbnails (Gemini 3 Pro Image), and AI video synthesis (Veo 3.1).
+5. **Real-time Observability**: Live reasoning traces with latency, tool calls, and token metrics on the Fleet Dashboard.
 
 ---
 
-## 🏛️ System Architecture (7-Layer GEAP)
+## System Architecture (7-Layer GEAP)
 
-Crewmate implements a strict **7-layer separation of concerns**. Every request traverses all layers top-to-bottom; every response traverses bottom-to-top. **No layer may be bypassed.**
+Crewmate implements a strict **7-layer separation of concerns**. Every request traverses all layers top-to-bottom; every response traverses bottom-to-top:
 
 ```mermaid
 flowchart TD
-    subgraph L1["🎨 Layer 1 — Presentation"]
+    subgraph L1["Layer 1 — Presentation"]
         UI["React 19 + 3D Claymorphism Dashboard"]
-        Voice["🎙️ Web Speech API Voice Gateway"]
-        Auth["🔐 Firebase Auth (Google SSO)"]
+        Voice["Web Speech API Voice Gateway"]
+        Auth["Firebase Auth (Google SSO)"]
     end
 
-    subgraph L2["🔀 Layer 2 — API Gateway"]
+    subgraph L2["Layer 2 — API Gateway"]
         GW["FastAPI Gateway (Cloud Run)"]
-        RL["⏱️ Sliding-Window Rate Limiter\n120 req/min per IP"]
-        CB["⚡ Circuit Breaker\nCLOSED → OPEN → HALF_OPEN"]
+        RL["Sliding-Window Rate Limiter\n120 req/min per IP"]
+        CB["Circuit Breaker\nCLOSED -> OPEN -> HALF_OPEN"]
     end
 
-    subgraph L3["🛡️ Layer 3 — Security & Identity"]
+    subgraph L3["Layer 3 — Security & Identity"]
         MA_IN["Model Armor — Input Screening\n15+ Injection Patterns + PII Filters"]
         RBAC["Agent Identity — RBAC\n15 Scoped Permission Matrices"]
         MA_OUT["Model Armor — Output Sanitization\nPII Redaction"]
     end
 
-    subgraph L4["🧠 Layer 4 — Orchestration Engine"]
+    subgraph L4["Layer 4 — Orchestration Engine"]
         ORCH["Fleet Orchestrator Captain\ngemini-3.1-pro-preview"]
         REG["Agent Registry Service\nFirestore Catalog"]
     end
 
-    subgraph L5["🤖 Layer 5 — Autonomous Agent Fleet"]
+    subgraph L5["Layer 5 — Autonomous Agent Fleet"]
         direction LR
         A1["Contract\nReviewer"]
         A2["Content\nCompliance"]
@@ -170,15 +200,15 @@ flowchart TD
         A14["Community\nGuardian"]
     end
 
-    subgraph L6["💾 Layer 6 — State & Memory Bank"]
+    subgraph L6["Layer 6 — State & Memory Bank"]
         FS[("Google Cloud Firestore\nNative Mode")]
-        MEM["🧠 Persistent Memory Bank\nCreator Context + Brand History"]
-        TRACES["📊 Traces Collection\nOpenTelemetry Spans"]
+        MEM["Persistent Memory Bank\nCreator Context + Brand History"]
+        TRACES["Traces Collection\nOpenTelemetry Spans"]
     end
 
-    subgraph L7["📈 Layer 7 — Observability & Telemetry"]
+    subgraph L7["Layer 7 — Observability & Telemetry"]
         OTEL["Live Reasoning Spans\nLatency • Tokens • Tool Calls"]
-        AUDIT["🚨 Security Audit Log\nModel Armor Events"]
+        AUDIT["Security Audit Log\nModel Armor Events"]
     end
 
     UI & Voice --> GW
@@ -193,68 +223,68 @@ flowchart TD
     MA_IN --> AUDIT
 ```
 
-> 📐 For the full layer-by-layer technical deep dive, see [**ARCHITECTURE.md**](ARCHITECTURE.md)
+> For the comprehensive layer-by-layer technical deep dive, see [**ARCHITECTURE.md**](ARCHITECTURE.md)
 
 ---
 
-## 🛡️ GEAP Component Matrix (7/7)
+## GEAP Component Matrix (7/7)
 
 Crewmate implements **100% of the 7 Gemini Enterprise Agent Platform (GEAP) requirements**:
 
-| # | GEAP Component | What It Does | How Crewmate Implements It | Source |
+| # | GEAP Component | Function | Crewmate Implementation | Source File |
 |:---|:---|:---|:---|:---|
-| 1 | **Agent Registry** | Central repository for publishing, versioning, and discovering agents | Firestore `agents` collection with 15 agent registrations. Parallel-seeded on startup with metadata, versioning (v2.0+), health status, and capability arrays. | [`services/registry.py`](backend/services/registry.py) |
-| 2 | **Memory Bank** | Persistent, secure cross-session context | Creator preferences ($6,500 min deal, 30-day max exclusivity, forbidden categories) + historical brand deal interactions (NordVPN: 3 deals, $7,500 last). Context auto-injected into agent system prompts. | [`services/memory.py`](backend/services/memory.py) |
-| 3 | **Model Armor** | Inline security guardrails for input/output | Pre-execution: 15+ prompt injection regex patterns, PII filters (SSN, credit cards). Post-execution: output PII redaction → `[REDACTED_BY_MODEL_ARMOR]`. All events logged to Firestore `armor_logs` with SHA-256 hashed payloads. | [`middleware/model_armor.py`](backend/middleware/model_armor.py) |
-| 4 | **Agent Identity** | Per-agent role-based access control | Zero-trust RBAC matrix with declared `allowed_actions`, `readable_collections`, and `writable_collections` for each of the 15 agents. Fleet Captain has unrestricted `*` access; all others are scoped. | [`middleware/identity.py`](backend/middleware/identity.py) |
-| 5 | **Agent Gateway** | Unified entrypoint with traffic governance | Sliding-window rate limiter (120 req/60s per IP), 3-state circuit breakers (CLOSED → OPEN → HALF_OPEN, 3 failure threshold, 30s recovery), standardized telemetry headers (`X-Gateway-Engine`, `X-Response-Time-Ms`). | [`middleware/gateway.py`](backend/middleware/gateway.py) |
-| 6 | **Agent Observability** | End-to-end reasoning traces | OpenTelemetry-compliant `SpanContext` tracking trace_id, span_id, agent_id, action, tool calls (name, args, latency), token metrics, output summaries. All persisted to Firestore `traces` collection with aggregate dashboard metrics. | [`services/observability.py`](backend/services/observability.py) |
-| 7 | **Agent Runtime** | Long-running async background execution | Firestore-backed lifecycle state machine: `pending` → `running` → `completed` / `failed`. Step tracking with progress percentages, timestamp tracking (`created_at`, `started_at`, `completed_at`). | [`services/runtime.py`](backend/services/runtime.py) |
+| 1 | **Agent Registry** | Central repository for publishing, versioning, and discovering agents | Firestore `agents` collection with 15 agent registrations. Seeded on startup with metadata, versioning, health status, and capability arrays. | [`services/registry.py`](backend/services/registry.py) |
+| 2 | **Memory Bank** | Persistent, secure cross-session context | Creator preferences ($6,500 min deal, 30-day max exclusivity) + historical brand deal interactions. Context auto-injected into agent reasoning. | [`services/memory.py`](backend/services/memory.py) |
+| 3 | **Model Armor** | Inline security guardrails for input and output | Pre-execution: 15+ prompt injection patterns, PII filters (SSN, credit cards). Post-execution: output PII redaction to `[REDACTED_BY_MODEL_ARMOR]`. Events logged to Firestore `armor_logs`. | [`middleware/model_armor.py`](backend/middleware/model_armor.py) |
+| 4 | **Agent Identity** | Per-agent role-based access control | Zero-trust RBAC matrix with declared `allowed_actions`, `readable_collections`, and `writable_collections` for each agent. Orchestrator has broad routing; workers are strictly scoped. | [`middleware/identity.py`](backend/middleware/identity.py) |
+| 5 | **Agent Gateway** | Unified entrypoint with traffic governance | Sliding-window rate limiter (120 req/60s per IP), 3-state circuit breakers (CLOSED → OPEN → HALF_OPEN, 30s recovery), standardized telemetry headers (`X-Gateway-Engine`, `X-Response-Time-Ms`). | [`middleware/gateway.py`](backend/middleware/gateway.py) |
+| 6 | **Agent Observability** | End-to-end reasoning traces | OpenTelemetry-compliant `SpanContext` tracking trace_id, span_id, agent_id, action, tool calls (name, args, latency), token metrics, and output summaries. Stored in Firestore `traces`. | [`services/observability.py`](backend/services/observability.py) |
+| 7 | **Agent Runtime** | Long-running async background execution | Firestore-backed lifecycle state machine: `pending` → `running` → `completed` / `failed`. Step tracking with progress percentages and execution timestamps. | [`services/runtime.py`](backend/services/runtime.py) |
 
 ---
 
-## 🤖 15-Agent Fleet Roster
+## 15-Agent Fleet Roster
 
 The Fleet Orchestrator Captain (powered by `gemini-3.1-pro-preview`) supervises 14 specialized worker agents, each built with **Google ADK** and equipped with domain-specific tools:
 
 ```mermaid
 flowchart TD
-    CAPTAIN["🧠 Fleet Orchestrator\ngemini-3.1-pro-preview\n(Captain & Supervisor)"]
+    CAPTAIN["Fleet Orchestrator\ngemini-3.1-pro-preview\n(Captain & Supervisor)"]
 
-    subgraph BIZ["💼 Business Intelligence"]
-        CR["📄 Contract Reviewer\nClause extraction, risk scoring\ncounter-proposal drafting"]
-        RO["💰 Revenue Optimizer\nCPM benchmarking, deal valuation\nnegotiation leverage"]
+    subgraph BIZ["Business Intelligence"]
+        CR["Contract Reviewer\nClause extraction, risk scoring\ncounter-proposal drafting"]
+        RO["Revenue Optimizer\nCPM benchmarking, deal valuation\nnegotiation leverage"]
     end
 
-    subgraph LEGAL["⚖️ Legal & Compliance"]
-        CC["📋 Content Compliance\nFTC 16 CFR § 255 audit\ncopyright scan, Lyria replacement"]
-        BS["🛡️ Brand Safety\nControversy detection\nbrand alignment, audience trust"]
+    subgraph LEGAL["Legal & Compliance"]
+        CC["Content Compliance\nFTC 16 CFR § 255 audit\ncopyright scan, Lyria replacement"]
+        BS["Brand Safety\nControversy detection\nbrand alignment, audience trust"]
     end
 
-    subgraph GROWTH["📈 Growth Engine"]
-        DM["🌐 Distribution Manager\nYouTube SEO, IG Reels tags\nplatform-specific metadata"]
-        CAL["📅 Content Calendar\nConflict detection\ncross-platform cadence"]
-        TR["📡 Trend Radar\nViral signal hunting\nvelocity scoring, content briefs"]
-        HA["✍️ Hook Architect\nFirst-3s hooks, beat-by-beat\ncuriosity gap scripts"]
+    subgraph GROWTH["Growth Engine"]
+        DM["Distribution Manager\nYouTube SEO, IG Reels tags\nplatform-specific metadata"]
+        CAL["Content Calendar\nConflict detection\ncross-platform cadence"]
+        TR["Trend Radar\nViral signal hunting\nvelocity scoring, content briefs"]
+        HA["Hook Architect\nFirst-3s hooks, beat-by-beat\ncuriosity gap scripts"]
     end
 
-    subgraph CREATE["🎬 Media Creation"]
-        VC["🎥 Video Cinematographer\nVeo 3.1 — 8s cinematic clips\ncamera direction, prompts"]
-        TD["🖼️ Thumbnail Director\nGemini 3 Pro Image\n1376×768 CTR-optimized"]
-        CD["✂️ Clipping Director\nLong-to-short extraction\n9:16 vertical packaging"]
+    subgraph CREATE["Media Creation"]
+        VC["Video Cinematographer\nVeo 3.1 — 8s cinematic clips\ncamera direction, prompts"]
+        TD["Thumbnail Director\nGemini 3 Pro Image\n1376x768 CTR-optimized"]
+        CD["Clipping Director\nLong-to-short extraction\n9:16 vertical packaging"]
     end
 
-    subgraph ANALYTICS["📊 Analytics"]
-        AA["👥 Audience Analyst\nDemographic synthesis\nretention physics, drop-off"]
-        RG["📑 Report Generator\nExecutive summaries\nPDF audit dossiers"]
+    subgraph ANALYTICS["Analytics"]
+        AA["Audience Analyst\nDemographic synthesis\nretention physics, drop-off"]
+        RG["Report Generator\nExecutive summaries\nPDF audit dossiers"]
     end
 
-    subgraph SEC["🔒 Security"]
-        TS["🚨 Threat Sentinel\nModel Armor anomaly monitor\ncircuit breaker isolation"]
+    subgraph SEC["Security"]
+        TS["Threat Sentinel\nModel Armor anomaly monitor\ncircuit breaker isolation"]
     end
 
-    subgraph COMM["💬 Community"]
-        CG["🗣️ Community Guardian\nGemma sentiment clustering\ntoxic moderation, replies"]
+    subgraph COMM["Community"]
+        CG["Community Guardian\nGemma sentiment clustering\ntoxic moderation, replies"]
     end
 
     CAPTAIN --> BIZ & LEGAL & GROWTH & CREATE & ANALYTICS & SEC & COMM
@@ -271,44 +301,44 @@ flowchart TD
 | 6 | **Brand Safety** | `gemini-3.7-flash` | Legal | Controversy scan, brand alignment check, audience fit evaluation |
 | 7 | **Content Calendar** | `gemini-3.7-flash` | Growth | Schedule conflict detection, cross-platform cadence, sponsor obligation tracking |
 | 8 | **Threat Sentinel** | `gemini-3.7-flash` | Security | Model Armor anomaly detection, tool poisoning defense, circuit breaker tripping |
-| 9 | **Audience Analyst** | `gemini-3.7-flash` | Analytics | Demographic synthesis, drop-off curve modeling, topic affinity scoring |
+| 9 | **Audience Analyst`** | `gemini-3.7-flash` | Analytics | Demographic synthesis, drop-off curve modeling, topic affinity scoring |
 | 10 | **Trend Radar** | `gemini-3.7-flash` | Growth | Trending topic scan, content gap analysis, velocity scoring, brief generation |
 | 11 | **Hook & Script Architect** | `gemini-3.7-flash` | Growth | Retention hook engineering, beat-by-beat scripting, curiosity gap optimization |
 | 12 | **AI Video Cinematographer** | `veo-3.1-fast-generate-001` | Creation | Cinematography planning, Veo 3.1 prompt engineering, 8s cinematic clip synthesis |
 | 13 | **Thumbnail Director** | `gemini-3-pro-image` | Creation | Rule-of-thirds framing, CTR prediction, anti-text guardrail diffusion prompts |
-| 14 | **Community Guardian** | `gemini-3.7-flash` + Gemma | Community | Sentiment clustering, toxic content filtering, creator-voice reply generation |
+| 14 | **Community Guardian** | `gemini-3.7-flash` + Gemma 2 | Community | Sentiment clustering, toxic content filtering, creator-voice reply generation |
 
 ---
 
-## 🔄 How It Works — Request Lifecycle
+## How It Works — Request Lifecycle
 
-Every request traverses all 7 layers. No layer may be bypassed. Here's what happens when a creator says *"Review this NordVPN contract"*:
+Every request traverses all 7 layers. Here is the execution flow when a creator uploads a sponsorship contract:
 
 ```mermaid
 sequenceDiagram
     actor Creator
-    participant UI as 🎨 React Dashboard
-    participant GW as 🔀 API Gateway
-    participant MA as 🛡️ Model Armor
-    participant ID as 🔐 Agent Identity
-    participant ORCH as 🧠 Orchestrator
-    participant AGENTS as 🤖 Agent Fleet
-    participant MEM as 💾 Memory Bank
-    participant OTEL as 📊 Observability
+    participant UI as React Dashboard
+    participant GW as API Gateway
+    participant MA as Model Armor
+    participant ID as Agent Identity
+    participant ORCH as Orchestrator
+    participant AGENTS as Agent Fleet
+    participant MEM as Memory Bank
+    participant OTEL as Observability
 
-    Creator->>UI: "Review this NordVPN contract"
-    UI->>GW: POST /api/contracts/review
+    Creator->>UI: Upload sponsorship contract PDF
+    UI->>GW: POST /api/contracts/analyze
 
-    Note over GW: Layer 2: Rate Limit ✅
+    Note over GW: Layer 2: Rate Limiter Verified
     GW->>GW: 47/120 requests in window
 
-    Note over MA: Layer 3a: Input Screen ✅
+    Note over MA: Layer 3a: Input Sanitized
     GW->>MA: Screen for injections + PII
-    MA->>MA: 15+ patterns → SAFE
+    MA->>MA: 15+ patterns verified clean
 
-    Note over ID: Layer 3b: Identity Check ✅
+    Note over ID: Layer 3b: Identity Checked
     MA->>ID: Verify contract_reviewer scope
-    ID->>ID: Action + Collection → AUTHORIZED
+    ID->>ID: Action & Collection authorized
 
     Note over ORCH: Layer 4: Decompose Goal
     ID->>ORCH: Forward authorized request
@@ -316,51 +346,51 @@ sequenceDiagram
 
     Note over AGENTS: Layer 5: Parallel Execution
     par Contract Reviewer
-        ORCH->>AGENTS: Extract clauses + score risk
+        ORCH->>AGENTS: Extract clauses & score risk
     and Revenue Optimizer
-        ORCH->>AGENTS: Benchmark deal at $12K
+        ORCH->>AGENTS: Benchmark deal against CPM rates
     and Brand Safety
-        ORCH->>AGENTS: Screen NordVPN reputation
+        ORCH->>AGENTS: Screen sponsor reputation
     and Memory Bank
-        AGENTS->>MEM: Recall 3 past NordVPN deals
-        MEM-->>AGENTS: $7,500 last, 60-day quirk
+        AGENTS->>MEM: Recall past brand deal histories
+        MEM-->>AGENTS: Previous rates & exclusivity quirks
     end
 
     Note over OTEL: Layer 7: Record Traces
-    AGENTS->>OTEL: 4 spans (1,247ms avg)
+    AGENTS->>OTEL: 4 spans recorded to Firestore
 
-    Note over MA: Layer 3c: Output Sanitize ✅
-    AGENTS->>MA: Screen output for PII
+    Note over MA: Layer 3c: Output Sanitized
+    AGENTS->>MA: Screen output for sensitive PII
     MA-->>GW: Clean response
 
-    GW-->>UI: Analysis + risk scores + counter-proposals
-    UI-->>Creator: Executive summary dashboard
+    GW-->>UI: Risk breakdown + counter-proposals + executive summary
+    UI-->>Creator: Interactive redline dashboard
 ```
 
 ---
 
-## 🛡️ Security Architecture
+## Security Architecture
 
-**Crewmate takes security as seriously as the enterprises it emulates.** The security pipeline processes every request through 4 defensive layers:
+Crewmate enforces a 4-stage defense-in-depth pipeline on every request:
 
 ```mermaid
 flowchart TD
     REQ["Incoming Request"] --> CORS["CORS Policy\nConfigurable Origins"]
-    CORS --> RATE["Sliding-Window Rate Limiter\n120 req/min per IP\n→ 429 if exceeded"]
-    RATE --> CB["Circuit Breaker\n3-state: CLOSED → OPEN → HALF_OPEN\n→ 503 if OPEN"]
-    CB --> INPUT["Model Armor — Input\n12 injection categories\n+ PII detection\n→ 403 if violation"]
-    INPUT --> RBAC["Agent Identity RBAC\n15 permission matrices\nAction + Collection scoping\n→ 403 if unauthorized"]
-    RBAC --> EXEC["✅ Execute Agent"]
-    EXEC --> OUTPUT["Model Armor — Output\nPII redaction:\nSSN → [REDACTED]\nCC → [REDACTED]"]
+    CORS --> RATE["Sliding-Window Rate Limiter\n120 req/min per IP\n-> 429 if exceeded"]
+    RATE --> CB["Circuit Breaker\n3-state: CLOSED -> OPEN -> HALF_OPEN\n-> 503 if OPEN"]
+    CB --> INPUT["Model Armor — Input\n12 injection categories\n+ PII detection\n-> 403 if violation"]
+    INPUT --> RBAC["Agent Identity RBAC\n15 permission matrices\nAction + Collection scoping\n-> 403 if unauthorized"]
+    RBAC --> EXEC["Execute Agent"]
+    EXEC --> OUTPUT["Model Armor — Output\nPII redaction:\nSSN -> [REDACTED]\nCC -> [REDACTED]"]
     OUTPUT --> HEADERS["Telemetry Headers\nX-Gateway-Engine\nX-Response-Time-Ms"]
     HEADERS --> RES["Response to Client"]
 
-    INPUT -.->|"Blocked events"| AUDIT["🚨 Firestore\narmor_logs\nSHA-256 hashed"]
+    INPUT -.->|"Blocked events"| AUDIT["Firestore\narmor_logs\nSHA-256 hashed"]
 ```
 
-**Model Armor protects against:**
+**Model Armor Defenses:**
 
-| Attack Category | Pattern Examples | Response |
+| Attack Category | Pattern Examples | Mitigation |
 |:---|:---|:---|
 | Instruction Reset | `ignore all previous instructions` | `403 MODEL_ARMOR_BLOCKED` |
 | Roleplay Jailbreak | `you are now DAN`, `developer mode` | `403 MODEL_ARMOR_BLOCKED` |
@@ -368,85 +398,60 @@ flowchart TD
 | XSS Injection | `<script>alert(1)</script>` | `403 MODEL_ARMOR_BLOCKED` |
 | SQL Injection | `DROP TABLE users` | `403 MODEL_ARMOR_BLOCKED` |
 | PII Leak (Input) | SSN `123-45-6789`, Credit Cards | `403 MODEL_ARMOR_BLOCKED` |
-| PII Leak (Output) | Agent accidentally generates PII | `[REDACTED_BY_MODEL_ARMOR]` |
+| PII Leak (Output) | Accidental PII in model output | `[REDACTED_BY_MODEL_ARMOR]` |
 | Filter Bypass | `bypass safety filters` | `403 MODEL_ARMOR_BLOCKED` |
 | Encoded Payload | `base64 decode and execute` | `403 MODEL_ARMOR_BLOCKED` |
 
 ---
 
-## 🎨 Multimodal UX — Voice, Vision & 3D Dashboard
+## Multimodal UX — Voice, Vision & 3D Dashboard
 
-Crewmate delivers a **premium multimodal experience** across voice, vision, and a custom 3D design system:
+Crewmate delivers a cohesive multimodal experience across voice, vision, image diffusion, and video synthesis:
 
 | Modality | Technology | Capability |
 |:---|:---|:---|
-| **🎙️ Voice** | Web Speech API | Real-time voice commands routed to Fleet Orchestrator |
-| **📄 Vision (PDF)** | Gemini multimodal + PyPDF | Contract PDF upload, clause extraction, and visual risk analysis |
-| **🖼️ Image Generation** | Gemini 3 Pro Image | 1376×768 native widescreen thumbnails with anti-text guardrails |
-| **🎥 Video Synthesis** | Veo 3.1 | 8-second cinematic clips with camera direction control |
-| **🔊 Audio Intelligence** | Lyria AI | Royalty-free music alternatives for copyright-flagged segments |
-| **💬 Text + Sentiment** | Gemma | Lightweight comment clustering and toxicity classification |
-| **🎨 3D Dashboard** | React 19 + Claymorphism | Soft clay-like depth, warm lighting, premium micro-animations |
-
-**Frontend Tech Stack:**
-
-| Technology | Version | Purpose |
-|:---|:---|:---|
-| React | 19 | Component framework |
-| TypeScript | 7 | Type safety |
-| Vite | 8 | Build system with HMR |
-| TailwindCSS | v4 | Styling with custom design tokens |
-| Framer Motion | 13 | Page transitions & micro-animations |
-| Zustand | 5 | Global state management |
-| React Router | v7 | 14 routes with AnimatePresence |
-| Firebase Auth | Latest | Google SSO authentication |
-
-**13 Dashboard Pages:** Landing, Command Center, Contracts, Compliance, Fleet Status, Trends & Distribution, Scripts Studio, Media Studio (Thumbnails + Video), Channel Profile, About, Privacy, Terms, Security
+| **Voice** | Web Speech API | Real-time speech input routed to Fleet Orchestrator |
+| **Vision (PDF)** | Gemini Multimodal + PyPDF | Contract PDF upload, clause extraction, and visual risk analysis |
+| **Image Generation** | Gemini 3 Pro Image | 1376×768 native widescreen thumbnails with anti-text guardrails |
+| **Video Synthesis** | Google Veo 3.1 | 8-second cinematic clips with camera direction control |
+| **Audio Intelligence** | Lyria AI | Royalty-free music alternatives for copyright-flagged segments |
+| **Text & Sentiment** | Gemma 2 | Lightweight comment clustering and toxicity classification |
+| **3D Dashboard** | React 19 + Claymorphism | Soft claymorphism depth, warm lighting, micro-interactions |
 
 ---
 
-## ⚡ Google Technologies Stack (15+ Integrated)
+## Google Technologies Stack (15+ Integrated)
 
-| # | Technology | How Crewmate Uses It |
+| # | Technology | Implementation in Crewmate |
 |:---|:---|:---|
-| 1 | **Google ADK** | Multi-agent supervisor pattern with hierarchical `sub_agents` decomposition across 15 agents |
-| 2 | **Gemini 3.7 Flash** (Vertex AI) | Primary model for all 13 specialist worker agents — high-speed reasoning |
-| 3 | **Gemini 3.1 Pro Preview** (Vertex AI) | Deep orchestrator planning for the Fleet Captain — complex goal decomposition |
-| 4 | **Gemini 3 Pro Image** | Native image diffusion for high-CTR 1376×768 widescreen thumbnails |
-| 5 | **Veo 3.1** | 8-second cinematic video synthesis with camera movement and lighting control |
-| 6 | **Google GenAI SDK** | Unified `genai.Client` with Vertex AI + API key dual support and automatic model fallback chains |
-| 7 | **Google Cloud Firestore** (Native Mode) | Serverless document DB for 5 collections: `agents`, `memory`, `traces`, `tasks`, `armor_logs` |
-| 8 | **Google Cloud Run** | Serverless container execution (Docker, Python 3.13-slim, auto-scaling) |
-| 9 | **Google Cloud Artifact Registry** | Secure Docker container image storage and versioning |
-| 10 | **Google Cloud Trace + OpenTelemetry** | Distributed tracing with SpanContext, latency metrics, and tool call tracking |
-| 11 | **Google Cloud Secret Manager + IAM** | Fine-grained service account permissions and API key management |
-| 12 | **Gemma** | Lightweight content categorization and brand safety classification engine |
-| 13 | **Lyria AI** | Intelligent royalty-free audio replacement for copyright-flagged video segments |
-| 14 | **Firebase Auth** | Google SSO authentication with AuthContext provider and ProtectedRoute middleware |
-| 15 | **Firebase Hosting** | CDN-backed SPA delivery for the React 19 Claymorphism dashboard |
-
-**Model Fallback Chain** (automatic resilience):
-
-```mermaid
-flowchart LR
-    A["gemini-3.7-flash\n(Primary)"] -->|"fails"| B["gemini-3.5-flash\n(Fallback)"]
-    B -->|"fails"| C["gemini-3.1-pro-preview\n(Deep Reasoning)"]
-    C -->|"fails"| D["❌ RuntimeError"]
-```
+| 1 | **Google ADK** | Multi-agent supervisor pattern with hierarchical `sub_agents` delegation |
+| 2 | **Gemini 3.7 Flash** (Vertex AI) | Core reasoning model for all 13 worker agents |
+| 3 | **Gemini 3.1 Pro Preview** (Vertex AI) | Supervisor planning and complex goal decomposition |
+| 4 | **Gemini 3 Pro Image** | Native image generation for 1376×768 widescreen thumbnails |
+| 5 | **Google Veo 3.1** | 8-second cinematic video synthesis with camera direction |
+| 6 | **Google GenAI SDK** | Unified client with Vertex AI and multi-model fallback chains |
+| 7 | **Google Cloud Firestore** (Native Mode) | Document DB for `agents`, `memory`, `traces`, `tasks`, `armor_logs` |
+| 8 | **Google Cloud Run** | Unified serverless container execution (FastAPI + React 19 SPA) |
+| 9 | **Google Cloud Artifact Registry** | Secure container image storage and automated versioning |
+| 10 | **Google Cloud Trace & OpenTelemetry** | Distributed tracing with SpanContext and token metrics |
+| 11 | **Google Cloud Secret Manager & IAM** | Principle of least privilege service account roles |
+| 12 | **Gemma 2** | Local categorization and toxicity classification |
+| 13 | **Lyria AI** | Royalty-free audio replacement for copyright compliance |
+| 14 | **Firebase Auth** | Google SSO authentication with protected routes |
+| 15 | **Firebase SDK** | Client-side auth tokens and real-time state sync |
 
 ---
 
-## 🚀 Quickstart & Local Setup
+## Quickstart & Local Setup
 
 ### Prerequisites
 
 | Tool | Version | Purpose |
 |:---|:---|:---|
 | Python | 3.11+ | Backend runtime |
-| Node.js | 18+ | Frontend build |
+| Node.js | 18+ | Frontend runtime |
 | pnpm | 8+ | Frontend package manager |
 | Google Cloud CLI | Latest | GCP authentication |
-| Docker | 20+ | Container builds |
 
 ### 1. Clone & Setup Backend
 
@@ -464,7 +469,6 @@ pip install -e .
 
 # Configure environment
 cp .env.example .env
-# Edit .env with your GCP project ID or Gemini API key
 
 # Start the GEAP API Server
 python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
@@ -476,18 +480,17 @@ python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
 cd ../frontend
 pnpm install
 cp .env.example .env
-# Edit .env with your Firebase configuration
 
 pnpm dev
 ```
 
-Open **`http://localhost:5173`** to access the 3D Claymorphism Command Center.
+Open **`http://localhost:5173`** to access the local development cockpit.
 
-### 3. Verify Live GEAP Endpoints
+### 3. Verify Live API Endpoints
 
 ```bash
-# Health & GEAP Info
-curl http://localhost:8000/
+# Platform Health
+curl http://localhost:8000/health
 
 # Agent Registry (15 Agents)
 curl http://localhost:8000/api/registry/agents
@@ -498,151 +501,112 @@ curl http://localhost:8000/api/memory
 # Fleet Status
 curl http://localhost:8000/api/fleet/status
 
-# Model Armor Test (should return 403 Forbidden)
+# Model Armor Screening (returns 403 Forbidden)
 curl "http://localhost:8000/api/registry/agents?q=ignore%20all%20previous%20instructions"
-
-# OpenTelemetry Overview
-curl http://localhost:8000/api/traces/overview
 ```
 
 ---
 
-## 🚢 Google Cloud Run Deployment
+## Google Cloud Run Deployment
+
+To deploy the unified full-stack container to Google Cloud Run:
 
 ```bash
-# 1. Authenticate
+# 1. Authenticate with Google Cloud
 gcloud auth login
 gcloud config set project crewmate-507013
-gcloud auth configure-docker us-central1-docker.pkg.dev
 
-# 2. Build & Push Container Image
-docker build -t us-central1-docker.pkg.dev/crewmate-507013/crewmate/backend:latest ./backend
-docker push us-central1-docker.pkg.dev/crewmate-507013/crewmate/backend:latest
-
-# 3. Deploy to Cloud Run
-gcloud run deploy crewmate-api \
-    --image=us-central1-docker.pkg.dev/crewmate-507013/crewmate/backend:latest \
-    --region=us-central1 \
-    --platform=managed \
+# 2. Deploy Unified Container
+gcloud run deploy crewmate \
+    --source . \
+    --region us-central1 \
+    --project crewmate-507013 \
     --allow-unauthenticated \
-    --set-env-vars=GCP_PROJECT_ID=crewmate-507013,USE_VERTEX_AI=true
-
-# 4. Deploy Frontend to Firebase Hosting
-cd frontend && pnpm build && firebase deploy --only hosting
+    --memory 2Gi \
+    --cpu 2
 ```
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Crewmate/
-├── README.md                       ← You are here
-├── ARCHITECTURE.md                 ← Full technical deep dive (7 layers, data flows, schemas)
+├── README.md                       ← Project overview & quickstart
+├── ARCHITECTURE.md                 ← 7-layer architecture deep dive
+├── Dockerfile                      ← Multi-stage production container
+├── assets/                         ← Brand assets and logos
 │
 ├── backend/                        ← FastAPI + Google ADK Backend
-│   ├── Dockerfile                  ← Cloud Run container (python:3.13-slim)
-│   ├── pyproject.toml              ← Python dependencies
-│   ├── main.py                     ← App entry: middleware stack + 19 routers
-│   ├── agents/                     ← 15 Google ADK Agent definitions
-│   │   ├── orchestrator.py         ← Fleet Captain (gemini-3.1-pro-preview)
-│   │   ├── contract_reviewer.py    ← Legal audit tools
-│   │   ├── content_compliance.py   ← FTC & copyright tools
-│   │   ├── video_cinematographer.py ← Veo 3.1 video synthesis
-│   │   ├── thumbnail_director.py   ← Gemini 3 Pro image generation
-│   │   └── ... (11 more agents)
-│   ├── middleware/                  ← GEAP Security Layer
-│   │   ├── gateway.py              ← Rate Limiter + Circuit Breaker
-│   │   ├── model_armor.py          ← Input/Output screening
-│   │   └── identity.py             ← Per-agent RBAC matrix
-│   ├── services/                   ← Core Business Services
-│   │   ├── firestore_client.py     ← Async Firestore CRUD
-│   │   ├── gemini.py               ← GenAI SDK (text, image, video)
-│   │   ├── registry.py             ← Agent Registry (15 agents)
-│   │   ├── memory.py               ← Persistent Memory Bank
-│   │   ├── observability.py        ← OpenTelemetry SpanContext
-│   │   └── runtime.py              ← Background task lifecycle
-│   ├── routers/                    ← 19 API route modules
-│   ├── schemas/                    ← Pydantic request/response models
-│   └── tools/                      ← PDF extraction utilities
+│   ├── main.py                     ← App entrypoint & static SPA mounting
+│   ├── pyproject.toml              ← Backend dependencies
+│   ├── agents/                     ← 15 Google ADK Agent implementations
+│   ├── middleware/                 ← Model Armor, Identity RBAC, Gateway
+│   ├── services/                   ← Firestore, Gemini, Registry, Memory, Traces
+│   ├── routers/                    ← 19 REST API route modules
+│   └── schemas/                    ← Pydantic typed request/response models
 │
 ├── frontend/                       ← React 19 + Vite + TailwindCSS v4
 │   ├── src/
-│   │   ├── App.tsx                 ← Root with routing + error boundaries
-│   │   ├── pages/                  ← 13 dashboard pages
-│   │   ├── components/             ← Clay design system + layout
-│   │   ├── context/AuthContext.tsx  ← Firebase Auth
-│   │   ├── store/useStudioStore.ts ← Zustand state
-│   │   └── lib/api.ts              ← Backend API client
+│   │   ├── pages/                  ← 13 Dashboard pages
+│   │   ├── components/             ← 3D Claymorphism components
+│   │   ├── services/               ← Firebase Auth service
+│   │   └── lib/api.ts              ← Typed API client
 │   └── package.json
 │
-└── docs/                           ← 12 internal planning docs + 14 agent specs
+└── docs/                           ← System blueprints & specifications
 ```
 
 ---
 
-## 🔌 API Endpoints
+## API Endpoints
 
 ### GEAP Infrastructure
 
 | Method | Endpoint | Description |
 |:---|:---|:---|
-| `GET` | `/` | Platform health & GEAP component links |
-| `GET` | `/api/registry/agents` | List all 15 registered agents |
-| `GET` | `/api/memory` | Full memory bank (preferences + brand histories) |
-| `GET` | `/api/traces/overview` | Aggregated observability metrics |
-| `GET` | `/api/runtime/tasks` | Background runtime task list |
-| `GET` | `/api/fleet/status` | Real-time fleet health |
+| `GET` | `/health` | Service health and active agent count |
+| `GET` | `/api/registry/agents` | List all 15 registered enterprise agents |
+| `GET` | `/api/memory` | Retrieve creator preferences and deal history |
+| `GET` | `/api/traces/overview` | Aggregated OpenTelemetry observability metrics |
+| `GET` | `/api/runtime/tasks` | Active async runtime task queue |
+| `GET` | `/api/fleet/status` | Real-time fleet health and capability matrix |
 
 ### Autonomous Features
 
 | Method | Endpoint | Description |
 |:---|:---|:---|
-| `POST` | `/api/contracts/review` | Contract review with clause extraction & risk scoring |
-| `POST` | `/api/compliance/scan` | FTC & copyright compliance scan |
-| `POST` | `/api/fleet/dispatch` | Multi-agent fleet dispatch for complex goals |
-| `POST` | `/api/distribution/optimize` | Platform-specific SEO optimization |
-| `POST` | `/api/reports/generate` | Executive summary compilation |
-| `POST` | `/api/trends/scan` | Viral trend detection & content briefs |
-| `POST` | `/api/community/analyze` | Sentiment analysis & comment clustering |
-| `POST` | `/api/voice/command` | Voice command processing |
-| `POST` | `/api/scripts/generate` | Hook & script engineering |
-| `POST` | `/api/thumbnails/generate` | AI thumbnail generation (Gemini 3 Pro Image) |
-| `POST` | `/api/videos/generate` | AI video synthesis (Veo 3.1) |
-| `POST` | `/api/music/suggest` | Lyria AI music alternatives |
-| `POST` | `/api/clips/extract` | Video clipping & repurposing |
+| `POST` | `/api/contracts/analyze` | Contract review, clause extraction, risk redlines |
+| `POST` | `/api/compliance/scan` | FTC 16 CFR § 255 and copyright compliance scan |
+| `POST` | `/api/fleet/invoke` | Dynamic goal delegation across worker agents |
+| `POST` | `/api/distribution/optimize` | Multi-platform metadata and SEO optimization |
+| `POST` | `/api/reports/generate` | Executive summary dossier generation |
+| `POST` | `/api/trends/scan` | Viral trend detection and content brief generation |
+| `POST` | `/api/community/analyze` | Comment sentiment analysis and clustering |
+| `POST` | `/api/voice/command` | Natural language voice command execution |
+| `POST` | `/api/scripts/generate` | Hook engineering and beat-by-beat scripts |
+| `POST` | `/api/thumbnails/generate` | Gemini 3 Pro Image thumbnail generation |
+| `POST` | `/api/videos/generate` | Google Veo 3.1 cinematic video synthesis |
+| `POST` | `/api/music/suggest` | Lyria AI royalty-free audio replacements |
+| `POST` | `/api/clips/extract` | Long-form to short-form viral clip extraction |
 
 ---
 
-## 📐 Architecture Deep Dive
+## Prize Targeting
 
-For the complete technical architecture including:
-- Layer-by-layer implementation details with code references
-- Firestore schema (ER diagram with all 5 collections)
-- Circuit Breaker state machine
-- Agent Identity RBAC permission matrix (all 15 agents)
-- Cloud Run deployment topology
-- Data flow diagrams
-- Frontend component architecture
-
-**👉 See [ARCHITECTURE.md](ARCHITECTURE.md)**
-
----
-
-## 🏆 Prize Targeting
-
-| Prize | Value | Why Crewmate Qualifies |
+| Prize Track | Award | Qualifications |
 |:---|:---|:---|
-| **Grand Prize** | $50,000 | Highest scorer across all tracks — 15+ Google technologies, 15 agents, full GEAP, multimodal UX |
-| **Fortified Enterprise Fleet** | $20,000 | 7/7 GEAP components, 15-agent fleet with per-agent RBAC, Model Armor, persistent memory, async runtime |
-| **Individual/Hobbyist** | $10,000 | Built by a 2-person team (solo/hobbyist category) |
-| **Best Architectural Design** | $5,000 | 7-layer strict separation, 10+ Mermaid diagrams, 1,200-line ARCHITECTURE.md |
-| **Best Multimodal UX** | $5,000 | Voice (Web Speech), Vision (PDF analysis), Image (Gemini 3 Pro), Video (Veo 3.1), Text (Gemma), 3D Dashboard |
+| **Grand Prize** | $50,000 | 15+ Google technologies integrated, 15 autonomous agents, full 7-layer GEAP, multimodal UX, live Cloud Run deployment. |
+| **Fortified Enterprise Fleet** | $20,000 | Complete 7/7 GEAP implementation: Agent Registry, Memory Bank, Model Armor, Agent Identity, Gateway, Observability, and Runtime. |
+| **The Collaborative Partner** | $20,000 | 2-person team structure with clear specialization across Full-Stack Agent Engineering and AI Domain Research & Documentation. |
+| **Best Architectural Design** | $5,000 | Strict 7-layer decoupled architecture, 10+ Mermaid flow diagrams, 1,175-line ARCHITECTURE.md. |
+| **Best Multimodal UX** | $5,000 | Voice, Vision (PDF analysis), Diffusion (Gemini 3 Pro Image), Video (Veo 3.1), and 3D Claymorphism UI. |
 
 ---
 
 <p align="center">
-  <strong>Built with ❤️ by Lovejeet Singh & Sahib Babbar</strong><br/>
-  All Things Agentic Hackathon 2026 · The Fortified Enterprise Fleet (Track 3)<br/>
-  <em>GCP Project: <code>crewmate-507013</code></em>
+  <strong>Built with care by Lovejeet Singh & Sachit Babbar</strong><br/>
+  All Things Agentic Hackathon 2026 · Track 3: The Fortified Enterprise Fleet<br/>
+  <em>Google Cloud Project: <code>crewmate-507013</code> · Region: <code>us-central1</code></em><br/>
+  <a href="https://crewmate-285381944529.us-central1.run.app"><strong>https://crewmate-285381944529.us-central1.run.app</strong></a>
 </p>
