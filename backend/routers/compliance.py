@@ -64,31 +64,52 @@ DEMO_COMPLIANCE = ComplianceResult(
         ComplianceCheckItem(
             category="FTC Sponsorship Disclosure",
             status="passed",
-            finding="First 3 lines of video description contain explicit '#ad' and 'Sponsored by BrandX' tag.",
+            finding="Clear and prominent disclosures ('Sponsored by BrandX', '#ad', '#sponsored') present in both title and upfront in description, fully adhering to FTC 16 CFR Part 255.",
             remediation="Compliant with FTC 16 CFR Part 255. No action required.",
             platform="both"
         ),
         ComplianceCheckItem(
             category="Copyright Fingerprint Shield",
             status="passed",
-            finding="Original background track 'Blinding Lights (Remix)' flagged for Content ID match in 142 territories.",
-            remediation="Automated Lyria AI replacement: 'Neon Horizon - Synthwave Chill (124 BPM)'. Cleared globally with zero copyright strikes.",
+            finding="Audio track utilizes Google Lyria AI Royalty-Free Synthwave, ensuring zero Content ID or copyright claim risk globally.",
+            remediation="Automated Lyria AI replacement: 'Neon Horizon - Synthwave Chill (124 BPM)'. Cleared globally.",
             platform="both"
         ),
         ComplianceCheckItem(
-            category="Community Guidelines & Brand Safety",
+            category="YouTube Paid Promotion Setting",
             status="passed",
-            finding="No profanity in the first 30 seconds (preserves Tier-1 ad CPM monetization).",
+            finding="Required 'Includes paid promotion' disclosure setting enabled for YouTube player.",
+            remediation="YouTube Paid Product Placements & Endorsements policy satisfied.",
+            platform="youtube"
+        ),
+        ComplianceCheckItem(
+            category="Advertiser-Friendly Guidelines",
+            status="passed",
+            finding="Content contains clean language and safe imagery suitable for Tier-1 yellow-dollar CPM monetization.",
             remediation="Full monetization eligibility confirmed.",
             platform="youtube"
         ),
         ComplianceCheckItem(
-            category="Instagram Branded Content",
+            category="Instagram Paid Partnership Tag",
             status="passed",
-            finding="Paid Partnership label active and hashtag placed before caption truncation.",
+            finding="Branded content sub-header tool enabled ('Paid partnership with BrandX') on Reels and Posts.",
             remediation="Complies with Meta Branded Content Policy.",
             platform="instagram"
-        )
+        ),
+        ComplianceCheckItem(
+            category="Caption Fold Transparency",
+            status="passed",
+            finding="Sponsorship disclosure hashtags placed in the first 3 lines before the '...more' caption cutoff.",
+            remediation="Ensures FTC mobile viewing disclosure compliance on Instagram feed.",
+            platform="instagram"
+        ),
+        ComplianceCheckItem(
+            category="Meta Commercial Audio License",
+            status="passed",
+            finding="Audio cleared for Instagram business and creator account monetization.",
+            remediation="No sound muting or regional copyright blocks.",
+            platform="instagram"
+        ),
     ],
     audio_shield=LyriaAudioAlternative(
         original_track="Blinding Lights (Remix)",
@@ -127,7 +148,7 @@ async def scan_compliance(request: ComplianceScanRequest):
         description=target_desc
     )
 
-    prompt = f"""Scan this creator content for regulatory and platform compliance:
+    prompt = f"""Scan this creator content for regulatory and platform compliance across YouTube and Instagram:
 Platform: {request.platform}
 Title: {target_title}
 Description: {target_desc}
@@ -135,26 +156,26 @@ Has Paid Sponsorship/Affiliate: {is_sponsored}
 Audio Track: {audio_info}
 Gemma Safety Score: {gemma_eval.get('brand_safety_score', 95)}/100
 
-Perform strict checks for YouTube, Instagram, and FTC:
-1. FTC Sponsorship Disclosure:
-   - If sponsored/affiliate, are '#ad', '#sponsored', or explicit 'Sponsored by' included in description?
-   - If missing on a sponsored video, status is 'critical' with score < 60.
-2. Copyright Audio Shield:
-   - Does audio need Lyria AI royalty-free replacement?
-3. Platform Community Guidelines & Brand Safety:
-   - Safe language, no false guarantees, monetization eligibility.
+Perform strict checks for BOTH YouTube and Instagram platforms:
+1. FTC 16 CFR Part 255: If sponsored, '#ad', '#sponsored', or explicit 'Sponsored by' must be present upfront. If missing on sponsored video, mark status as 'warning' or 'critical'.
+2. Copyright Audio Shield: Does audio need Lyria AI royalty-free replacement?
+3. YouTube Compliance: Paid promotion toggle, community guidelines, Advertiser-Friendly green icon.
+4. Instagram Compliance: Paid partnership label, caption fold visibility (before '...more'), commercial audio license.
 
 Return ONLY valid JSON matching this schema:
 {{
-  "platform": "{request.platform}",
+  "platform": "YouTube + Instagram",
   "overall_score": 95,
   "shield_status": "SECURED",
   "ftc_compliant": true,
   "checks": [
     {{"category": "FTC Sponsorship Disclosure", "status": "passed", "finding": "...", "remediation": "...", "platform": "both"}},
     {{"category": "Copyright Fingerprint Shield", "status": "passed", "finding": "...", "remediation": "...", "platform": "both"}},
-    {{"category": "YouTube Guidelines", "status": "passed", "finding": "...", "remediation": "...", "platform": "youtube"}},
-    {{"category": "Instagram Guidelines", "status": "passed", "finding": "...", "remediation": "...", "platform": "instagram"}}
+    {{"category": "YouTube Paid Promotion", "status": "passed", "finding": "...", "remediation": "...", "platform": "youtube"}},
+    {{"category": "Advertiser-Friendly Guidelines", "status": "passed", "finding": "...", "remediation": "...", "platform": "youtube"}},
+    {{"category": "Instagram Paid Partnership Tag", "status": "passed", "finding": "...", "remediation": "...", "platform": "instagram"}},
+    {{"category": "Caption Fold Visibility", "status": "passed", "finding": "...", "remediation": "...", "platform": "instagram"}},
+    {{"category": "Meta Commercial Audio License", "status": "passed", "finding": "...", "remediation": "...", "platform": "instagram"}}
   ],
   "summary": "...",
   "remediations": ["..."]
