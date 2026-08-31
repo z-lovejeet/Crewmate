@@ -23,6 +23,7 @@ import {
 } from "../lib/icons"
 import { useAuth } from "../context/AuthContext"
 import { useStudioStore } from "../store/useStudioStore"
+import { LiveContentCalendar } from "../components/calendar/LiveContentCalendar"
 
 const stagger = { animate: { transition: { staggerChildren: 0.03 } } }
 const item = {
@@ -423,75 +424,20 @@ export default function CommandCenter() {
         </motion.div>
       </Section>
 
-      {/* Content Calendar + Pinned Directives */}
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-        <ClayCard>
-          <Section
-            title="Content Calendar"
-            hint={contentCalendar.length > 0 ? `${contentCalendar.length} upcoming posts` : "Generate your publishing schedule"}
-          >
-            {contentCalendar.length > 0 ? (
-              <div className="flex flex-col gap-2">
-                {contentCalendar.slice(0, 5).map((entry, i) => (
-                  <div key={entry.id || i} className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface-sunken)] border border-[var(--border)]">
-                    <div className="flex items-center gap-3">
-                      <div className="flex flex-col items-center w-10">
-                        <span className="text-[10px] font-bold text-text-tertiary uppercase">{entry.day?.slice(0, 3)}</span>
-                        <span className="text-xs font-semibold text-text-primary">{entry.date}</span>
-                      </div>
-                      <div>
-                        <p className="text-xs font-semibold text-text-primary leading-snug">{entry.title}</p>
-                        <p className="text-[11px] text-text-tertiary mt-0.5">{entry.platform} · {entry.format}{entry.time ? ` · ${entry.time}` : ''}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                <button
-                  onClick={() => { clearContentCalendar(); handleGenerateCalendar() }}
-                  className="mt-1 text-xs text-text-tertiary hover:text-primary transition cursor-pointer text-center py-1"
-                >
-                  ↻ Regenerate schedule
-                </button>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-8 gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-                  <CompassIcon size={24} />
-                </div>
-                <div className="text-center">
-                  <p className="text-sm font-semibold text-text-primary">No schedule yet</p>
-                  <p className="text-xs text-text-tertiary mt-1 max-w-[240px]">
-                    Generate a weekly publishing plan based on your Channel DNA profile.
-                  </p>
-                </div>
-                <button
-                  onClick={handleGenerateCalendar}
-                  disabled={generatingCalendar}
-                  className="mt-1 px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:brightness-110 active:scale-[0.98] transition cursor-pointer disabled:opacity-60 flex items-center gap-2"
-                >
-                  {generatingCalendar ? (
-                    <>
-                      <span className="w-3 h-3 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                      Generating...
-                    </>
-                  ) : (
-                    <>
-                      <ZapIcon size={14} />
-                      Generate Schedule
-                    </>
-                  )}
-                </button>
-              </div>
-            )}
-          </Section>
-        </ClayCard>
+      {/* ─── Live Content Calendar & Agent A07 Cadence Intelligence ────── */}
+      <Section
+        title="Live Publishing Calendar"
+        hint="Interactive calendar with manual event creation, date inspection & Agent A07 cadence intelligence"
+      >
+        <LiveContentCalendar />
+      </Section>
 
-        <ClayCard>
-          <Section title="Pinned Directives & Pin Board" hint="Your personal studio rulebook & reminders">
-            <NotesBoard />
-          </Section>
-        </ClayCard>
-      </div>
+      {/* ─── Pinned Directives & Pin Board ──────────────────────────────── */}
+      <ClayCard>
+        <Section title="Pinned Directives & Studio Rulebook" hint="Your creator rules, deal thresholds, and active reminders">
+          <NotesBoard />
+        </Section>
+      </ClayCard>
 
       {/* Live Observability Feed with Refresh button */}
       <ClayCard>

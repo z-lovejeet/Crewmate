@@ -40,12 +40,15 @@ export interface PersonalizedIdea {
 
 export interface CalendarEntry {
   id: string
-  day: string          // e.g. "Monday", "Tuesday"
-  date: string         // e.g. "Sep 1"
   title: string
+  date: string         // YYYY-MM-DD
+  day?: string         // "Monday"
+  time?: string        // "18:00 EST"
   format: string       // "Long-Form" | "Short" | "Reel" | "Live"
   platform: string     // "YouTube" | "Instagram" | "TikTok"
-  time?: string        // e.g. "6:00 PM EST"
+  category?: string    // "Sponsor" | "Organic" | "Tutorial" | "Community"
+  status?: "scheduled" | "in_progress" | "published"
+  notes?: string
 }
 
 const DEFAULT_PROFILE: ChannelProfile = {
@@ -180,12 +183,67 @@ interface StudioState {
   // Content Calendar
   contentCalendar: CalendarEntry[]
   setContentCalendar: (entries: CalendarEntry[]) => void
+  addCalendarEntry: (entry: CalendarEntry) => void
+  removeCalendarEntry: (id: string) => void
+  updateCalendarEntry: (id: string, updates: Partial<CalendarEntry>) => void
+  toggleCalendarStatus: (id: string) => void
   clearContentCalendar: () => void
 
   // Agent Fleet Toggles (Persisted)
   disabledAgents: string[]
   toggleAgentEnabled: (id: string) => void
 }
+
+const DEFAULT_CALENDAR: CalendarEntry[] = [
+  {
+    id: "cal-1",
+    title: "10 Gemini 3.7 Agent Hacks That Blew My Mind",
+    date: "2026-08-31",
+    day: "Monday",
+    time: "18:00 EST",
+    format: "Long-Form",
+    platform: "YouTube",
+    category: "Tutorial",
+    status: "published",
+    notes: "Deep dive code walkthrough with repo link."
+  },
+  {
+    id: "cal-2",
+    title: "Why You Should Never Sign a Net-90 Contract (Redline Breakdown)",
+    date: "2026-09-02",
+    day: "Wednesday",
+    time: "13:00 EST",
+    format: "Short",
+    platform: "YouTube",
+    category: "Organic",
+    status: "scheduled",
+    notes: "High retention 60s short with contract screenshot."
+  },
+  {
+    id: "cal-3",
+    title: "Building an Autonomous Creator Fleet from Scratch",
+    date: "2026-09-03",
+    day: "Thursday",
+    time: "18:00 EST",
+    format: "Long-Form",
+    platform: "YouTube",
+    category: "Sponsor",
+    status: "in_progress",
+    notes: "Includes BrandX 60s integration (FTC certified)."
+  },
+  {
+    id: "cal-4",
+    title: "3 Rules for Creator IP Protection in AI Era",
+    date: "2026-09-05",
+    day: "Saturday",
+    time: "15:00 EST",
+    format: "Reel",
+    platform: "Instagram",
+    category: "Community",
+    status: "scheduled",
+    notes: "Carousel infographic + audio voiceover."
+  }
+]
 
 export const useStudioStore = create<StudioState>()(
   persist(
@@ -254,8 +312,33 @@ export const useStudioStore = create<StudioState>()(
         })),
 
       // Content Calendar
-      contentCalendar: [],
+      contentCalendar: DEFAULT_CALENDAR,
       setContentCalendar: (contentCalendar) => set({ contentCalendar }),
+      addCalendarEntry: (entry) =>
+        set((state) => ({ contentCalendar: [...state.contentCalendar, entry] })),
+      removeCalendarEntry: (id) =>
+        set((state) => ({
+          contentCalendar: state.contentCalendar.filter((e) => e.id !== id),
+        })),
+      updateCalendarEntry: (id, updates) =>
+        set((state) => ({
+          contentCalendar: state.contentCalendar.map((e) =>
+            e.id === id ? { ...e, ...updates } : e
+          ),
+        })),
+      toggleCalendarStatus: (id) =>
+        set((state) => ({
+          contentCalendar: state.contentCalendar.map((e) => {
+            if (e.id !== id) return e
+            const nextStatus: "scheduled" | "in_progress" | "published" =
+              e.status === "scheduled"
+                ? "in_progress"
+                : e.status === "in_progress"
+                ? "published"
+                : "scheduled"
+            return { ...e, status: nextStatus }
+          }),
+        })),
       clearContentCalendar: () => set({ contentCalendar: [] }),
 
       // Agent Fleet Toggles
