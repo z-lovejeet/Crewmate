@@ -14,6 +14,8 @@ import {
   CheckmarkSquare03Icon
 } from "../lib/icons"
 
+import { RealThumbnailStudio } from "../components/media/RealThumbnailStudio"
+
 type MediaTab = "clips" | "thumbnails" | "music"
 
 export default function MediaStudio() {
@@ -388,123 +390,9 @@ export default function MediaStudio() {
         </div>
       )}
 
-      {/* TAB 2: Imagen 3 High-CTR Thumbnail Studio */}
+      {/* TAB 2: Real High-CTR Thumbnail Studio */}
       {activeTab === "thumbnails" && (
-        <div className="flex flex-col gap-6">
-          <ClayCard accent="var(--accent)">
-            <div className="flex flex-col gap-5 p-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                    <Edit03Icon size={22} />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-extrabold text-text-primary tracking-tight font-[var(--font-display)]">
-                      Imagen 3 High-CTR Thumbnail Studio
-                    </h2>
-                    <p className="text-xs text-text-tertiary">
-                      Predictive High-CTR Visual Layouts, Color Harmonies & Photorealistic Prompts
-                    </p>
-                  </div>
-                </div>
-                <span className="clay-sm px-3 py-1 rounded-full text-xs font-semibold text-emerald-600 bg-emerald-50">
-                  Engine: imagen-3.0-generate-002
-                </span>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-2.5">
-                <input
-                  type="text"
-                  value={thumbTopic}
-                  onChange={(e) => setThumbTopic(e.target.value)}
-                  placeholder="e.g. 10 AI Tools That Changed How I Build Software..."
-                  className="flex-1 px-4 py-2.5 rounded-xl bg-[var(--surface-sunken)] border border-[var(--border)] text-xs text-text-primary focus:outline-none focus:border-accent transition"
-                />
-                <button
-                  onClick={handleGenerateThumbnails}
-                  disabled={generatingThumbnails}
-                  className="px-6 py-2.5 rounded-xl bg-accent text-white font-bold text-xs hover:brightness-110 active:scale-[0.98] transition cursor-pointer shadow-sm flex items-center gap-2 disabled:opacity-60 shrink-0"
-                >
-                  {generatingThumbnails ? (
-                    <>
-                      <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                      <span>Synthesizing Concepts...</span>
-                    </>
-                  ) : (
-                    <>
-                      <SparkleIcon size={14} />
-                      <span>Generate Concepts</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-          </ClayCard>
-
-          {/* Render Thumbnail Concepts */}
-          <AnimatePresence>
-            {thumbnailConcepts.length > 0 ? (
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="grid grid-cols-1 md:grid-cols-3 gap-5"
-              >
-                {thumbnailConcepts.map((concept: any, idx: number) => (
-                  <div
-                    key={idx}
-                    className="p-5 rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-sm flex flex-col justify-between gap-4"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-text-primary text-sm font-[var(--font-display)]">
-                        "{concept.headline_text}"
-                      </span>
-                      <span className="clay-sm px-2.5 py-0.5 rounded-full text-xs font-bold text-emerald-600 bg-emerald-50 border border-emerald-100">
-                        {concept.predicted_ctr || "13.2%"} CTR
-                      </span>
-                    </div>
-
-                    <div>
-                      <p className="text-[11px] font-semibold text-text-tertiary mb-1.5">
-                        Harmonized Color Palette:
-                      </p>
-                      <div className="flex gap-2">
-                        {concept.color_palette?.map((hex: string, i: number) => (
-                          <div
-                            key={i}
-                            className="w-7 h-7 rounded-lg border border-slate-200 shadow-xs"
-                            style={{ backgroundColor: hex }}
-                            title={hex}
-                          />
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="p-3 rounded-2xl bg-[var(--surface-sunken)] border border-[var(--border)]">
-                      <p className="text-[11px] font-bold text-text-primary mb-1">
-                        Imagen 3 Generation Prompt:
-                      </p>
-                      <p className="text-xs text-text-secondary leading-relaxed font-mono text-[11px]">
-                        {concept.imagen_prompt}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-16 text-center px-4 bg-[var(--surface)] rounded-3xl border border-[var(--border)]">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3">
-                  <Edit03Icon size={24} />
-                </div>
-                <h4 className="font-bold text-text-primary text-sm font-[var(--font-display)]">
-                  Generate High-CTR Thumbnail Layouts
-                </h4>
-                <p className="text-xs text-text-secondary max-w-sm mt-1 leading-relaxed">
-                  Enter your video title above and click <b>"Generate Concepts"</b> to synthesize predictive thumbnail concepts with color harmonies.
-                </p>
-              </div>
-            )}
-          </AnimatePresence>
-        </div>
+        <RealThumbnailStudio />
       )}
 
       {/* TAB 3: Lyria AI Background Music Studio */}
