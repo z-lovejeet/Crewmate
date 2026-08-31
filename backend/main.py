@@ -42,7 +42,8 @@ from .routers import (
     voice,
     scripts,
     clips,
-    music
+    music,
+    thumbnails
 )
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
@@ -122,6 +123,7 @@ app.include_router(voice.router, prefix="/api/voice")
 app.include_router(scripts.router)
 app.include_router(clips.router)
 app.include_router(music.router)
+app.include_router(thumbnails.router)
 
 @app.get("/", summary="Crewmate GEAP Health & Info")
 async def root():

@@ -476,6 +476,13 @@ export const api = {
     })
   },
 
+  generateAiThumbnails: async (title: string, description = "", style = "cyberpunk", aspect_ratio = "16:9") => {
+    return fetchFromBackend<any>("/api/thumbnails/generate", {
+      method: "POST",
+      body: JSON.stringify({ title, description, style, aspect_ratio })
+    })
+  },
+
   generateScript: async (
     topic: string,
     targetDurationMinutes = 8,
