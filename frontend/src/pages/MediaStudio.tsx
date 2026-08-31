@@ -181,7 +181,7 @@ export default function MediaStudio() {
           Media Studio
         </h1>
         <p className="mt-1.5 text-sm sm:text-[15px] text-text-secondary leading-relaxed">
-          Veo 3.1 AI video generation, Gemini 2.5 Flash thumbnails, and Lyria AI music synthesis.
+          Veo 3.1 AI video generation, Gemini 3 Pro master thumbnails, and Lyria AI music synthesis.
         </p>
       </div>
       {/* Studio Tab Switcher */}

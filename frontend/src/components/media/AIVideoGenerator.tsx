@@ -5,8 +5,8 @@ import {
   SparkleIcon,
   DownloadSquare01Icon,
   ZapIcon,
-  PlayIcon,
-  PauseIcon,
+  VideoAiIcon,
+  Shield01Icon,
 } from "../../lib/icons"
 
 interface VeoModel {
@@ -18,12 +18,12 @@ interface VeoModel {
 }
 
 const STYLES = [
-  { id: "cinematic", name: "Cinematic", icon: "🎬" },
-  { id: "documentary", name: "Documentary", icon: "📹" },
-  { id: "sci-fi", name: "Sci-Fi / Futuristic", icon: "🚀" },
-  { id: "nature", name: "Nature / Landscape", icon: "🌿" },
-  { id: "product", name: "Product Demo", icon: "📦" },
-  { id: "abstract", name: "Abstract / Artistic", icon: "🎨" },
+  { id: "cinematic", name: "Cinematic 8K", desc: "Volumetric lighting, shallow focus, anamorphic lens" },
+  { id: "documentary", name: "Documentary", desc: "Realistic handheld, natural ambient lighting, candid framing" },
+  { id: "sci-fi", name: "Sci-Fi Cyber", desc: "Holographic projections, neon contrast, futuristic aesthetic" },
+  { id: "nature", name: "Nature Aerial", desc: "Sweeping drone pans, golden hour, wide landscape depth" },
+  { id: "product", name: "Commercial Studio", desc: "Macro detail, turntable rotation, clean specular highlights" },
+  { id: "abstract", name: "Artistic Motion", desc: "Dynamic light trails, stylized fluid motion, visual elegance" },
 ]
 
 const DEFAULT_MODELS: Record<string, VeoModel> = {
@@ -130,7 +130,7 @@ export const AIVideoGenerator: React.FC = () => {
               timerRef.current = null
 
               setStatus("failed")
-              setErrorMsg(e?.message || "Lost connection to video generation service. Please try again.")
+              setErrorMsg(e?.message || "Connection to video service lost. Please retry.")
               setGenerating(false)
             }
           }
@@ -170,7 +170,7 @@ export const AIVideoGenerator: React.FC = () => {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-[var(--border)]">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center font-bold">
-                <SparkleIcon size={22} />
+                <VideoAiIcon size={22} />
               </div>
               <div>
                 <div className="flex items-center gap-2">
@@ -182,7 +182,7 @@ export const AIVideoGenerator: React.FC = () => {
                   </span>
                 </div>
                 <p className="text-xs text-text-secondary mt-0.5">
-                  Generate real 10-second video clips from scratch using Google's Veo AI models
+                  Generate 10-second high-definition video clips from scratch using Google's Veo foundation models
                 </p>
               </div>
             </div>
@@ -195,7 +195,7 @@ export const AIVideoGenerator: React.FC = () => {
                   aspectRatio === "16:9" ? "bg-accent text-white shadow-2xs" : "text-text-secondary hover:text-text-primary"
                 }`}
               >
-                16:9 YouTube
+                16:9 YouTube Widescreen
               </button>
               <button
                 onClick={() => setAspectRatio("9:16")}
@@ -203,51 +203,51 @@ export const AIVideoGenerator: React.FC = () => {
                   aspectRatio === "9:16" ? "bg-accent text-white shadow-2xs" : "text-text-secondary hover:text-text-primary"
                 }`}
               >
-                9:16 Shorts
+                9:16 Vertical Shorts
               </button>
             </div>
           </div>
 
           {/* Title & Description */}
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-bold text-text-primary">Video Title</label>
+              <label className="text-xs font-bold text-text-primary uppercase tracking-wider">Video Title</label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g. The Future of AI-Powered Content Creation"
+                placeholder="Enter title or main theme..."
                 className="px-4 py-2.5 rounded-xl bg-[var(--surface-sunken)] border border-[var(--border)] text-xs text-text-primary focus:outline-none focus:border-accent transition"
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-bold text-text-primary">What should the video contain?</label>
+              <label className="text-xs font-bold text-text-primary uppercase tracking-wider">Visual Scene Description</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Describe the scene, subjects, actions, mood, and atmosphere you want in the video..."
-                rows={3}
-                className="px-4 py-2.5 rounded-xl bg-[var(--surface-sunken)] border border-[var(--border)] text-xs text-text-primary focus:outline-none focus:border-accent transition resize-none"
+                placeholder="Describe camera movement, environment, subject action, and lighting..."
+                rows={2}
+                className="px-4 py-2 rounded-xl bg-[var(--surface-sunken)] border border-[var(--border)] text-xs text-text-primary focus:outline-none focus:border-accent transition resize-none"
               />
             </div>
           </div>
 
           {/* Style Selector */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-bold text-text-primary">Visual Style</label>
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+            <label className="text-xs font-bold text-text-primary uppercase tracking-wider">Visual Style Preset</label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
               {STYLES.map((st) => (
                 <button
                   key={st.id}
                   onClick={() => setSelectedStyle(st.id)}
-                  className={`p-2 rounded-xl border text-center transition cursor-pointer text-xs ${
+                  className={`p-2.5 rounded-xl border text-left transition cursor-pointer flex flex-col gap-0.5 ${
                     selectedStyle === st.id
                       ? "bg-accent/10 border-accent text-accent font-bold"
                       : "bg-[var(--surface-sunken)] border-[var(--border)] text-text-secondary hover:text-text-primary"
                   }`}
                 >
-                  <div className="text-base mb-0.5">{st.icon}</div>
-                  <div className="truncate">{st.name}</div>
+                  <div className="text-xs font-bold text-text-primary truncate">{st.name}</div>
+                  <div className="text-[10px] text-text-tertiary truncate leading-tight">{st.desc}</div>
                 </button>
               ))}
             </div>
@@ -255,7 +255,7 @@ export const AIVideoGenerator: React.FC = () => {
 
           {/* Model Selector */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-bold text-text-primary">Select Model & Quality</label>
+            <label className="text-xs font-bold text-text-primary uppercase tracking-wider">Model Architecture & Speed Tier</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
               {Object.entries(models).map(([key, model]) => (
                 <button
@@ -315,43 +315,43 @@ export const AIVideoGenerator: React.FC = () => {
           <div className="flex flex-col items-center justify-center py-12 gap-5">
             {/* Animated spinner */}
             <div className="relative">
-              <div className="w-20 h-20 rounded-full border-4 border-violet-100 border-t-violet-500 animate-spin" />
+              <div className="w-16 h-16 rounded-full border-3 border-violet-100 border-t-violet-600 animate-spin" />
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-lg">🎬</span>
+                <VideoAiIcon size={24} className="text-violet-600" />
               </div>
             </div>
 
             <div className="text-center">
               <h3 className="text-base font-bold text-text-primary" style={{ fontFamily: "var(--font-display)" }}>
-                Generating Your Video...
+                Rendering Video Clip
               </h3>
               <p className="text-xs text-text-secondary mt-1">
-                {modelUsedName || currentModel.name} is rendering your 10-second clip
+                {modelUsedName || currentModel.name} is synthesizing video frames on Vertex AI
               </p>
             </div>
 
             {/* Progress info */}
             <div className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-violet-50 border border-violet-100 max-w-sm w-full">
               <div className="flex items-center justify-between w-full text-xs">
-                <span className="text-violet-700 font-bold">Elapsed</span>
+                <span className="text-violet-700 font-bold">Elapsed Time</span>
                 <span className="font-mono text-violet-900 font-bold">{formatTime(elapsedSeconds)}</span>
               </div>
               <div className="flex items-center justify-between w-full text-xs">
-                <span className="text-violet-700 font-bold">Estimated</span>
+                <span className="text-violet-700 font-bold">Expected Time</span>
                 <span className="font-mono text-violet-600">{currentModel.speed}</span>
               </div>
               <div className="w-full bg-violet-200 rounded-full h-1.5 mt-1">
                 <div
                   className="bg-violet-500 h-1.5 rounded-full transition-all duration-1000"
-                  style={{ width: `${Math.min(95, (elapsedSeconds / 120) * 100)}%` }}
+                  style={{ width: `${Math.min(95, (elapsedSeconds / 100) * 100)}%` }}
                 />
               </div>
             </div>
 
-            <div className="flex flex-col gap-1 text-[11px] text-text-tertiary text-center">
-              <span>Step 1: ✅ Gemini crafted cinematic prompt</span>
-              <span>Step 2: 🔄 {modelUsedName} is rendering video frames...</span>
-              <span>Polling for completion every 5 seconds</span>
+            <div className="flex flex-col gap-1 text-[11px] text-text-tertiary text-center font-mono">
+              <span>Stage 1: Prompt engineered via Gemini 3.7 Flash</span>
+              <span>Stage 2: {modelUsedName || "Veo 3.1"} rendering video frames on us-central1</span>
+              <span>Polling status every 5 seconds</span>
             </div>
           </div>
         </ClayCard>
@@ -361,17 +361,19 @@ export const AIVideoGenerator: React.FC = () => {
       {status === "failed" && (
         <ClayCard>
           <div className="flex flex-col items-center justify-center py-10 gap-4">
-            <div className="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center text-2xl">❌</div>
+            <div className="w-12 h-12 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center text-red-600 font-bold text-sm">
+              !
+            </div>
             <div className="text-center">
-              <h3 className="text-base font-bold text-text-primary">Generation Failed</h3>
+              <h3 className="text-base font-bold text-text-primary">Generation Incomplete</h3>
               <p className="text-xs text-red-500 mt-1 max-w-md">{errorMsg}</p>
-              <p className="text-[11px] text-text-tertiary mt-2">This can happen with preview models. Try again or select a different model.</p>
+              <p className="text-[11px] text-text-tertiary mt-2">Veo preview operations may occasionally require a retry.</p>
             </div>
             <button
               onClick={() => { setStatus("idle"); setGenerating(false); }}
               className="px-6 py-2 rounded-xl bg-accent text-white text-xs font-bold hover:brightness-110 transition cursor-pointer"
             >
-              Try Again
+              Retry Generation
             </button>
           </div>
         </ClayCard>
@@ -385,10 +387,10 @@ export const AIVideoGenerator: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-[var(--border)]">
               <div>
                 <h3 className="text-base font-bold text-text-primary" style={{ fontFamily: "var(--font-display)" }}>
-                  Generated Video
+                  Generated Video Clip
                 </h3>
                 <p className="text-xs text-text-secondary mt-0.5">
-                  Generated in {formatTime(elapsedSeconds)} with {modelUsedName}
+                  Completed in {formatTime(elapsedSeconds)} via {modelUsedName}
                 </p>
               </div>
 
@@ -397,7 +399,7 @@ export const AIVideoGenerator: React.FC = () => {
                   onClick={() => { setStatus("idle"); setVideoUrl(null); setGenerating(false); }}
                   className="px-4 py-2 rounded-xl bg-[var(--surface-sunken)] border border-[var(--border)] text-xs font-bold text-text-secondary hover:text-text-primary transition cursor-pointer"
                 >
-                  Generate New
+                  New Generation
                 </button>
                 <button
                   onClick={handleDownload}
@@ -429,33 +431,33 @@ export const AIVideoGenerator: React.FC = () => {
               {/* Info Panel */}
               <div className="w-full lg:w-72 flex flex-col gap-3">
                 <div className="p-3 rounded-2xl bg-[var(--surface-sunken)] border border-[var(--border)] flex flex-col gap-2">
-                  <span className="text-xs font-bold text-text-primary uppercase tracking-wider">Generation Info</span>
+                  <span className="text-xs font-bold text-text-primary uppercase tracking-wider text-[10px]">Generation Metrics</span>
                   <div className="flex items-center justify-between text-[11px]">
                     <span className="text-text-secondary">Model</span>
                     <span className="font-bold text-text-primary">{modelUsedName}</span>
                   </div>
                   <div className="flex items-center justify-between text-[11px]">
-                    <span className="text-text-secondary">Duration</span>
-                    <span className="font-bold text-text-primary">~10 seconds</span>
+                    <span className="text-text-secondary">Clip Duration</span>
+                    <span className="font-bold text-text-primary">10.0 seconds</span>
                   </div>
                   <div className="flex items-center justify-between text-[11px]">
                     <span className="text-text-secondary">Aspect Ratio</span>
                     <span className="font-bold text-text-primary">{aspectRatio}</span>
                   </div>
                   <div className="flex items-center justify-between text-[11px]">
-                    <span className="text-text-secondary">Gen Time</span>
-                    <span className="font-bold text-text-primary">{formatTime(elapsedSeconds)}</span>
+                    <span className="text-text-secondary">Render Time</span>
+                    <span className="font-bold font-mono text-text-primary">{formatTime(elapsedSeconds)}</span>
                   </div>
                   <div className="flex items-center justify-between text-[11px]">
-                    <span className="text-text-secondary">Format</span>
-                    <span className="font-bold text-text-primary">MP4</span>
+                    <span className="text-text-secondary">Container</span>
+                    <span className="font-bold text-text-primary">ISO MP4 (H.264)</span>
                   </div>
                 </div>
 
                 {promptUsed && (
                   <div className="p-3 rounded-2xl bg-[var(--surface-sunken)] border border-[var(--border)] flex flex-col gap-1.5">
-                    <span className="text-xs font-bold text-text-primary">Cinematic Prompt:</span>
-                    <p className="text-[11px] text-text-secondary leading-relaxed max-h-32 overflow-y-auto">
+                    <span className="text-xs font-bold text-text-primary uppercase tracking-wider text-[10px]">Cinematic Prompt</span>
+                    <p className="text-[11px] text-text-secondary font-mono leading-relaxed max-h-32 overflow-y-auto">
                       "{promptUsed}"
                     </p>
                   </div>
@@ -470,15 +472,15 @@ export const AIVideoGenerator: React.FC = () => {
       {status === "idle" && !generating && (
         <ClayCard>
           <div className="flex flex-col items-center justify-center py-16 gap-4 text-center">
-            <div className="w-16 h-16 rounded-3xl bg-violet-50 flex items-center justify-center text-3xl">
-              🎬
+            <div className="w-14 h-14 rounded-2xl bg-violet-50 flex items-center justify-center">
+              <VideoAiIcon size={26} className="text-violet-600" />
             </div>
             <div>
               <h3 className="text-base font-bold text-text-primary" style={{ fontFamily: "var(--font-display)" }}>
-                Generate Your First Video Clip
+                AI Video Synthesis
               </h3>
               <p className="text-xs text-text-secondary mt-1 max-w-md">
-                Enter a title and describe what the video should contain. Select your preferred model, quality, and style — then click Generate. Google Veo will create a real 10-second video clip from scratch.
+                Enter your video title and visual scene description to generate a real 10-second cinematic video clip using Google Veo foundation models.
               </p>
             </div>
           </div>
