@@ -50,18 +50,23 @@ export default function AgentStatusCard({
       transition={{ duration: 0.15 }}
       onClick={onClick}
       className={clsx(
-        "flex flex-col justify-between p-4 rounded-2xl bg-[var(--surface)] border transition-all cursor-pointer shadow-xs min-h-[148px] select-none",
-        isSelected
-          ? "border-primary ring-2 ring-primary/20 bg-primary-pale/10 shadow-sm"
-          : "border-[var(--border)] hover:border-primary/40 hover:shadow-sm"
+        "flex flex-col justify-between p-4 rounded-2xl border transition-all cursor-pointer shadow-xs min-h-[148px] select-none",
+        !enabled
+          ? "bg-[var(--surface-sunken)]/60 border-dashed border-[var(--border)] opacity-60 grayscale-[25%]"
+          : isSelected
+          ? "bg-primary-pale/10 border-primary ring-2 ring-primary/20 shadow-sm"
+          : "bg-[var(--surface)] border-[var(--border)] hover:border-primary/40 hover:shadow-sm"
       )}
-      aria-label={`${agentName}, ${status}, ${taskCount} tasks`}
+      aria-label={`${agentName}, ${enabled ? status : "disabled"}, ${taskCount} tasks`}
     >
       <div>
         {/* Top bar: Icon, Model pill & Status dot */}
         <div className="flex items-center justify-between gap-2 mb-2.5">
           <div className="flex items-center gap-2">
-            <span className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+            <span className={clsx(
+              "w-8 h-8 rounded-xl flex items-center justify-center transition-colors",
+              enabled ? "bg-primary/10 text-primary" : "bg-zinc-200/60 text-zinc-500"
+            )}>
               {icon}
             </span>
             <span className="px-2 py-0.5 rounded-md bg-[var(--surface-sunken)] border border-[var(--border)] text-[10px] font-bold text-text-secondary">
@@ -71,10 +76,17 @@ export default function AgentStatusCard({
           <div className="flex items-center gap-1.5">
             <span className={clsx(
               "w-2 h-2 rounded-full",
-              status === "busy" ? "bg-amber-500 animate-ping" : "bg-emerald-500"
+              !enabled
+                ? "bg-zinc-400"
+                : status === "busy"
+                ? "bg-amber-500 animate-ping"
+                : "bg-emerald-500"
             )} />
-            <span className="text-[10px] font-semibold text-text-tertiary capitalize">
-              {status === "busy" ? "Busy" : "Online"}
+            <span className={clsx(
+              "text-[10px] font-semibold capitalize",
+              !enabled ? "text-zinc-400" : "text-text-tertiary"
+            )}>
+              {!enabled ? "Disabled" : status === "busy" ? "Busy" : "Online"}
             </span>
           </div>
         </div>
@@ -82,7 +94,10 @@ export default function AgentStatusCard({
         {/* Title & Role */}
         <div className="flex flex-col gap-0.5">
           <h4
-            className="text-sm font-bold text-text-primary leading-tight line-clamp-1"
+            className={clsx(
+              "text-sm font-bold leading-tight line-clamp-1 transition-colors",
+              enabled ? "text-text-primary" : "text-text-secondary line-through opacity-80"
+            )}
             style={{ fontFamily: "var(--font-display)" }}
           >
             {agentName}
