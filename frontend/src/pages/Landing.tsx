@@ -18,13 +18,13 @@ import {
   Calendar03Icon,
   AiSearch01Icon,
   PencilEdit01Icon,
-  ScissorsIcon,
+  ViewIcon,
   Comment01Icon,
   BotIconComp,
   PlayIcon,
   PauseIcon,
-  Mic01Icon,
   MusicNote01Icon,
+  SparkleIcon,
 } from "../lib/icons"
 import {
   ClayCard,
@@ -32,7 +32,6 @@ import {
   ClayProgressRing,
   StatusBadge,
   MusicPlayer,
-  VoiceWave,
 } from "../components/clay"
 
 const container: Variants = {
@@ -65,120 +64,120 @@ const SIMULATOR_SCENARIOS = [
       "Creator received a 12-page PDF agreement from BrandX with hidden perpetual exclusivity and Net-90 terms.",
     pipeline: [
       {
-        agent: "Fleet Orchestrator",
+        agent: "Fleet Orchestrator (A00)",
         action:
           "Decomposing contract into legal clause risk & rate benchmarking tasks",
         status: "completed",
         time: "0.2s",
       },
       {
-        agent: "Contract Reviewer",
+        agent: "Contract Reviewer (A01)",
         action:
           "Flagged Clause 4: 12-month category lock without compensation (Risk 0.91 CRITICAL)",
         status: "critical",
         time: "1.4s",
       },
       {
-        agent: "Revenue Optimizer",
+        agent: "Revenue Optimizer (A05)",
         action:
-          "Deal is 19% under median tier rate. Drafted $11,200 counter-proposal + Net-30 terms",
+          "Deal is 29% under median tier rate. Drafted $11,200 counter-proposal + Net-30 terms",
         status: "success",
         time: "0.8s",
       },
       {
-        agent: "Report Generator",
+        agent: "Report Generator (A04)",
         action:
-          "Generated executive PDF summary with annotated markup ready to forward to brand",
+          "Generated executive PDF redline audit ready to forward to brand",
         status: "success",
         time: "0.5s",
       },
     ],
   },
   {
-    id: "video",
-    title: "Long-Form Video Repurposing",
-    subtitle: "18-Min YouTube Tech Deep Dive",
+    id: "studio",
+    title: "Autonomous Veo 3 Video & Thumbnail Studio",
+    subtitle: "8-Sec Cinematic B-Roll & 3 Imagen Thumbnails",
     tag: "Growth & Creative",
     summary:
-      "A 4K YouTube review is uploaded. The fleet analyzes transcript energy and automatically creates vertical short-form assets.",
+      "Creator requests visual assets for an AI tutorial. The fleet discovers trending keywords, drafts viral hooks, renders an 8s Veo 3 clip, and generates 3 CTR-optimized thumbnails.",
     pipeline: [
       {
-        agent: "Clipping Director",
+        agent: "Trend Radar (A10)",
         action:
-          "Identified 4 high-energy standalone segments (Humor spike at 03:14, revelation at 11:20)",
+          "Scanned search velocity for 'Agentic AI 2026' (94/100 breakout velocity score)",
         status: "success",
-        time: "2.1s",
+        time: "0.6s",
       },
       {
-        agent: "Hook Architect",
+        agent: "Hook Architect (A11)",
         action:
-          "Engineered 3 high-retention hooks ('Nobody noticed this secret...') for 9:16 vertical crop",
+          "Engineered 3 high-retention opening hooks ('I automated my YouTube crew in 24 hours')",
         status: "success",
         time: "1.1s",
       },
       {
-        agent: "Content Compliance",
+        agent: "AI Video Cinematographer (A12)",
         action:
-          "Verified FTC sponsorship disclosures and cleared audio rights via Lyria replacement",
-        status: "completed",
-        time: "0.7s",
+          "Rendered 8-second 1080p cinematic B-roll clip via Google Veo 3 generative model",
+        status: "success",
+        time: "2.4s",
       },
       {
-        agent: "Distribution Manager",
+        agent: "Master Thumbnail Director (A13)",
         action:
-          "Formatted and queued 4 Instagram Reels + 4 YouTube Shorts across the optimal weekly calendar",
+          "Generated 3 high-contrast thumbnails via Google Imagen 3 with 92% predicted CTR",
         status: "success",
-        time: "0.4s",
+        time: "1.5s",
       },
     ],
   },
   {
     id: "community",
-    title: "Community Intelligence & Feedback",
-    subtitle: "850 Comments on Latest Release",
+    title: "Community Intelligence & Compliance Shield",
+    subtitle: "850 Viewer Comments + FTC Shield",
     tag: "Audience & Safety",
     summary:
-      "A flood of viewer reactions arrives. The guardian clusters feedback, filters toxicity, and feeds ideas into the next video brief.",
+      "A flood of viewer reactions arrives. The fleet clusters feedback, verifies FTC 16 CFR Part 255 compliance, and swaps copyrighted audio.",
     pipeline: [
       {
-        agent: "Community Guardian",
+        agent: "Community Guardian (A14)",
         action:
-          "Scored 850 comments with Gemma: 78% Positive, 19% Constructive, 3% Toxic Spam blocked",
+          "Scored 850 comments with Gemma 2: 78% Positive, 19% Constructive, 3% Spam blocked",
         status: "success",
         time: "0.9s",
       },
       {
-        agent: "Trend Radar",
+        agent: "Content Compliance (A02)",
         action:
-          "Detected top viewer demand cluster: 'Cover AI coding tools next' (Signal strength: 94/100)",
-        status: "success",
-        time: "0.6s",
-      },
-      {
-        agent: "Brand Safety",
-        action:
-          "Audited controversial keywords to ensure sponsor brand guidelines remain 100% compliant",
+          "Audited description for FTC 16 CFR Part 255 disclosures & generated Sponsor Certificate",
         status: "completed",
-        time: "0.3s",
+        time: "0.7s",
       },
       {
-        agent: "Fleet Orchestrator",
+        agent: "Brand Safety (A06)",
         action:
-          "Auto-generated next week's Content Brief and queued 5 creator-voice reply drafts",
+          "Replaced flagged commercial background track with Google Lyria AI royalty-free synthwave",
         status: "success",
-        time: "0.5s",
+        time: "0.8s",
+      },
+      {
+        agent: "Distribution Manager (A03)",
+        action:
+          "Auto-formatted SEO metadata and scheduled YouTube & Instagram distribution",
+        status: "success",
+        time: "0.4s",
       },
     ],
   },
 ]
 
-// ─── 3 Operational Pillars Data ──────────────────────────────────────────────
+// ─── 3 Operational Pillars Data (15-Agent Fleet) ──────────────────────────────
 const PILLARS = [
   {
     title: "Growth & Creative Engine",
     kicker: "Pillar 01",
     accent: "var(--primary)",
-    desc: "Autonomous trend discovery, retention-maximized scripting, and multi-platform short-form clipping.",
+    desc: "Autonomous trend discovery, retention-maximized scripting, Google Veo 3 video clips, and Imagen 3 thumbnails.",
     agents: [
       {
         icon: <AiSearch01Icon size={20} />,
@@ -191,13 +190,18 @@ const PILLARS = [
         role: "Engineers 0-3s verbal/visual hooks and retention-optimized video beats.",
       },
       {
-        icon: <ScissorsIcon size={20} />,
-        name: "Clipping Director (A12)",
-        role: "Extracts 30-60s viral moments from long-form YouTube into Reels & Shorts.",
+        icon: <VideoAiIcon size={20} />,
+        name: "AI Video Cinematographer (A12)",
+        role: "Generates 8-second cinematic 1080p video B-roll clips using Google Veo 3.",
+      },
+      {
+        icon: <ViewIcon size={20} />,
+        name: "Master Thumbnail Director (A13)",
+        role: "Generates 3 CTR-optimized thumbnail concepts with Google Imagen 3.",
       },
       {
         icon: <Comment01Icon size={20} />,
-        name: "Community Guardian (A13)",
+        name: "Community Guardian (A14)",
         role: "Clusters comment feedback, isolates toxic remarks, and drafts replies in your voice.",
       },
       {
@@ -211,7 +215,7 @@ const PILLARS = [
     title: "Operations & Legal Commerce",
     kicker: "Pillar 02",
     accent: "var(--warning)",
-    desc: "Protecting creator revenue, negotiating brand deals, and organizing distribution.",
+    desc: "Protecting creator revenue, negotiating brand deals, and organizing multi-platform distribution.",
     agents: [
       {
         icon: <Scroll01Icon size={20} />,
@@ -229,9 +233,9 @@ const PILLARS = [
         role: "Manages publishing cadence, resolves schedule conflicts, and syncs platforms.",
       },
       {
-        icon: <VideoAiIcon size={20} />,
+        icon: <Scroll01Icon size={20} />,
         name: "Report Generator (A04)",
-        role: "Compiles brand compliance reports, PDF dossiers, and Veo AI video summaries.",
+        role: "Compiles brand compliance reports, PDF dossiers, and sponsor audit certificates.",
       },
       {
         icon: <GlobeIcon size={20} />,
@@ -249,7 +253,7 @@ const PILLARS = [
       {
         icon: <Shield01Icon size={20} />,
         name: "Content Compliance (A02)",
-        role: "Real-time FTC disclosure audits and Lyria royalty-free music swap recommendations.",
+        role: "Real-time FTC 16 CFR Part 255 disclosure audits and Lyria royalty-free music swaps.",
       },
       {
         icon: <CheckmarkSquare03Icon size={20} />,
@@ -276,29 +280,29 @@ const NICHE_PROFILES = [
     id: "tech",
     name: "Tech & Software Reviewers",
     focus: "Product testing, sponsored gadgets, code demos",
-    topAgents: ["Contract Reviewer", "Clipping Director", "Trend Radar"],
+    topAgents: ["Contract Reviewer", "AI Video Cinematographer", "Trend Radar"],
     benefit:
-      "Auto-generates code snippet Reels and protects against strict OEM exclusivity clauses.",
+      "Generates Veo 3 code b-roll scenes and protects against strict OEM exclusivity clauses.",
   },
   {
     id: "lifestyle",
     name: "Lifestyle & Vlogs",
     focus: "Daily routines, travel sponsorships, aesthetic Reels",
-    topAgents: ["Content Compliance", "Hook Architect", "Community Guardian"],
+    topAgents: ["Content Compliance", "Hook Architect", "Master Thumbnail Director"],
     benefit:
-      "Ensures FTC #ad compliance across Instagram Stories and drafts conversational comment replies.",
+      "Ensures FTC Part 255 #ad compliance across Instagram Stories and generates click-worthy thumbnails.",
   },
   {
     id: "gaming",
     name: "Gaming & Live Streamers",
     focus: "Long gameplay sessions, esports highlights, hardware deals",
     topAgents: [
-      "Clipping Director",
+      "AI Video Cinematographer",
       "Content Compliance (Lyria)",
       "Revenue Optimizer",
     ],
     benefit:
-      "Extracts funniest stream moments into Shorts and replaces DMCA music with Lyria audio.",
+      "Renders cinematic 8s hype clips and replaces DMCA audio with royalty-free Lyria tracks.",
   },
   {
     id: "finance",
@@ -318,7 +322,7 @@ const FAQS = [
   },
   {
     q: "How does Crewmate help a solo YouTuber or Instagrammer?",
-    a: "Solo creators spend over 60% of their time on uncompensated operations: reviewing legal contracts, checking FTC compliance, worrying about copyright strikes, chopping videos for Shorts, and reading thousands of comments. Crewmate automates these repetitive workflows 24/7 so creators can focus purely on creativity.",
+    a: "Solo creators spend over 60% of their time on uncompensated operations: reviewing legal contracts, checking FTC compliance, worrying about copyright strikes, generating B-roll and thumbnails, and reading thousands of comments. Crewmate automates these repetitive workflows 24/7 so creators can focus purely on creativity.",
   },
   {
     q: "How does the platform handle security and brand protection?",
@@ -326,7 +330,7 @@ const FAQS = [
   },
   {
     q: "What Google technologies power Crewmate?",
-    a: "Crewmate uses 12+ Google Cloud and AI technologies: Google ADK for multi-agent choreography, Gemini 3.7 Flash for reasoning, Gemma 2 for on-device/edge sentiment classification, Veo for AI video summaries, Lyria for copyright-safe music, Firebase Firestore for real-time state, and Cloud Run for serverless deployment.",
+    a: "Crewmate uses 12+ Google Cloud and AI technologies: Google ADK for multi-agent choreography, Gemini 3.7 Flash for reasoning, Gemini 3.1 Pro Preview for orchestration, Gemma 2 for on-device/edge sentiment classification, Veo 3 for 8-second cinematic video generation, Imagen 3 for CTR thumbnails, Lyria for copyright-safe music, Firebase Firestore for real-time state, and Cloud Run for serverless deployment.",
   },
 ]
 
@@ -335,24 +339,15 @@ export default function Landing() {
   const [activeNiche, setActiveNiche] = useState(0)
   const [videoCount, setVideoCount] = useState(4)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
-  const [voiceActive, setVoiceActive] = useState(false)
-  const [voiceText, setVoiceText] = useState("")
   const [musicPlaying, setMusicPlaying] = useState(false)
+  const [selectedVeoPrompt, setSelectedVeoPrompt] = useState(0)
 
   const [heroTab, setHeroTab] =
-    useState<"contract" | "compliance" | "repurpose">("contract")
+    useState<"contract" | "compliance" | "studio">("contract")
 
   const hoursSaved = videoCount * 9.5
   const revenueUnlocked = videoCount * 850
   const clipsGenerated = videoCount * 4
-
-  const testVoiceCommand = (cmd: string) => {
-    setVoiceActive(true)
-    setVoiceText(cmd)
-    setTimeout(() => {
-      setVoiceActive(false)
-    }, 2400)
-  }
 
   const HERO_SCENARIOS = {
     contract: {
@@ -409,32 +404,32 @@ export default function Landing() {
         "Inserted mandatory #ad disclosure within top 2 lines of video description for both YouTube and Instagram guidelines.",
       metricBadge: "Zero Strike Risk",
     },
-    repurpose: {
-      tabTitle: "1-Click Shorts Extraction",
-      tabIcon: <ScissorsIcon size={16} />,
-      taskTitle: "18-Min Tech Breakdown",
-      taskMeta: "Transcript energy & pacing analysis complete",
-      badgeText: "4 Viral Clips Ready",
+    studio: {
+      tabTitle: "Veo 3 Video & Imagen 3 Studio",
+      tabIcon: <VideoAiIcon size={16} />,
+      taskTitle: "AI Creator Workspace 2026",
+      taskMeta: "Google Veo 3 Video + Imagen 3 Thumbnails",
+      badgeText: "8s Cinematic + 3 Thumbnails",
       badgeTone: "info" as const,
       activeAgents: [
         {
-          name: "Clipping Director (A12)",
-          role: "Viral Moment Extractor",
-          icon: <ScissorsIcon size={14} />,
+          name: "AI Video Cinematographer (A12)",
+          role: "Veo 3 Generation",
+          icon: <VideoAiIcon size={14} />,
         },
         {
-          name: "Hook Architect (A11)",
-          role: "3s Retention Hooks",
-          icon: <PencilEdit01Icon size={14} />,
+          name: "Master Thumbnail Director (A13)",
+          role: "Imagen 3 Design",
+          icon: <ViewIcon size={14} />,
         },
       ],
-      findingTitle: "4 High-Retention 9:16 Clips Extracted",
+      findingTitle: "Generated 8-Second Cinematic Clip & 3 Thumbnails",
       findingDesc:
-        "Identified humor and revelation peaks at 03:14 and 11:20 with retention-tested hook ('Nobody talks about this bug...').",
-      actionTitle: "Formatted for Reels & Shorts",
+        "Engineered high-fidelity 1080p B-roll scene using Veo 3 plus 3 high-contrast YouTube thumbnail concepts with CTR scores up to 92%.",
+      actionTitle: "Assets Ready for Publishing",
       actionDesc:
-        "Generated vertical 9:16 crops with animated word-by-word captions and platform-specific hashtags.",
-      metricBadge: "4x Audience Reach",
+        "Delivered 16:9 and 9:16 optimized media with prompt metadata and instant preview playback.",
+      metricBadge: "+92% CTR Benchmark",
     },
   }
 
@@ -1039,7 +1034,7 @@ export default function Landing() {
         </motion.div>
       </section>
 
-      {/* ─── 6. MULTIMODAL AI SHOWCASE (VOICE + AUDIO + VIDEO) ──────────── */}
+      {/* ─── 6. MULTIMODAL AI SHOWCASE (VEO 3 + IMAGEN 3 + LYRIA AI) ────── */}
       <section className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <motion.div
           initial="hidden"
@@ -1049,64 +1044,81 @@ export default function Landing() {
         >
           <div className="mb-10 text-center">
             <span className="clay-sm inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-pale px-3.5 py-1 text-xs font-extrabold uppercase tracking-widest text-primary">
-              Multimodal Superpowers
+              Generative Multimodal Power
             </span>
             <h2
               className="mt-4 text-3xl font-extrabold text-text-primary sm:text-4xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Voice, Vision & Audio Intelligence
+              Google Veo 3, Imagen 3 & Lyria AI Studio
             </h2>
             <p className="mx-auto mt-2 max-w-2xl text-sm text-text-secondary">
-              Experience seamless voice commands, Lyria copyright audio swaps,
-              and Veo video briefings.
+              Cinematic 8-second B-roll clips, CTR-optimized YouTube thumbnails, and royalty-free copyright audio swaps.
             </p>
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {/* Interactive Voice Command Demo */}
+            {/* Google Veo 3 & Imagen 3 Creative Showcase */}
             <ClayCard accent="var(--primary)">
               <div className="flex flex-col gap-4 p-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="clay-sm flex h-8 w-8 items-center justify-center rounded-xl bg-primary-pale text-primary">
-                      <Mic01Icon size={18} />
+                      <VideoAiIcon size={18} />
                     </span>
                     <h4 className="text-base font-bold text-text-primary">
-                      Voice Commander Testbed
+                      Veo 3 Video & Imagen 3 Thumbnails
                     </h4>
                   </div>
-                  <span className="text-xs font-bold text-text-tertiary">
-                    Try Clicking a Preset
+                  <span className="clay-sm rounded-full bg-primary-pale px-2.5 py-0.5 text-[11px] font-bold text-primary font-mono">
+                    8s HD · 3 Thumbnails
                   </span>
                 </div>
 
-                <div className="flex flex-col items-center justify-center py-4">
-                  <VoiceWave
-                    isActive={voiceActive}
-                    onMicClick={() => testVoiceCommand("Run compliance scan")}
-                  />
-                  <p className="mt-3 text-xs font-medium text-text-secondary">
-                    {voiceActive
-                      ? `Processing: "${voiceText}"`
-                      : "Tap a voice preset below to simulate spoken commands"}
-                  </p>
+                <p className="text-xs text-text-secondary">
+                  AI Video Cinematographer & Master Thumbnail Director generate broadcast-grade visual assets directly from your script.
+                </p>
+
+                {/* Interactive Prompt Presets */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-text-tertiary">
+                    Select Generative Prompt:
+                  </span>
+                  <div className="flex flex-col gap-1.5">
+                    {[
+                      "Cinematic 8s drone flyover above futuristic neon AI data center",
+                      "Developer coding at holographic glass terminal (Synthwave 4K)",
+                      "High-contrast YouTube thumbnail: Bold typography + 92% CTR",
+                    ].map((preset, pIdx) => (
+                      <button
+                        key={pIdx}
+                        onClick={() => setSelectedVeoPrompt(pIdx)}
+                        className={`p-2 rounded-xl text-left text-xs font-semibold border transition cursor-pointer flex items-center justify-between ${
+                          selectedVeoPrompt === pIdx
+                            ? "bg-primary-pale/60 text-primary border-primary/40 shadow-2xs font-bold"
+                            : "bg-[var(--surface-sunken)] border-[var(--border)] text-text-secondary hover:text-primary"
+                        }`}
+                      >
+                        <span className="truncate">"{preset}"</span>
+                        <span className="text-[10px] uppercase font-mono shrink-0 ml-2">
+                          {pIdx === 2 ? "Imagen 3" : "Veo 3 (8s)"}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    "Run full compliance scan",
-                    "Analyze BrandX contract",
-                    "Extract clips for Instagram",
-                  ].map((preset) => (
-                    <button
-                      key={preset}
-                      onClick={() => testVoiceCommand(preset)}
-                      className="clay-sm rounded-xl bg-bg-app px-3 py-1.5 text-xs font-bold text-text-primary hover:bg-primary-pale hover:text-primary transition-all"
-                    >
-                      "{preset}"
+                {/* Generative Preview Specs & Link */}
+                <div className="p-3 rounded-2xl bg-[var(--surface-sunken)] border border-[var(--border)] flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-xs text-text-secondary">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>Vertex AI Engine: 1080p 16:9 ready</span>
+                  </div>
+                  <Link to="/media">
+                    <button className="clay-sm px-3 py-1 rounded-xl bg-primary text-white text-xs font-bold hover:brightness-105 transition cursor-pointer">
+                      Open Media Studio →
                     </button>
-                  ))}
+                  </Link>
                 </div>
               </div>
             </ClayCard>
@@ -1131,18 +1143,30 @@ export default function Landing() {
                 <p className="text-xs text-text-secondary">
                   When a flagged copyrighted track is detected, Lyria
                   automatically generates an authentic, royalty-free acoustic
-                  match.
+                  match with full commercial rights.
                 </p>
 
                 <div className="flex flex-col gap-2">
                   <MusicPlayer
-                    trackName="Acoustic Chill Beats (Lyria Clean)"
-                    artist="Royalty-Free Replacement"
+                    trackName="Neon Horizon · Synthwave Chill (124 BPM)"
+                    artist="Google Lyria AI Gen-3"
                     isPlaying={musicPlaying}
                     onPlayPause={() => setMusicPlaying((p) => !p)}
                     variant="alternative"
                     badge="Cleared · Lyria"
                   />
+                </div>
+
+                <div className="p-3 rounded-2xl bg-[var(--surface-sunken)] border border-[var(--border)] flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-xs text-text-secondary">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                    <span>FTC 16 CFR Part 255 compliant</span>
+                  </div>
+                  <Link to="/compliance">
+                    <button className="clay-sm px-3 py-1 rounded-xl bg-accent text-white text-xs font-bold hover:brightness-105 transition cursor-pointer">
+                      Open Compliance Shield →
+                    </button>
+                  </Link>
                 </div>
               </div>
             </ClayCard>
@@ -1348,7 +1372,7 @@ export default function Landing() {
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-error font-bold">✕</span>
-                    Long-form videos die without short-form repurposing
+                    Hours wasted manually rendering B-roll and designing thumbnails
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-error font-bold">✕</span>
@@ -1381,8 +1405,8 @@ export default function Landing() {
                     100% automated FTC checks & Lyria royalty-free music swaps
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-accent font-bold">✓</span>1 long-form
-                    video automatically generates 4+ Shorts & Reels
+                    <span className="text-accent font-bold">✓</span>
+                    Instant 8s Veo 3 B-roll clips and 3 CTR-optimized Imagen 3 thumbnails
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-accent font-bold">✓</span>
@@ -1419,16 +1443,17 @@ export default function Landing() {
             className="flex flex-wrap justify-center gap-3"
           >
             {[
-              "Google ADK",
+              "Google ADK (15 Agents)",
               "Gemini 3.7 Flash",
+              "Gemini 3.1 Pro (Orchestrator)",
+              "Google Veo 3 (8s Video AI)",
+              "Google Imagen 3 (Thumbnail AI)",
+              "Google Lyria (Music AI)",
               "Firebase Firestore",
               "Google Cloud Run",
-              "Model Armor",
-              "Gemma 2 (Edge)",
-              "Veo (Video AI)",
-              "Lyria (Music AI)",
-              "Google Cloud Pub/Sub",
-              "OpenTelemetry Trace",
+              "Model Armor Security",
+              "Gemma 2 9B (Edge Classifier)",
+              "OpenTelemetry Cloud Trace",
             ].map((tech) => (
               <span
                 key={tech}
