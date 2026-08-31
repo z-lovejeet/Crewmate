@@ -105,7 +105,7 @@ def generate_image(
     Returns (image_bytes, mime_type).
     """
     settings = get_settings()
-    image_model = model or settings.IMAGE_MODEL
+    image_model = model or settings.IMAGE_MODEL or "gemini-2.5-flash-image"
     client = _get_image_client()
 
     logger.info(f"Generating image with {image_model}: {prompt[:80]}...")
