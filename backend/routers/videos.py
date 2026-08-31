@@ -13,11 +13,31 @@ from ..services.gemini import generate_text, generate_video, check_video_operati
 logger = logging.getLogger("crewmate.videos")
 router = APIRouter(prefix="/api/videos", tags=["Videos"])
 
-# In-memory job store (sufficient for hackathon demo)
-_jobs: Dict[str, dict] = {}
-
+# In-memory + file-backed job store
 VIDEO_DIR = "/tmp/crewmate_videos"
 os.makedirs(VIDEO_DIR, exist_ok=True)
+JOBS_FILE = os.path.join(VIDEO_DIR, "jobs.json")
+
+
+def _load_jobs() -> Dict[str, dict]:
+    if os.path.exists(JOBS_FILE):
+        try:
+            with open(JOBS_FILE, "r") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+
+def _save_job(job_id: str, data: dict):
+    jobs = _load_jobs()
+    jobs[job_id] = data
+    try:
+        with open(JOBS_FILE, "w") as f:
+            json.dump(jobs, f, indent=2)
+    except Exception as e:
+        logger.warning(f"Could not persist job {job_id}: {e}")
+
 
 # Available Veo models for user selection
 VEO_MODELS = {
@@ -154,9 +174,10 @@ Return ONLY the prompt text, nothing else."""
         logger.error(f"Veo generation failed to start: {e}")
         raise HTTPException(status_code=500, detail=f"Video generation failed to start: {str(e)}")
 
-    # Step 3: Store job
+    # Step 3: Store job (persisted to disk)
     job_id = str(uuid.uuid4())[:8]
-    _jobs[job_id] = {
+    job_data = {
+        "job_id": job_id,
         "operation_name": operation.name,
         "status": "processing",
         "model_id": model_id,
@@ -167,6 +188,7 @@ Return ONLY the prompt text, nothing else."""
         "video_path": None,
         "error": None,
     }
+    _save_job(job_id, job_data)
 
     logger.info(f"Job {job_id} started: operation={operation.name}")
 
@@ -182,10 +204,11 @@ Return ONLY the prompt text, nothing else."""
 @router.get("/status/{job_id}", response_model=VideoStatusResponse)
 async def check_video_status(job_id: str):
     """Poll video generation job status."""
-    if job_id not in _jobs:
+    jobs = _load_jobs()
+    if job_id not in jobs:
         raise HTTPException(status_code=404, detail="Job not found")
 
-    job = _jobs[job_id]
+    job = jobs[job_id]
 
     if job["status"] == "completed":
         return VideoStatusResponse(
@@ -213,6 +236,7 @@ async def check_video_status(job_id: str):
             if operation.error:
                 job["status"] = "failed"
                 job["error"] = operation.error.get("message", "Video generation failed")
+                _save_job(job_id, job)
                 logger.warning(f"Job {job_id} failed: {job['error']}")
                 return VideoStatusResponse(
                     job_id=job_id,
@@ -228,6 +252,7 @@ async def check_video_status(job_id: str):
                 save_generated_video(operation, video_path)
                 job["status"] = "completed"
                 job["video_path"] = video_path
+                _save_job(job_id, job)
                 logger.info(f"Job {job_id} completed: {video_path}")
 
                 return VideoStatusResponse(
@@ -240,6 +265,7 @@ async def check_video_status(job_id: str):
             except Exception as e:
                 job["status"] = "failed"
                 job["error"] = str(e)
+                _save_job(job_id, job)
                 return VideoStatusResponse(
                     job_id=job_id,
                     status="failed",
@@ -268,10 +294,11 @@ async def check_video_status(job_id: str):
 @router.get("/download/{job_id}")
 async def download_video(job_id: str):
     """Download the generated video as MP4."""
-    if job_id not in _jobs:
+    jobs = _load_jobs()
+    if job_id not in jobs:
         raise HTTPException(status_code=404, detail="Job not found")
 
-    job = _jobs[job_id]
+    job = jobs[job_id]
     video_path = job.get("video_path")
 
     if not video_path or not os.path.exists(video_path):

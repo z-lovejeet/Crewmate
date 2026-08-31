@@ -93,14 +93,17 @@ export const AIVideoGenerator: React.FC = () => {
         setJobId(resp.job_id)
         setModelUsedName(resp.model_name || models[selectedModelKey]?.name || "")
 
+        let consecutiveErrors = 0
+
         // Start polling
         pollingRef.current = setInterval(async () => {
           try {
             const statusResp = await api.getVideoStatus(resp.job_id)
+            consecutiveErrors = 0
 
             if (statusResp?.status === "completed") {
-              clearInterval(pollingRef.current!)
-              clearInterval(timerRef.current!)
+              if (pollingRef.current) clearInterval(pollingRef.current)
+              if (timerRef.current) clearInterval(timerRef.current)
               pollingRef.current = null
               timerRef.current = null
 
@@ -109,8 +112,8 @@ export const AIVideoGenerator: React.FC = () => {
               setPromptUsed(statusResp.prompt_used || "")
               setGenerating(false)
             } else if (statusResp?.status === "failed") {
-              clearInterval(pollingRef.current!)
-              clearInterval(timerRef.current!)
+              if (pollingRef.current) clearInterval(pollingRef.current)
+              if (timerRef.current) clearInterval(timerRef.current)
               pollingRef.current = null
               timerRef.current = null
 
@@ -118,13 +121,23 @@ export const AIVideoGenerator: React.FC = () => {
               setErrorMsg(statusResp.error || "Video generation failed")
               setGenerating(false)
             }
-          } catch {
-            // Keep polling on network errors
+          } catch (e: any) {
+            consecutiveErrors++
+            if (consecutiveErrors >= 6) {
+              if (pollingRef.current) clearInterval(pollingRef.current)
+              if (timerRef.current) clearInterval(timerRef.current)
+              pollingRef.current = null
+              timerRef.current = null
+
+              setStatus("failed")
+              setErrorMsg(e?.message || "Lost connection to video generation service. Please try again.")
+              setGenerating(false)
+            }
           }
         }, 5000)
       }
     } catch (err: any) {
-      clearInterval(timerRef.current!)
+      if (timerRef.current) clearInterval(timerRef.current)
       timerRef.current = null
       setStatus("failed")
       setErrorMsg(err?.message || "Failed to start video generation")

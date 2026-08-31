@@ -165,6 +165,21 @@ async def generate_image_async(
     )
 
 
+def _get_video_client() -> genai.Client:
+    """Get a GenAI client for video generation (Veo models require us-central1)."""
+    settings = get_settings()
+    if settings.USE_VERTEX_AI:
+        return genai.Client(
+            vertexai=True,
+            project=settings.GCP_PROJECT_ID,
+            location="us-central1",
+        )
+    elif settings.GOOGLE_GENAI_API_KEY:
+        return genai.Client(api_key=settings.GOOGLE_GENAI_API_KEY)
+    else:
+        raise RuntimeError("No Vertex AI or API key configured for video generation")
+
+
 def generate_video(
     prompt: str,
     model: str = "veo-3.1-fast-generate-001",
@@ -174,9 +189,9 @@ def generate_video(
     
     Returns the operation object which must be polled via check_video_operation().
     """
-    client = _get_image_client()  # reuse us-central1 client
+    client = _get_video_client()
 
-    logger.info(f"Starting video generation with {model}: {prompt[:80]}...")
+    logger.info(f"Starting video generation with {model} @ us-central1: {prompt[:80]}...")
 
     operation = client.models.generate_videos(
         model=model,
@@ -193,7 +208,7 @@ def generate_video(
 
 def check_video_operation(operation_name: str) -> object:
     """Check the status of a Veo video generation operation."""
-    client = _get_image_client()
+    client = _get_video_client()
     
     # Reconstruct a minimal operation object to poll
     from google.genai.types import GenerateVideosOperation
