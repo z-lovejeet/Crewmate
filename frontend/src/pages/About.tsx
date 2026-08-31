@@ -57,7 +57,7 @@ export default function About() {
           className="mx-auto max-w-2xl text-base font-normal leading-relaxed text-text-secondary sm:text-lg"
         >
           Built for the All Things Agentic Hackathon 2026. A comprehensive
-          platform designed to empower creators with an intelligent fleet of 13
+          platform designed to empower creators with an intelligent fleet of 15
           specialized AI agents managing compliance, contracts, content
           distribution, and audience growth.
         </motion.p>
@@ -99,7 +99,7 @@ export default function About() {
                   <strong className="text-text-primary">
                     L4: Specialized Agents
                   </strong>{" "}
-                  — The fleet of 13 distinct LLM instances with narrow focus
+                  — The fleet of 15 distinct LLM instances with narrow focus
                 </li>
                 <li>
                   <strong className="text-text-primary">
@@ -134,7 +134,7 @@ export default function About() {
       >
         <Section
           title="The Agent Fleet"
-          hint="13 specialized AI agents working in harmony"
+          hint="15 specialized AI agents working in harmony"
         >
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {AGENTS.map((agent) => (
@@ -181,12 +181,12 @@ export default function About() {
             {[
               { name: "Google ADK", desc: "Agent Orchestration" },
               { name: "Gemini 3.7 Flash", desc: "Core Reasoning" },
-              { name: "Veo", desc: "Video Summarization" },
-              { name: "Lyria", desc: "Music Generation" },
-              { name: "Gemma", desc: "Local Classification" },
-              { name: "Firebase", desc: "Auth & Database" },
-              { name: "Cloud Run", desc: "Serverless Compute" },
-              { name: "React + Tailwind", desc: "Frontend UI" },
+              { name: "Veo 3", desc: "8s Cinematic Video Generation" },
+              { name: "Imagen 3", desc: "CTR Thumbnail Diffusion" },
+              { name: "Lyria", desc: "Royalty-Free Music Generation" },
+              { name: "Gemma 2", desc: "Edge Safety & Classification" },
+              { name: "Firebase", desc: "Auth & Firestore Database" },
+              { name: "Cloud Run", desc: "Serverless Container Compute" },
             ].map((tech) => (
               <motion.div key={tech.name} variants={item}>
                 <ClayCard>
@@ -205,30 +205,85 @@ export default function About() {
         </Section>
       </motion.div>
 
-      {/* Builder */}
+      {/* Builders / Team Section */}
       <motion.div
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
         variants={container}
       >
-        <ClayCard accent="var(--accent)">
-          <div className="flex flex-col items-center justify-center py-6 text-center">
-            <h3
-              className="mb-2 text-xl font-bold text-text-primary"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              Solo Builder
-            </h3>
-            <p className="mb-6 text-sm text-text-secondary">
-              Designed and developed by one person for the All Things Agentic
-              Hackathon 2026.
-            </p>
+        <Section
+          title="Meet the Builders"
+          hint="Engineering & Research Team behind Crewmate"
+        >
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            {/* Lovejeet Singh */}
+            <ClayCard hover={true} accent="var(--primary)">
+              <div className="flex flex-col gap-4 p-3">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-12 h-12 rounded-2xl bg-primary text-white flex items-center justify-center font-extrabold text-base shadow-sm shrink-0">
+                    LS
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h4
+                        className="text-base font-extrabold text-text-primary"
+                        style={{ fontFamily: "var(--font-display)" }}
+                      >
+                        Lovejeet Singh
+                      </h4>
+                      <span className="px-2 py-0.5 rounded-md bg-primary-pale border border-primary/20 text-[10px] font-extrabold uppercase text-primary">
+                        Engineering Lead
+                      </span>
+                    </div>
+                    <p className="text-xs text-text-secondary mt-0.5 font-medium">
+                      Lead Full-Stack & Agent Systems Architect
+                    </p>
+                  </div>
+                </div>
+                <p className="text-xs text-text-secondary leading-relaxed">
+                  Engineered the 15-agent Google ADK multi-agent fleet, Vertex AI & Gemini 3.7 integrations, Veo 3 video & Imagen 3 thumbnail generation engines, FastAPI backend, and 3D Claymorphism frontend.
+                </p>
+              </div>
+            </ClayCard>
+
+            {/* Sahib Babbar */}
+            <ClayCard hover={true} accent="var(--accent)">
+              <div className="flex flex-col gap-4 p-3">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-12 h-12 rounded-2xl bg-accent text-white flex items-center justify-center font-extrabold text-base shadow-sm shrink-0">
+                    SB
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h4
+                        className="text-base font-extrabold text-text-primary"
+                        style={{ fontFamily: "var(--font-display)" }}
+                      >
+                        Sahib Babbar
+                      </h4>
+                      <span className="px-2 py-0.5 rounded-md bg-accent-pale border border-accent/20 text-[10px] font-extrabold uppercase text-accent">
+                        Research & Docs Lead
+                      </span>
+                    </div>
+                    <p className="text-xs text-text-secondary mt-0.5 font-medium">
+                      AI Domain Research & Documentation Lead
+                    </p>
+                  </div>
+                </div>
+                <p className="text-xs text-text-secondary leading-relaxed">
+                  Authored the comprehensive system architecture, FTC 16 CFR Part 255 and copyright safety policies, creator economy domain research, API contract specifications, and enterprise documentation.
+                </p>
+              </div>
+            </ClayCard>
+          </div>
+
+          <div className="mt-8 flex justify-center">
             <Link to="/dashboard">
-              <ClayButton label="Back to Dashboard" variant="primary" />
+              <ClayButton label="Back to Command Deck" variant="primary" size="lg" />
             </Link>
           </div>
-        </ClayCard>
+        </Section>
       </motion.div>
     </div>
   )
