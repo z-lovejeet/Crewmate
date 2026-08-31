@@ -421,12 +421,14 @@ export default function Fleet() {
                 <select
                   value={traceFilter}
                   onChange={(e) => setTraceFilter(e.target.value)}
-                  className="px-2.5 py-1 rounded-lg bg-[var(--surface-sunken)] border border-[var(--border)] text-xs text-text-secondary focus:outline-none"
+                  className="px-2.5 py-1 rounded-lg bg-[var(--surface-sunken)] border border-[var(--border)] text-xs text-text-secondary focus:outline-none cursor-pointer"
                 >
                   <option value="all">All Agents</option>
                   <option value="orchestrator">Orchestrator</option>
                   <option value="contract">Contract Reviewer</option>
                   <option value="compliance">Compliance</option>
+                  <option value="video">Video Cinematographer</option>
+                  <option value="thumbnail">Thumbnail Director</option>
                   <option value="trend">Trend Radar</option>
                   <option value="hook">Hook Architect</option>
                 </select>

@@ -191,6 +191,8 @@ export const CLAUSES: Clause[] = [
 ]
 
 export const FEED: FeedMessage[] = [
+  { id: "f0", agent: "Video Cinematographer", agentId: "video_cinematographer", message: "Veo 3.1 8s synthesis: Rendered 15MB 8K cinematic clip for 'GTA6 City Night Drive'.", timestamp: "12:10", tone: "success" },
+  { id: "f00", agent: "Thumbnail Director", agentId: "thumbnail_director", message: "Gemini 3 Pro diffusion: Generated 1376x768 Master Thumbnail for 'GTA6 LEAKS' (16.4% CTR).", timestamp: "12:08", tone: "success" },
   { id: "f1", agent: "Threat Sentinel", agentId: "threat_sentinel", message: "Model Armor verified: Zero injection vectors in incoming BrandX PDF.", timestamp: "12:04", tone: "info" },
   { id: "f2", agent: "Contract Reviewer", agentId: "contract_reviewer", message: "Redline generated: Captured +$4,000 via Net-15 and Rate increase counter-proposals.", timestamp: "12:02", tone: "warning" },
   { id: "f3", agent: "Content Compliance", agentId: "content_compliance", message: "Audio scan: Substituted 'Cyberpunk Neon Drive' with cleared Lyria Gen-3 Echo Pulse.", timestamp: "11:58", tone: "success" },

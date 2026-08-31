@@ -2,11 +2,14 @@ import asyncio
 import base64
 import json
 import logging
+import time
+import uuid
 from typing import List, Optional
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from ..services.gemini import generate_text, generate_image_async
+from ..services.observability import record_trace_span
 
 logger = logging.getLogger("crewmate.thumbnails")
 router = APIRouter(prefix="/api/thumbnails", tags=["Thumbnails"])
@@ -79,7 +82,9 @@ OUTPUT FORMAT: Return ONLY valid JSON with this exact schema:
 @router.post("/generate", response_model=ThumbnailGenerateResponse)
 async def generate_ai_thumbnail(req: ThumbnailGenerateRequest):
     """Generate the single optimal AI thumbnail using the Master Prompt System + Gemini 3 Pro Image."""
-    logger.info(f"Generating Master AI thumbnail for: '{req.title}'")
+    t0 = time.time()
+    trace_id = f"tr_thumb_{uuid.uuid4().hex[:8]}"
+    logger.info(f"Generating Master AI thumbnail for: '{req.title}' (trace={trace_id})")
 
     user_context = f"""Video Title: "{req.title}"
 Visual Scene / Context: "{req.description}"
@@ -89,6 +94,7 @@ Aspect Ratio: "{req.aspect_ratio}"
 Synthesize the above inputs into the single highest-CTR master thumbnail concept and image generation prompt."""
 
     # ── Step 1: Master Prompt System Direction via Gemini 3.7 Flash ──────────
+    t_llm0 = time.time()
     try:
         raw = generate_text(
             prompt=user_context,
@@ -129,6 +135,7 @@ Synthesize the above inputs into the single highest-CTR master thumbnail concept
                 "badgeBorder": "#00f0ff"
             }
         }
+    llm_latency_ms = (time.time() - t_llm0) * 1000
 
     # ── Step 2: Generate Real 1376x768 Image via Gemini 3 Pro Image ─────────
     image_prompt = thumb_data.get("ai_image_prompt", f"{req.title}, cinematic 8k photorealistic")
@@ -136,6 +143,7 @@ Synthesize the above inputs into the single highest-CTR master thumbnail concept
 
     logger.info(f"Rendering master thumbnail image with Gemini 3 Pro Image: {full_image_prompt[:80]}...")
 
+    t_img0 = time.time()
     try:
         img_bytes, mime_type = await generate_image_async(full_image_prompt, model="gemini-3-pro-image")
         b64 = base64.b64encode(img_bytes).decode("utf-8")
@@ -144,6 +152,9 @@ Synthesize the above inputs into the single highest-CTR master thumbnail concept
     except Exception as e:
         logger.error(f"Image generation failed: {e}")
         raise HTTPException(status_code=500, detail=f"Image generation failed: {str(e)}")
+    img_latency_ms = (time.time() - t_img0) * 1000
+
+    total_latency_ms = (time.time() - t0) * 1000
 
     thumbnail_item = ThumbnailVariantItem(
         id=thumb_data.get("id", "master-1"),
@@ -167,7 +178,34 @@ Synthesize the above inputs into the single highest-CTR master thumbnail concept
         })
     )
 
-    logger.info(f"Master thumbnail generated successfully ({fmt}, {len(data_uri):,} chars)")
+    # ── Step 3: Record OpenTelemetry Reasoning Trace in Firestore ───────────
+    try:
+        await record_trace_span(
+            trace_id=trace_id,
+            agent_id="thumbnail_director",
+            action=f"Render Master Thumbnail: {req.title}",
+            latency_ms=total_latency_ms,
+            status="success",
+            tool_calls=[
+                {
+                    "tool": "gemini_prompt_engineer",
+                    "arguments": {"title": req.title, "style": req.style},
+                    "result_preview": f"Crafted master prompt with {thumb_data.get('predicted_ctr', '15%')} predicted CTR",
+                    "latency_ms": round(llm_latency_ms, 2)
+                },
+                {
+                    "tool": "gemini_3_pro_image_diffusion",
+                    "arguments": {"model": "gemini-3-pro-image", "resolution": "1376x768"},
+                    "result_preview": f"Rendered 1376x768 PNG ({len(img_bytes):,} bytes)",
+                    "latency_ms": round(img_latency_ms, 2)
+                }
+            ],
+            output_summary=f"Rendered 1376x768 Master Thumbnail for '{req.title}' ({thumb_data.get('predicted_ctr', '15%')} CTR)"
+        )
+    except Exception as e:
+        logger.warning(f"Trace span recording failed: {e}")
+
+    logger.info(f"Master thumbnail generated successfully ({fmt}, {len(data_uri):,} chars, latency={total_latency_ms:.0f}ms)")
 
     return ThumbnailGenerateResponse(
         title=req.title,
