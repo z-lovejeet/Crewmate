@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     REASONING_MODEL: str = "gemini-3.1-pro-preview"
     FALLBACK_MODEL: str = "gemini-3.5-flash"
     CLASSIFICATION_MODEL: str = "gemini-3.7-flash"
-    IMAGE_MODEL: str = "gemini-3-pro-image"
+    IMAGE_MODEL: str = "gemini-2.5-flash-image"
     VIDEO_OMNI_MODEL: str = "gemini-omni-1.1-flash-preview"
     AUDIO_TTS_MODEL: str = "gemini-3.1-flash-tts-preview"
     STT_TRANSCRIBE_MODEL: str = "gemini-3.5-transcribe-preview"
