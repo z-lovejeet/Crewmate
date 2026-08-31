@@ -436,9 +436,17 @@ export default function Landing() {
   const currentHero = HERO_SCENARIOS[heroTab]
 
   return (
-    <div className="min-h-screen bg-bg-app">
+    <div className="min-h-screen bg-bg-app relative">
       {/* ─── 1. HERO SECTION ────────────────────────────────────────────── */}
       <section className="relative overflow-hidden px-6 pt-16 pb-20 sm:pt-24 sm:pb-28 lg:px-8">
+        {/* Ambient Gradient Glows & Particle Dot Grid Background */}
+        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-gradient-to-tr from-primary/20 via-indigo-400/15 to-accent/15 blur-[120px] rounded-full" />
+          <div className="absolute top-1/4 -left-32 w-80 h-80 bg-primary/10 blur-[100px] rounded-full" />
+          <div className="absolute top-1/3 -right-32 w-80 h-80 bg-accent/10 blur-[100px] rounded-full" />
+          <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:28px_28px] opacity-35 [mask-image:radial-gradient(ellipse_65%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+        </div>
+
         <div className="mx-auto max-w-7xl">
           <motion.div
             initial="hidden"
@@ -446,41 +454,70 @@ export default function Landing() {
             variants={container}
             className="mx-auto max-w-4xl text-center"
           >
-            {/* Human Tagline Pill */}
-            <motion.div variants={item} className="mb-6 flex items-center justify-center gap-3">
-              <img
-                src="/logo-icon.png"
-                alt="Crewmate Logo"
-                className="w-9 h-9 object-contain drop-shadow-sm"
-              />
-              <span className="clay-sm inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-pale px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-primary">
-                <span className="h-2 w-2 rounded-full bg-accent" />
-                The AI Backstage Crew for Solo Creators
-              </span>
+            {/* Live Hackathon & Multi-Agent Announcement Pill */}
+            <motion.div variants={item} className="mb-6 flex justify-center">
+              <div className="clay-sm inline-flex items-center gap-3 p-1.5 pr-4 rounded-full bg-surface/90 border border-primary/20 backdrop-blur-md shadow-xs">
+                <img
+                  src="/logo-icon.png"
+                  alt="Crewmate Logo"
+                  className="w-7 h-7 object-contain drop-shadow-sm ml-0.5"
+                />
+                <span className="flex items-center gap-2 text-xs font-bold text-text-secondary">
+                  <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary-pale text-primary text-[11px] font-extrabold uppercase tracking-wider">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20 animate-pulse" />
+                    Google ADK Fleet
+                  </span>
+                  <span>15 Autonomous Agents Active</span>
+                  <span className="text-primary font-mono font-extrabold">⚡</span>
+                </span>
+              </div>
             </motion.div>
 
-            {/* Main Headline with Human Directness */}
+            {/* Main Hero Headline */}
             <motion.h1
               variants={item}
-              className="text-4xl font-extrabold tracking-tight text-text-primary sm:text-6xl lg:text-7xl leading-[1.08]"
+              className="text-4xl font-extrabold tracking-tight text-text-primary sm:text-6xl lg:text-7xl leading-[1.06]"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Make great videos.
               <br />
-              <span className="bg-gradient-to-r from-primary via-indigo-600 to-accent bg-clip-text text-transparent">
-                Let your crew handle the rest.
+              <span className="bg-gradient-to-r from-primary via-indigo-600 to-accent bg-clip-text text-transparent drop-shadow-xs">
+                Let your 15-agent crew handle the rest.
               </span>
             </motion.h1>
 
-            {/* Subhead */}
+            {/* Subtitle */}
             <motion.p
               variants={item}
               className="mx-auto mt-6 max-w-2xl text-base sm:text-lg text-text-secondary leading-relaxed font-normal"
             >
-              Your 24/7 autonomous backstage crew for YouTube & Instagram. 15
-              specialized AI agents that spot predatory contracts, swap copyright
-              audio with Lyria, and generate 8-second Veo video clips & 3 Pro thumbnails.
+              The 24/7 autonomous backstage media engine for YouTube & Instagram creators. Spot predatory sponsor clauses, replace copyrighted audio with Google Lyria AI, and generate broadcast-grade 8s Veo 3 B-roll & Imagen 3 thumbnails.
             </motion.p>
+
+            {/* 3 Value Pillars Mini Grid */}
+            <motion.div
+              variants={item}
+              className="mt-6 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs"
+            >
+              <div className="clay-sm flex items-center gap-2 rounded-xl bg-surface/90 border border-[var(--border)] px-3.5 py-2 text-text-primary shadow-2xs backdrop-blur-xs">
+                <span className="text-primary"><Scroll01Icon size={16} /></span>
+                <span className="font-bold">Legal Defense</span>
+                <span className="text-text-tertiary">·</span>
+                <span className="text-text-secondary">12-Clause Redlines in 1.4s</span>
+              </div>
+              <div className="clay-sm flex items-center gap-2 rounded-xl bg-surface/90 border border-[var(--border)] px-3.5 py-2 text-text-primary shadow-2xs backdrop-blur-xs">
+                <span className="text-accent"><Shield01Icon size={16} /></span>
+                <span className="font-bold">Lyria AI Audio</span>
+                <span className="text-text-tertiary">·</span>
+                <span className="text-text-secondary">0 Copyright Strike Risk</span>
+              </div>
+              <div className="clay-sm flex items-center gap-2 rounded-xl bg-surface/90 border border-[var(--border)] px-3.5 py-2 text-text-primary shadow-2xs backdrop-blur-xs">
+                <span className="text-indigo-600"><VideoAiIcon size={16} /></span>
+                <span className="font-bold">Veo 3 & Imagen 3</span>
+                <span className="text-text-tertiary">·</span>
+                <span className="text-text-secondary">8s Video & 3 Thumbnails</span>
+              </div>
+            </motion.div>
 
             {/* Hero CTAs */}
             <motion.div
@@ -505,10 +542,10 @@ export default function Landing() {
               </Link>
             </motion.div>
 
-            {/* Quick Proof Pills */}
+            {/* Micro-Trust Proof Line */}
             <motion.div
               variants={item}
-              className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-text-tertiary"
+              className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-medium text-text-tertiary"
             >
               <span className="flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent" />
@@ -521,15 +558,20 @@ export default function Landing() {
               </span>
               <span>•</span>
               <span className="flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
+                Gemini 3.1 Pro Supervisor
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
                 Model Armor Threat Guard
               </span>
             </motion.div>
           </motion.div>
 
-          {/* ─── Hero Interactive Live Studio Deck ─────────────────────────── */}
+          {/* ─── Hero Interactive Live Studio Cockpit Deck ──────────────────── */}
           <motion.div
-            initial={{ opacity: 0, y: 35 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25, duration: 0.55 }}
             className="mt-12"
@@ -592,7 +634,7 @@ export default function Landing() {
                         type={currentHero.badgeTone}
                         text={currentHero.badgeText}
                       />
-                      <span className="clay-sm rounded-full bg-primary-pale px-3 py-1 text-xs font-extrabold text-primary">
+                      <span className="clay-sm rounded-full bg-primary-pale px-3 py-1 text-xs font-extrabold text-primary font-mono">
                         {currentHero.metricBadge}
                       </span>
                     </div>
@@ -629,7 +671,7 @@ export default function Landing() {
                   {/* Insight & Action Split Grid */}
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     {/* Left: What the Agent Found */}
-                    <div className="clay-sm rounded-2xl bg-bg-app p-4">
+                    <div className="clay-sm rounded-2xl bg-bg-app p-4 border border-[var(--border)]">
                       <div className="flex items-center gap-2">
                         <span className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-100 text-amber-600 text-xs font-extrabold">
                           !
@@ -670,13 +712,12 @@ export default function Landing() {
                     <div className="flex items-center gap-2 text-xs font-medium text-text-secondary">
                       <span className="h-2 w-2 rounded-full bg-accent" />
                       <span>
-                        Simulated live on Google ADK Supervisor · Memory Bank
-                        updated
+                        Simulated live on Google ADK Supervisor · Memory Bank updated
                       </span>
                     </div>
 
                     <Link to="/dashboard">
-                      <button className="clay-sm focus-clay cursor-pointer rounded-xl bg-primary px-4 py-2 text-xs font-extrabold text-white transition-all hover:opacity-95">
+                      <button className="clay-sm focus-clay cursor-pointer rounded-xl bg-primary px-4 py-2 text-xs font-extrabold text-white transition-all hover:opacity-95 shadow-sm">
                         Open in Command Deck →
                       </button>
                     </Link>
